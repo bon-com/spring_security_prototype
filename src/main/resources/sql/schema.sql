@@ -21,3 +21,17 @@ CREATE TABLE purchase_item (
     FOREIGN KEY (purchase_id) REFERENCES purchase_history(id),
     FOREIGN KEY (item_id) REFERENCES item(id)
 );
+
+-- 利用者テーブル
+CREATE TABLE users (
+  username VARCHAR(50) PRIMARY KEY,
+  password VARCHAR(100) NOT NULL,
+  enabled BOOLEAN NOT NULL
+);
+
+-- 権限テーブル
+CREATE TABLE authorities (
+  username VARCHAR(50),
+  authority VARCHAR(50),
+  FOREIGN KEY (username) REFERENCES users(username)
+);

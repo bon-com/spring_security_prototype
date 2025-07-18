@@ -8,8 +8,7 @@
 		</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:/META-INF/spring/springMVCContext.xml
-			</param-value>
+			<param-value>classpath:/META-INF/spring/springMVCContext.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -26,7 +25,9 @@
 	</listener>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:/META-INF/spring/applicationContext.xml
+		<param-value>
+			classpath:/META-INF/spring/applicationContext.xml
+			classpath:/META-INF/spring/applicationContext-security.xml
 		</param-value>
 	</context-param>
 
@@ -57,4 +58,30 @@
 			<include-prelude>/WEB-INF/common/include.jsp</include-prelude>
 		</jsp-property-group>
 	</jsp-config>
+
+	<!-- Spring Security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- 認証情報ロギングフィルター -->
+	<filter>
+		<filter-name>authLoggingFilter</filter-name>
+		<filter-class>com.example.prototype.web.security.filter.AuthLoggingFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>authLoggingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- デフォルトのエラー遷移先 -->
+	<error-page>
+		<location>/WEB-INF/views/default_error.jsp</location>
+	</error-page>
 </web-app>

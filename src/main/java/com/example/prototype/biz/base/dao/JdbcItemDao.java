@@ -15,6 +15,7 @@ public class JdbcItemDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
     /** エンティティマッパー */
     private static final RowMapper<Item> itemRowMapper = (rs, i) -> {
         var item = new Item();

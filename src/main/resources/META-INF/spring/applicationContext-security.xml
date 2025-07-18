@@ -1,22 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
+<beans:beans xmlns:sec="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="
                http://www.springframework.org/schema/security
                http://www.springframework.org/schema/security/spring-security.xsd
                http://www.springframework.org/schema/beans
                http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<!-- 静的リソース（CSS, JS, 画像など）へのセキュリティ除外 -->
+	<sec:http pattern="/resources/**" security="none" />
+
+	<!-- 認証と認可の設定をここに記載していく -->
+	<sec:http>
+		<!-- すべてのパスで認証が必要 -->
+		<sec:intercept-url pattern="/**" access="isAuthenticated()" />
+		<!-- 
+		未認証時のパス：<sec:form-login />だけを定義すると、Spring Security提供のデフォルトログイン画面に遷移
+		default-target-url属性を指定すると、ログインのリダイレクト先URLを指定可能。（省略時は「/」）
+		-->
+		<sec:form-login default-target-url="/" />
+	</sec:http>
+
 	<!-- 認証プロバイダーの設定 -->
-	<authentication-manager>
-		<authentication-provider user-service-ref="userDetailsService">
-			<password-encoder ref="passwordEncoder" />
-		</authentication-provider>
-	</authentication-manager>
-
-	<!-- UserDetailsService の Bean定義 -->
-	<beans:bean id="userDetailsService" class="com.example.prototype.biz.security.service.CustomUserDetailsService" />
-
-	<!-- パスワードエンコーダー（BCrypt） -->
-	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<sec:authentication-manager>
+		<!-- 認証処理は下記のBeanを呼び出すという設定（実際のBeanはコンポーネントスキャンにて登録されている） -->
+		<sec:authentication-provider user-service-ref="userDetailsService" />
+	</sec:authentication-manager>
 
 </beans:beans>

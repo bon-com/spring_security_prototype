@@ -19,6 +19,7 @@
 		</tr>
 		<c:forEach var="item" items="${items}">
 			<form method="post" action="${pageContext.request.contextPath}/cart/add">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<tr>
 				<td>${item.name}</td>
 				<td>${item.price}円</td>

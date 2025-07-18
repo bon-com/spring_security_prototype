@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Users {
     /** 利用者氏名 */
     private String userName;
     /** 利用者パスワード */
