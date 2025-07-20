@@ -99,3 +99,8 @@ data.sqlのパスワードの前に{noop}を付与している
 ・認証ユーザー名を画面表示
 【JSTL ＋ Spring Securityタグライブラリ】を使用することで認証したユーザーにアクセスできる
 「<sec:authentication property="name" />」とすることで、Authentication#getName()（※UserDetails.getUsername()）にアクセスできる
+
+・パスワードのハッシュ化
+applicationContext-security.xmlにパスコードエンコーダーのBeanを用意して
+「sec:authentication-manager」に参照させることでパスワードをハッシュ化して管理できる
+認証処理にて内部でBCryptPasswordEncoderのmatchesメソッドを呼び出し、入力値とDBにあるパスワードのハッシュ値を照合する

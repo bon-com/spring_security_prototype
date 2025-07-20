@@ -24,7 +24,10 @@
 	<!-- 認証プロバイダーの設定 -->
 	<sec:authentication-manager>
 		<!-- 認証処理は下記のBeanを呼び出すという設定（実際のBeanはコンポーネントスキャンにて登録されている） -->
-		<sec:authentication-provider user-service-ref="userDetailsService" />
+		<sec:authentication-provider user-service-ref="userDetailsService">
+			 <sec:password-encoder ref="passwordEncoder" />
+		</sec:authentication-provider>
 	</sec:authentication-manager>
-
+	<!-- 認証時のパスワードエンコーダー -->
+	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 </beans:beans>
