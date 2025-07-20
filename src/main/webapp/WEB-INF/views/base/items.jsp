@@ -6,6 +6,8 @@
 <title>商品一覧画面</title>
 </head>
 <body>
+	<h5>こんにちは、<sec:authentication property="name" />さん</h5>
+	<hr />
 	<h3>商品一覧</h3>
 	<%-- DIコンテナで管理しているセッションスコープBeanはSpELを利用して参照する --%>
 	<spring:eval var="cart" expression="@cart"/><%-- オブジェクトだけ取得したり --%>

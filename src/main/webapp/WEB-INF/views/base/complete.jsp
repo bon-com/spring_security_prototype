@@ -6,6 +6,8 @@
 <title>注文完了画面</title>
 </head>
 <body>
+	<h5>こんにちは、<sec:authentication property="name" />さん</h5>
+	<hr />
 	<h3>注文完了</h3>
 	<hr />
 	<h2>ご購入ありがとうございました！</h2>

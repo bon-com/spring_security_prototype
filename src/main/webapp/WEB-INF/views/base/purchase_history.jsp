@@ -6,6 +6,8 @@
 <title>購入履歴一覧画面</title>
 </head>
 <body>
+	<h5>こんにちは、<sec:authentication property="name" />さん</h5>
+	<hr />
 	<h3>購入履歴一覧</h3>
 	<hr />
 	<form:form method="get" modelAttribute="historyForm" action="${pageContext.request.contextPath}/history/purchase-history">

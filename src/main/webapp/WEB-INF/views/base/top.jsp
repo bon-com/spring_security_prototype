@@ -7,6 +7,8 @@
 <title>TOP</title>
 </head>
 <body>
+	<h5>こんにちは、<sec:authentication property="name" />さん</h5>
+	<hr />
 	<h3>${greeting}</h3>
 	<ul>
 		<li>カートの利用：　<a href="<c:url value='/items/'/>">こちら</a></li>

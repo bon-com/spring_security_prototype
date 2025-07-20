@@ -95,3 +95,7 @@ Spring Securityは、POST・PUT・DELETEなどの状態変更リクエストに�
 ・{noop}
 data.sqlのパスワードの前に{noop}を付与している
 これはハッシュ化せず平文として使用するという意味
+
+・認証ユーザー名を画面表示
+【JSTL ＋ Spring Securityタグライブラリ】を使用することで認証したユーザーにアクセスできる
+「<sec:authentication property="name" />」とすることで、Authentication#getName()（※UserDetails.getUsername()）にアクセスできる

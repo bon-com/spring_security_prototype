@@ -7,6 +7,8 @@
 <title>注文内容確認画面</title>
 </head>
 <body>
+	<h5>こんにちは、<sec:authentication property="name" />さん</h5>
+	<hr />
 	<h3>注文内容確認</h3>
 	<hr />
 	<table>
