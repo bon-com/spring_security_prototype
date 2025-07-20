@@ -112,3 +112,6 @@ applicationContext-security.xmlにパスコードエンコーダーのBeanを用
 ログアウト時は「/logout」にリクエストし、ログアウト成功時は「 / 」にリクエストする
 また、invalidate-sessionをtrueにすることで、内部でsession.invalidate()が呼ばれてセッション破棄される
 
+・認証情報をハンドラ引数で取得したいとき
+１．<mvc:annotation-driven>にAuthenticationPrincipalArgumentResolverのBeanを追加
+２．ハンドラ引数にて「@AuthenticationPrincipal」を付与して取得したい型を指定する

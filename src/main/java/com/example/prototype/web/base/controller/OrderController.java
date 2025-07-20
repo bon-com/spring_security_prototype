@@ -2,7 +2,11 @@ package com.example.prototype.web.base.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,9 @@ import com.example.prototype.web.base.dto.CartDto;
 @RequestMapping("order")
 public class OrderController {
 
+    /** ロガー */
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+    
     /** カート（セッション管理） */
     @Autowired
     private CartDto cart;
@@ -53,8 +60,11 @@ public class OrderController {
      * @return
      */
     @GetMapping(value = "/complete")
-    public String complete(HttpSession session) {
-
+    public String complete(HttpSession session, @AuthenticationPrincipal UserDetails user) {
+        
+        // 「@AuthenticationPrincipal」を使用すれば認証情報を引数で取得可能
+        logger.debug("★★注文完了★★\n利用者： {}\n", user);
+        
         // 購入履歴登録
         int totalPrice = cartService.getTotalPrice(cart);
         orderService.insertPurchaseHistory(cart, totalPrice);
