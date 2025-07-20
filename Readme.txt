@@ -91,6 +91,7 @@ Spring Securityを適用させるURLのパターン
 Spring Securityは、POST・PUT・DELETEなどの状態変更リクエストに対してCSRFトークンの検証を行う。
 そのトークンがリクエストに含まれていないまたは一致しない場合、403を返すらしい。
 ⇒解決策：Spring Securityが自動で用意するCSRFトークンをフォームに埋め込む
+⇒<sec:csrfInput/>をフォーム内に埋め込む
 
 ・{noop}
 data.sqlのパスワードの前に{noop}を付与している
@@ -104,3 +105,10 @@ data.sqlのパスワードの前に{noop}を付与している
 applicationContext-security.xmlにパスコードエンコーダーのBeanを用意して
 「sec:authentication-manager」に参照させることでパスワードをハッシュ化して管理できる
 認証処理にて内部でBCryptPasswordEncoderのmatchesメソッドを呼び出し、入力値とDBにあるパスワードのハッシュ値を照合する
+
+・ログアウト
+<sec:logout logout-url="/logout" logout-success-url="/" invalidate-session="true" />
+上記を設定するだけでログアウト機能が有効になる
+ログアウト時は「/logout」にリクエストし、ログアウト成功時は「 / 」にリクエストする
+また、invalidate-sessionをtrueにすることで、内部でsession.invalidate()が呼ばれてセッション破棄される
+

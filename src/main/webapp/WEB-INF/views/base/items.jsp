@@ -7,6 +7,10 @@
 </head>
 <body>
 	<h5>こんにちは、<sec:authentication property="name" />さん</h5>
+	<form action="<c:url value='/logout' />" method="post">
+		<sec:csrfInput/>
+		<input type="submit" value="ログアウト" />
+	</form>
 	<hr />
 	<h3>商品一覧</h3>
 	<%-- DIコンテナで管理しているセッションスコープBeanはSpELを利用して参照する --%>
@@ -21,7 +25,7 @@
 		</tr>
 		<c:forEach var="item" items="${items}">
 			<form method="post" action="${pageContext.request.contextPath}/cart/add">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<sec:csrfInput/>
 			<tr>
 				<td>${item.name}</td>
 				<td>${item.price}円</td>

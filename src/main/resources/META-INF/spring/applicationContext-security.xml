@@ -19,6 +19,12 @@
 		default-target-url属性を指定すると、ログインのリダイレクト先URLを指定可能。（省略時は「/」）
 		-->
 		<sec:form-login default-target-url="/" />
+  		<!-- ログアウト設定 -->
+  		<!-- 
+  		logout-success-url： ログアウト成功時のリダイレクト先URL
+  		invalidate-session： TRUE⇒セッション破棄
+  		 -->
+		<sec:logout logout-url="/logout" logout-success-url="/" invalidate-session="true" />
 	</sec:http>
 
 	<!-- 認証プロバイダーの設定 -->

@@ -8,6 +8,10 @@
 </head>
 <body>
 	<h5>こんにちは、<sec:authentication property="name" />さん</h5>
+	<form action="<c:url value='/logout' />" method="post">
+		<sec:csrfInput/>
+		<input type="submit" value="ログアウト" />
+	</form>
 	<hr />
 	<h3>注文内容確認</h3>
 	<hr />
