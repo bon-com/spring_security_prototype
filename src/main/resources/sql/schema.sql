@@ -26,7 +26,10 @@ CREATE TABLE purchase_item (
 CREATE TABLE users (
   username VARCHAR(50) PRIMARY KEY,
   password VARCHAR(100) NOT NULL,
-  enabled BOOLEAN NOT NULL
+  enabled BOOLEAN NOT NULL,
+  account_non_locked BOOLEAN NOT NULL DEFAULT TRUE,     -- ロック状態（true:ロック無し/false:ロック有り）
+  login_failure_count INT NOT NULL DEFAULT 0,           -- 失敗回数
+  last_login_at TIMESTAMP                               -- 最終ログイン成功日時
 );
 
 -- 権限テーブル
