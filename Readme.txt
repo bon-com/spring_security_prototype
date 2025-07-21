@@ -115,3 +115,9 @@ applicationContext-security.xmlにパスコードエンコーダーのBeanを用
 ・認証情報をハンドラ引数で取得したいとき
 １．<mvc:annotation-driven>にAuthenticationPrincipalArgumentResolverのBeanを追加
 ２．ハンドラ引数にて「@AuthenticationPrincipal」を付与して取得したい型を指定する
+
+・認証イベントのハンドリング
+１．認証成功イベント： InteractiveAuthenticationSuccessEvent
+　　ルートアプリケーションコンテキスト配下にイベント取得用のBeanを用意する
+　　@EventListenerを付与したメソッドの引数に上記イベントを指定することで、画面遷移を除いた認証処理がすべて成功した通知を取得できる
+
