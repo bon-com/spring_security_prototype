@@ -116,6 +116,13 @@ applicationContext-security.xmlにパスコードエンコーダーのBeanを用
 １．<mvc:annotation-driven>にAuthenticationPrincipalArgumentResolverのBeanを追加
 ２．ハンドラ引数にて「@AuthenticationPrincipal」を付与して取得したい型を指定する
 
+・認証時のUserDetailsの拡張
+usersテーブルに「ロック状態」「失敗回数（ログイン）」「最終ログイン成功日時」を追加した
+それに伴い、org.springframework.security.core.userdetails.UserをラップしたExtendedUserを用意した
+ログイン失敗回数と最終ログイン日時を保持させている
+ロック状態はデフォルトでフィールドにある
+
+
 ・認証イベントのハンドリング
 １．認証成功イベント： InteractiveAuthenticationSuccessEvent
 　　ルートアプリケーションコンテキスト配下にイベント取得用のBeanを用意する
@@ -131,4 +138,5 @@ applicationContext-security.xmlにパスコードエンコーダーのBeanを用
 　　├── AuthenticationFailureCredentialsExpiredEvent
 　　├── AuthenticationFailureProviderNotFoundEvent
 　　├── AuthenticationFailureServiceExceptionEvent
+
 

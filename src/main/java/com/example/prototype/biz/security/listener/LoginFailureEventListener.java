@@ -13,7 +13,7 @@ public class LoginFailureEventListener {
 
     /** 認証失敗後に呼ばれるイベントリスナー（※すべての失敗イベントを取得） */
     @EventListener
-    public void onFailure(AbstractAuthenticationFailureEvent event) {
+    public void handleLoginFailure(AbstractAuthenticationFailureEvent event) {
         var auth = event.getAuthentication();
         Exception ex = event.getException();
 

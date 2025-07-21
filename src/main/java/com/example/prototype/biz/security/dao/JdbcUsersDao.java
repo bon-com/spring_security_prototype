@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
@@ -57,7 +58,6 @@ public class JdbcUsersDao {
         );
     };
 
-
     /**
      * 利用者氏名検索
      * @param username
@@ -74,5 +74,35 @@ public class JdbcUsersDao {
 
         return namedParameterJdbcTemplate.query(sql, param, userExtractor);
     }
+    
+    /**
+     * 利用者情報登録更新
+     * @param user
+     */
+    public void save(ExtendedUser user) {
+        // 存在チェック
+        String checkSql = "SELECT COUNT(*) FROM users WHERE username = :username";
+        var param = new MapSqlParameterSource("username", user.getUsername());
+        int count = namedParameterJdbcTemplate.queryForObject(checkSql, param, Integer.class);
+
+        var beanParam = new BeanPropertySqlParameterSource(user);
+        if (count > 0) {
+            // UPDATE
+            String updateSql = "UPDATE users SET password = :password, enabled = :enabled, "
+                    + "account_non_locked = :accountNonLocked, login_failure_count = :loginFailureCount, "
+                    + "last_login_at = :lastLoginAt WHERE username = :username";
+
+            namedParameterJdbcTemplate.update(updateSql, beanParam);
+
+        } else {
+            // INSERT
+            String insertSql = "INSERT INTO users (username, password, enabled, account_non_locked, "
+                    + "login_failure_count, last_login_at) VALUES (:username, :password, :enabled, :accountNonLocked, "
+                    + ":loginFailureCount, :lastLoginAt)";
+
+            namedParameterJdbcTemplate.update(insertSql, beanParam);
+        }
+    }
+
 
 }

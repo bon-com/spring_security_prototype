@@ -6,15 +6,20 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 利用者拡張エンティティ
  * Spring SecurityのUserを継承して拡張している
  */
+@Getter
+@Setter
 public class ExtendedUser extends User {
     /** ログイン失敗回数 */
-    private final int loginFailureCount;
+    private int loginFailureCount;
     /** 最終ログイン日時 */
-    private final LocalDateTime lastLoginAt;
+    private LocalDateTime lastLoginAt;
 
     public ExtendedUser(
         String username,
@@ -32,12 +37,4 @@ public class ExtendedUser extends User {
         this.lastLoginAt = lastLoginAt;
     }
 
-    public int getLoginFailureCount() {
-        return loginFailureCount;
-    }
-
-    public LocalDateTime getLastLoginAt() {
-        return lastLoginAt;
-    }
-    
 }
