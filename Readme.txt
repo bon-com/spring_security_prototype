@@ -121,3 +121,14 @@ applicationContext-security.xmlにパスコードエンコーダーのBeanを用
 　　ルートアプリケーションコンテキスト配下にイベント取得用のBeanを用意する
 　　@EventListenerを付与したメソッドの引数に上記イベントを指定することで、画面遷移を除いた認証処理がすべて成功した通知を取得できる
 
+２．認証失敗イベント： AbstractAuthenticationFailureEvent
+　　すべての認証失敗イベントの親クラス
+　　AbstractAuthenticationFailureEvent
+　　├── AuthenticationFailureBadCredentialsEvent
+　　├── AuthenticationFailureDisabledEvent
+　　├── AuthenticationFailureLockedEvent
+　　├── AuthenticationFailureExpiredEvent
+　　├── AuthenticationFailureCredentialsExpiredEvent
+　　├── AuthenticationFailureProviderNotFoundEvent
+　　├── AuthenticationFailureServiceExceptionEvent
+
