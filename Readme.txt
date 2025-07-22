@@ -125,7 +125,14 @@ usersテーブルに「ロック状態」「失敗回数（ログイン）」「
 Userの場合、アカウントロック状態などにアクセスできず利便性が悪いため、
 org.springframework.security.core.userdetails.UserDetailsをラップした
 
-
+・エラーメッセージ定義
+認証エラー時のSpring Securityが用意しているデフォルトエラーメッセージは、プロパティに定義することでメッセージ変更可能
+※以下参考
+AbstractUserDetailsAuthenticationProvider.badCredentials=ログインIDまたはパスワードが間違っています
+AbstractUserDetailsAuthenticationProvider.locked=アカウントはロックされています
+AbstractUserDetailsAuthenticationProvider.disabled=アカウントは使用できません
+AbstractUserDetailsAuthenticationProvider.expired=アカウントの有効期限が切れています
+AbstractUserDetailsAuthenticationProvider.credentialsExpired=パスワードの有効期限が切れています
 
 ・認証イベントのハンドリング
 １．認証成功イベント： InteractiveAuthenticationSuccessEvent
