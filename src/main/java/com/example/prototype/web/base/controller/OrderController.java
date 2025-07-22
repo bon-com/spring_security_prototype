@@ -63,7 +63,7 @@ public class OrderController {
     public String complete(HttpSession session, @AuthenticationPrincipal UserDetails user) {
         
         // 「@AuthenticationPrincipal」を使用すれば認証情報を引数で取得可能
-        logger.debug("★★注文完了★★\n利用者： {}\n", user);
+        logger.debug("\n★★注文完了★★\n利用者： {}\n", user);
         
         // 購入履歴登録
         int totalPrice = cartService.getTotalPrice(cart);

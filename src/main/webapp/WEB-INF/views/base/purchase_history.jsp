@@ -20,7 +20,7 @@
 			<form:option value="" label="選択してください" />
 			<form:options items="${availableDates}" />
 		</form:select>
-		<button type="submit">検索</button>　<form:errors path="purchaseDate"/>
+		<button type="submit">検索</button>　<form:errors path="purchaseDate" cssStyle="color: red;"/>
 	</form:form>
 	<c:if test="${not empty purchaseHistory}">
 		<hr />

@@ -88,7 +88,7 @@ public class JdbcUsersDao {
         var beanParam = new BeanPropertySqlParameterSource(user);
         if (count > 0) {
             // UPDATE
-            String updateSql = "UPDATE users SET password = :password, enabled = :enabled, "
+            String updateSql = "UPDATE users SET enabled = :enabled, "
                     + "account_non_locked = :accountNonLocked, login_failure_count = :loginFailureCount, "
                     + "last_login_at = :lastLoginAt WHERE username = :username";
 
