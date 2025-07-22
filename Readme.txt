@@ -121,6 +121,10 @@ usersテーブルに「ロック状態」「失敗回数（ログイン）」「
 それに伴い、org.springframework.security.core.userdetails.UserをラップしたExtendedUserを用意した
 ログイン失敗回数と最終ログイン日時を保持させている
 ロック状態はデフォルトでフィールドにある
+※追記：
+Userの場合、アカウントロック状態などにアクセスできず利便性が悪いため、
+org.springframework.security.core.userdetails.UserDetailsをラップした
+
 
 
 ・認証イベントのハンドリング
