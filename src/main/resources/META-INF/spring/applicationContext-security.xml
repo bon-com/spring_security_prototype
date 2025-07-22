@@ -12,19 +12,29 @@
 
 	<!-- 認証と認可の設定をここに記載していく -->
 	<sec:http>
+		<!-- 自作したログイン画面のパス「/login」は認証不要とする（※isAuthenticated()の設定よりも先に定義すること） -->
+		<sec:intercept-url pattern="/login" access="permitAll()" />
 		<!-- すべてのパスで認証が必要 -->
 		<sec:intercept-url pattern="/**" access="isAuthenticated()" />
 		<!-- 
 		未認証時のパス：<sec:form-login />だけを定義すると、Spring Security提供のデフォルトログイン画面に遷移
 		default-target-url属性を指定すると、ログインのリダイレクト先URLを指定可能。（省略時は「/」）
+		login-page属性にパスを指定することで、認証が必要なリソースにアクセスした際、未認証ならこのURLにリダイレクトされる
+		authentication-failure-url属性は認証エラー時のリダイレクト先URL
 		-->
-		<sec:form-login default-target-url="/" />
+		<sec:form-login 
+			default-target-url="/" 
+			login-page="/login" 
+			authentication-failure-url="/login?error"/>
   		<!-- ログアウト設定 -->
   		<!-- 
   		logout-success-url： ログアウト成功時のリダイレクト先URL
   		invalidate-session： TRUE⇒セッション破棄
   		 -->
-		<sec:logout logout-url="/logout" logout-success-url="/" invalidate-session="true" />
+		<sec:logout 
+			logout-url="/logout" 
+			logout-success-url="/login?logout=true" 
+			invalidate-session="true" />
 	</sec:http>
 
 	<!-- 認証プロバイダーの設定 -->

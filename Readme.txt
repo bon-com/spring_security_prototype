@@ -134,6 +134,10 @@ AbstractUserDetailsAuthenticationProvider.disabled=アカウントは使用で�
 AbstractUserDetailsAuthenticationProvider.expired=アカウントの有効期限が切れています
 AbstractUserDetailsAuthenticationProvider.credentialsExpired=パスワードの有効期限が切れています
 
+・自作ログイン画面追加
+ログイン画面遷移用のコントローラー（AuthenticationController）、ログイン画面（login.jsp）、ログイン画面マッピング（applicationContext-security.xml）
+を追加修正することで、自作ログイン画面に遷移させる
+
 ・認証イベントのハンドリング
 １．認証成功イベント： InteractiveAuthenticationSuccessEvent
 　　ルートアプリケーションコンテキスト配下にイベント取得用のBeanを用意する
