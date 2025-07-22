@@ -139,4 +139,7 @@ usersテーブルに「ロック状態」「失敗回数（ログイン）」「
 　　├── AuthenticationFailureProviderNotFoundEvent
 　　├── AuthenticationFailureServiceExceptionEvent
 
+３．認証イベント成功と失敗時にDB更新追加
+　　ログイン失敗回数とアカウントロックまわりを更新している
+
 
