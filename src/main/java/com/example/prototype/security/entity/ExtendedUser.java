@@ -14,6 +14,7 @@ import lombok.Data;
  */
 @Data
 public class ExtendedUser implements UserDetails {
+    private String loginId;
     private String username;
     private String password;
     private boolean enabled;
@@ -27,6 +28,7 @@ public class ExtendedUser implements UserDetails {
     private LocalDateTime lastLoginAt;
 
     public ExtendedUser(
+        String loginId,
         String username,
         String password,
         boolean enabled,
@@ -37,6 +39,7 @@ public class ExtendedUser implements UserDetails {
         int loginFailureCount,
         LocalDateTime lastLoginAt
     ) {
+        this.loginId = loginId;
         this.username = username;
         this.password = password;
         this.enabled = enabled;

@@ -24,7 +24,8 @@ CREATE TABLE purchase_item (
 
 -- 利用者テーブル
 CREATE TABLE users (
-  username VARCHAR(50) PRIMARY KEY,
+  login_id VARCHAR(50) PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
   password VARCHAR(100) NOT NULL,
   enabled BOOLEAN NOT NULL,
   account_non_locked BOOLEAN NOT NULL DEFAULT TRUE,     -- ロック状態（true:ロック無し/false:ロック有り）
@@ -34,7 +35,7 @@ CREATE TABLE users (
 
 -- 権限テーブル
 CREATE TABLE authorities (
-  username VARCHAR(50),
+  login_id VARCHAR(50),
   authority VARCHAR(50),
-  FOREIGN KEY (username) REFERENCES users(username)
+  FOREIGN KEY (login_id) REFERENCES users(login_id)
 );

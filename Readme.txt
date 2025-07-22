@@ -138,6 +138,10 @@ AbstractUserDetailsAuthenticationProvider.credentialsExpired=パスワードの�
 ログイン画面遷移用のコントローラー（AuthenticationController）、ログイン画面（login.jsp）、ログイン画面マッピング（applicationContext-security.xml）
 を追加修正することで、自作ログイン画面に遷移させる
 
+・自作ログイン画面のフォーム変数変更
+ログインフォームから送信されるリクエストパラメータはデフォルトで「username」と「password	」となっている
+この両者のパラメータを変更したい場合、<sec:form-loginに「username-parameter」属性と「password-parameter」属性を使用する
+
 ・認証イベントのハンドリング
 １．認証成功イベント： InteractiveAuthenticationSuccessEvent
 　　ルートアプリケーションコンテキスト配下にイベント取得用のBeanを用意する
@@ -153,6 +157,7 @@ AbstractUserDetailsAuthenticationProvider.credentialsExpired=パスワードの�
 　　├── AuthenticationFailureCredentialsExpiredEvent
 　　├── AuthenticationFailureProviderNotFoundEvent
 　　├── AuthenticationFailureServiceExceptionEvent
+　　※ただし、UsernameNotFoundExceptionがスローされた場合（usernameがそもそも正しくないケース）、このイベントは発火しない！
 
 ３．認証イベント成功と失敗時にDB更新追加
 　　ログイン失敗回数とアカウントロックまわりを更新している

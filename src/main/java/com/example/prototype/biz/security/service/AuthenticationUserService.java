@@ -21,9 +21,9 @@ public class AuthenticationUserService implements UserDetailsService {
      * 認証用の情報を取得（Spring Securityで呼ばれる）
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 氏名検索
-        return jdbcUsersDao.findByUsername(username);
+    public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
+        // ログインID検索
+        return jdbcUsersDao.findByLoginId(loginId);
     }
 
 }

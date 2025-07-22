@@ -14,22 +14,21 @@ import com.example.prototype.security.entity.ExtendedUser;
 public class LoginFailureEventListener {
     /** ロガー */
     private static final Logger logger = LoggerFactory.getLogger(LoginFailureEventListener.class);
-    
+
     @Autowired
     private UsersService usersService;
-    
+
     /** ログイン失敗回数の閾値 */
     private static final int MAX_FAILURES = 3;
-    
-    
+
     /** 認証失敗後に呼ばれるイベントリスナー（※すべての失敗イベントを取得） */
     @EventListener
     public void handleLoginFailure(AbstractAuthenticationFailureEvent event) {
         // 利用者検索
         var auth = event.getAuthentication();
-        String username = auth.getName();
-        ExtendedUser user = usersService.findByUsername(username);
-        
+        String loginId = auth.getName(); // 認証失敗したusernameにあたる値
+        ExtendedUser user = usersService.findByLoginId(loginId);
+
         // 利用者情報が存在する場合
         if (user != null) {
             // ログイン失敗回数取得
@@ -41,17 +40,16 @@ public class LoginFailureEventListener {
                 // ログイン失敗回数カウント
                 user.setLoginFailureCount(failureCount + 1);
             }
-            
             usersService.save(user);
         }
-        
-        // 認証失敗情報のログ出力
+
+        // 認証失敗ログ
         Exception ex = event.getException();
         String clientInfo = auth.getDetails().toString();
         String failureType = ex.getClass().getSimpleName();
         String message = ex.getMessage();
-
-        logger.debug("\n★★認証失敗★★:\n・ユーザー名: {}\n・失敗理由: {} ({})\n・詳細: {}\n", username, failureType, message, clientInfo);
+        logger.debug("\n★★認証失敗★★:\nログインID: {}\n・失敗理由: {} ({})\n・詳細: {}\n・ログイン失敗回数: {}\n・アカウントロック状態: {}\n", loginId, failureType,
+                message, clientInfo, user.getLoginFailureCount(), user.isAccountNonLocked()?"ロックなし":"ロックあり");
     }
 
 }

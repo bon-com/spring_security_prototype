@@ -19,7 +19,7 @@
 
 	<form action="${pageContext.request.contextPath}/login" method="post">
 		<sec:csrfInput />
-		<label for="username">ユーザー名:</label> <input type="text" id="username" name="username" autofocus />
+		<label for="loginId">ログインID:</label> <input type="text" id="loginId" name="loginId" autofocus />
 		<br />
 
 		<label for="password">パスワード:</label> <input type="password" id="password" name="password" />

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.prototype.biz.base.service.CartService;
 import com.example.prototype.biz.base.service.OrderService;
 import com.example.prototype.biz.utils.MessageUtil;
+import com.example.prototype.security.entity.ExtendedUser;
 import com.example.prototype.web.base.dto.CartDto;
 
 @Controller
@@ -60,10 +60,10 @@ public class OrderController {
      * @return
      */
     @GetMapping(value = "/complete")
-    public String complete(HttpSession session, @AuthenticationPrincipal UserDetails user) {
+    public String complete(HttpSession session, @AuthenticationPrincipal ExtendedUser user) {
         
         // 「@AuthenticationPrincipal」を使用すれば認証情報を引数で取得可能
-        logger.debug("\n★★注文完了★★\n利用者： {}\n", user);
+        logger.debug("\n★★注文完了★★\n利用者： {}\n", user.getLoginId());
         
         // 購入履歴登録
         int totalPrice = cartService.getTotalPrice(cart);

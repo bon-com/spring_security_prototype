@@ -21,11 +21,11 @@ public class UsersService {
     }
     
     /**
-     * 利用者検索
+     * ログインID検索
      * @param username
      * @return
      */
-    public ExtendedUser findByUsername(String username) {
-        return jdbcUsersDao.findByUsername(username);
+    public ExtendedUser findByLoginId(String loginId) {
+        return jdbcUsersDao.findByLoginId(loginId);
     }
 }

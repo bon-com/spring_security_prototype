@@ -25,9 +25,10 @@ public class JdbcUsersDao {
     /** エンティティマッパー */
     private static final ResultSetExtractor<ExtendedUser> userExtractor = rs -> {
         if (!rs.next()) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("ログインIDまたはパスワードが間違っています");
         }
-
+        
+        String loginId = rs.getString("login_id");
         String username = rs.getString("username");
         String password = rs.getString("password");
         boolean enabled = rs.getBoolean("enabled");
@@ -46,7 +47,8 @@ public class JdbcUsersDao {
         } while (rs.next());
 
         return new ExtendedUser(
-            username, // ログインID
+            loginId, // ログインID
+            username, // 利用者指名
             password, // パスワード
             enabled, // enabled（アカウント有効可否）
             true, // accountNonExpired（アカウント有効期限切れ可否 ⇒ falseならログイン不可）
@@ -59,18 +61,18 @@ public class JdbcUsersDao {
     };
 
     /**
-     * 利用者氏名検索
+     * ログインID検索
      * @param username
      * @return
      */
-    public ExtendedUser findByUsername(String username) {
-        var sql = "SELECT u.username as username, u.password as password, u.enabled as enabled, "
+    public ExtendedUser findByLoginId(String loginId) {
+        var sql = "SELECT u.login_id as login_id, u.username as username, u.password as password, u.enabled as enabled, "
                 + "u.account_non_locked as account_non_locked, u.login_failure_count as login_failure_count,"
                 + " u.last_login_at as last_login_at, a.authority as authority FROM users u "
-                + "INNER JOIN authorities a ON u.username = a.username WHERE u.username = :username";
+                + "INNER JOIN authorities a ON u.login_id = a.login_id WHERE u.login_id = :loginId";
         // パラメータ設定
         var param = new MapSqlParameterSource();
-        param.addValue("username", username);
+        param.addValue("loginId", loginId);
 
         return namedParameterJdbcTemplate.query(sql, param, userExtractor);
     }
@@ -81,8 +83,8 @@ public class JdbcUsersDao {
      */
     public void save(ExtendedUser user) {
         // 存在チェック
-        String checkSql = "SELECT COUNT(*) FROM users WHERE username = :username";
-        var param = new MapSqlParameterSource("username", user.getUsername());
+        String checkSql = "SELECT COUNT(*) FROM users WHERE login_id = :loginId";
+        var param = new MapSqlParameterSource("loginId", user.getLoginId());
         int count = namedParameterJdbcTemplate.queryForObject(checkSql, param, Integer.class);
 
         var beanParam = new BeanPropertySqlParameterSource(user);
@@ -90,14 +92,14 @@ public class JdbcUsersDao {
             // UPDATE
             String updateSql = "UPDATE users SET enabled = :enabled, "
                     + "account_non_locked = :accountNonLocked, login_failure_count = :loginFailureCount, "
-                    + "last_login_at = :lastLoginAt WHERE username = :username";
+                    + "last_login_at = :lastLoginAt WHERE login_id = :loginId";
 
             namedParameterJdbcTemplate.update(updateSql, beanParam);
 
         } else {
             // INSERT
-            String insertSql = "INSERT INTO users (username, password, enabled, account_non_locked, "
-                    + "login_failure_count, last_login_at) VALUES (:username, :password, :enabled, :accountNonLocked, "
+            String insertSql = "INSERT INTO users (login_id, username, password, enabled, account_non_locked, "
+                    + "login_failure_count, last_login_at) VALUES (:loginId, :username, :password, :enabled, :accountNonLocked, "
                     + ":loginFailureCount, :lastLoginAt)";
 
             namedParameterJdbcTemplate.update(insertSql, beanParam);

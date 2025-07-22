@@ -119,6 +119,13 @@
 			<artifactId>javax.annotation-api</artifactId>
 			<version>1.3.2</version>
 		</dependency>
+		<!-- StringUtils-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version> <!-- 最新安定版を指定 -->
+		</dependency>
+
 	</dependencies>
 
 	<build>

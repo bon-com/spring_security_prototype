@@ -21,10 +21,14 @@
 		default-target-url属性を指定すると、ログインのリダイレクト先URLを指定可能。（省略時は「/」）
 		login-page属性にパスを指定することで、認証が必要なリソースにアクセスした際、未認証ならこのURLにリダイレクトされる
 		authentication-failure-url属性は認証エラー時のリダイレクト先URL
+		username-parameter属性はフォームのusername変数を指定できる
+		password-parameter属性はフォームのpassword変数を指定できる
 		-->
 		<sec:form-login 
 			default-target-url="/" 
 			login-page="/login" 
+			username-parameter="loginId"
+			password-parameter="password"
 			authentication-failure-url="/login?error"/>
   		<!-- ログアウト設定 -->
   		<!-- 
