@@ -45,7 +45,9 @@
 		</c:forEach>
 	</table>
 	<br>
-	<a href="${pageContext.request.contextPath}/order/">購入確認</a><br>
+	<c:if test="${cart.total ne '0'}">
+		<a href="${pageContext.request.contextPath}/order/">購入確認</a><br>
+	</c:if>
 	<hr />
 	<a href="<c:url value='/'/>">TOP</a>
 </body>
