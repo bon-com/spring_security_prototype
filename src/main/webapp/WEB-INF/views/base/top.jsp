@@ -12,7 +12,7 @@
 		さん
 	</h5>
 	<form action="${pageContext.request.contextPath}/logout" method="post">
-		<sec:csrfInput/>
+		<sec:csrfInput />
 		<input type="submit" value="ログアウト" />
 	</form>
 	<hr />

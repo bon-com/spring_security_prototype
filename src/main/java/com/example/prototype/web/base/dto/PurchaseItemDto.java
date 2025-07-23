@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 購入商品履歴クラス
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

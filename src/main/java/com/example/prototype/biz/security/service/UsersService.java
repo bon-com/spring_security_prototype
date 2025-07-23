@@ -8,7 +8,6 @@ import com.example.prototype.security.entity.ExtendedUser;
 
 @Service
 public class UsersService {
-    
     @Autowired
     private JdbcUsersDao jdbcUsersDao;
     

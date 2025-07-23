@@ -11,7 +11,6 @@ import com.example.prototype.biz.base.service.ItemService;
 @Controller
 @RequestMapping("items")
 public class ItemController {
-
     /** 商品サービス */
     @Autowired
     private ItemService itemService;

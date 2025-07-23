@@ -14,7 +14,6 @@ import com.example.prototype.base.entity.Item;
 
 @Repository
 public class JdbcItemDao {
-
     /** ロガー */
     private static final Logger logger = LoggerFactory.getLogger(JdbcItemDao.class);
     
@@ -37,7 +36,8 @@ public class JdbcItemDao {
      */
     public List<Item> findAll() {
         var sql = "SELECT id, name, price, deleted FROM item WHERE deleted = false";
-        // 実行
+        
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcItemDao\n・メソッド=findAll\n・SQL={}\n", sql);
         return namedParameterJdbcTemplate.query(sql, itemRowMapper);
     }
 
@@ -48,39 +48,38 @@ public class JdbcItemDao {
      */
     public Item findById(int id) {
         var sql = "SELECT id, name, price, deleted FROM item WHERE id = :id and deleted = false";
-        // パラメータ設定
         var param = new MapSqlParameterSource();
         param.addValue("id", id);
-        // 実行
+
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcItemDao\n・メソッド=findById\n・SQL={}\n・パラメータ={}\n", sql, param);
         return namedParameterJdbcTemplate.queryForObject(sql, param, itemRowMapper);
     }
     
     /**
-     * 商品削除
+     * 商品削除フラグ更新（管理者用）
      * @param id
      */
-    public void updateDeleted(int id, boolean deleted) {
+    public void updateDeletedByAdmin(int id, boolean deleted) {
         var sql = "UPDATE item SET deleted = :deleted WHERE id = :id";
-        // パラメータ設定
         var param = new MapSqlParameterSource();
         param.addValue("id", id);
         param.addValue("deleted", deleted);
-        // 実行
+        
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcItemDao\n・メソッド=updateDeleted\n・SQL={}\n・パラメータ={}\n", sql, id);
         int count = namedParameterJdbcTemplate.update(sql, param);
         if (count == 0) {
-            logger.warn("\n★★商品テーブル更新失敗★★\n・SQL={}\n・パラメータ={}\n", sql, param);
             throw new IllegalStateException("更新対象が存在しません");
         }
     }
-    
 
     /**
-     * 商品全件検索
+     * 商品全件検索（管理者用）
      * @return
      */
     public List<Item> findAllByAdmin() {
         var sql = "SELECT id, name, price, deleted FROM item";
-        // 実行
+        
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcItemDao\n・メソッド=findAllByAdmin\n・SQL={}\n", sql);
         return namedParameterJdbcTemplate.query(sql, itemRowMapper);
     }
 }

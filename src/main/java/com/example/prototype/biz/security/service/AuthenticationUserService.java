@@ -13,12 +13,11 @@ import com.example.prototype.biz.security.dao.JdbcUsersDao;
  */
 @Service("userDetailsService")
 public class AuthenticationUserService implements UserDetailsService {
-
     @Autowired
     private JdbcUsersDao jdbcUsersDao;
 
     /**
-     * 認証用の情報を取得（Spring Securityで呼ばれる）
+     * 認証用の情報を取得（Spring Securityのログイン処理にて内部で呼ばれる）
      */
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {

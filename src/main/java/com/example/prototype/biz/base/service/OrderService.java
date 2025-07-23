@@ -18,16 +18,18 @@ import com.example.prototype.web.base.dto.CartDto;
  */
 @Service
 public class OrderService {
-
     @Autowired
     private JdbcPurchaseHistoryDao jdbcPurchaseHistoryDao;
 
     @Autowired
     private JdbcPurchaseItemDao jdbcPurchaseItemDao;
 
-    /** 購入履歴に追加（AOPトランザクション制御あり） */
+    /**
+     * 購入履歴に追加
+     * @param cart
+     * @param totalPrice
+     */
     public void insertPurchaseHistory(CartDto cart, int totalPrice) {
-
         // 購入履歴生成
         var history = new PurchaseHistory();
         history.setPurchaseDate(LocalDate.now());
@@ -44,19 +46,23 @@ public class OrderService {
         });
     }
 
-    /** カート情報から購入商品履歴情報を生成 */
+    /**
+     * カート情報から購入商品履歴情報を生成
+     * @param cart
+     * @return
+     */
     private List<PurchaseItem> createPurchaseItemList(CartDto cart) {
         // 購入商品リスト生成
         List<PurchaseItem> purchaceItemList = new ArrayList<>();
         cart.getItems().values().forEach(cartItem -> {
-            var dto = new PurchaseItem();
-            var item = cartItem.getItem();
-            dto.setItemId(item.getId());
-            dto.setPrice(item.getPrice());
-            dto.setTotalPrice(cartItem.getTotal());
-            dto.setQuantity(cartItem.getQuantity());
+            var entity = new PurchaseItem();
+            var itemDto = cartItem.getItem();
+            entity.setItemId(itemDto.getId());
+            entity.setPrice(itemDto.getPrice());
+            entity.setTotalPrice(cartItem.getTotal());
+            entity.setQuantity(cartItem.getQuantity());
 
-            purchaceItemList.add(dto);
+            purchaceItemList.add(entity);
         });
 
         return purchaceItemList;

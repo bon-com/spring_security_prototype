@@ -10,11 +10,14 @@ import com.example.prototype.biz.utils.MessageUtil;
 
 @Controller
 public class WelcomeController {
-    
-    /** メッセージユーティリティ */
     @Autowired
     private MessageUtil messageUtil;
     
+    /**
+     * TOP画面表示
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/")
     public String top(Model model) {
         // プロパティからメッセージ取得

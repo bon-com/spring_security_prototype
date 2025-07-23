@@ -18,24 +18,24 @@ import com.example.prototype.security.entity.ExtendedUser;
  * ※認可エラー時はイベントが発行されない
  */
 public class ExtendedAccessDeniedHandler implements AccessDeniedHandler {
-    
     /** ロガー */
     private static final Logger logger = LoggerFactory.getLogger(ExtendedAccessDeniedHandler.class);
     
-    /** 認可されていないロールでリクエストして403になっ多場合に、ハンドリング */
+    /**
+     * 認可されていないロールでリクエストして403が返却された場合にハンドリング
+     */
     @Override
     public void handle(HttpServletRequest request,
                        HttpServletResponse response,
                        AccessDeniedException ex) throws IOException {
         
-        // アクセス者のログ
-        Authentication auth = (Authentication) request.getUserPrincipal();
-        ExtendedUser authUser = (ExtendedUser) auth.getPrincipal();
-        logger.debug("\n★★不正アクセス★★\n・ログインID: {}\n・アクセスパス: {}\n・理由: {}\n",
+        // 不正アクセス者のログ
+        var auth = (Authentication) request.getUserPrincipal();
+        var authUser = (ExtendedUser) auth.getPrincipal();
+        logger.warn("\n★★不正アクセス★★\n・ログインID: {}\n・アクセスパス: {}\n・理由: {}\n",
                 authUser.getLoginId(), request.getRequestURI(), ex.getMessage());
         
         // エラー画面にリダイレクト
         response.sendRedirect(request.getContextPath() + "/system/error?code=403");
-
     }
 }

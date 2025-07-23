@@ -22,10 +22,10 @@ public class LoginFailureEventListener {
     @Autowired
     private UsersService usersService;
 
-    /** ログイン失敗回数の閾値 */
-    private static final int MAX_FAILURES = 3;
-
-    /** 認証失敗後に呼ばれるイベントリスナー（※すべての失敗イベントを取得） */
+    /**
+     * 認証失敗後に呼ばれるイベントリスナー（※すべての失敗イベントを取得）をハンドリング
+     * @param event
+     */
     @EventListener
     public void handleLoginFailure(AbstractAuthenticationFailureEvent event) {
         // 利用者検索
@@ -37,7 +37,7 @@ public class LoginFailureEventListener {
         if (user != null) {
             // ログイン失敗回数取得
             int failureCount = user.getLoginFailureCount();
-            if (failureCount + 1 > MAX_FAILURES) {
+            if (failureCount + 1 > Constants.MAX_FAILURES) {
                 // アカウントロック
                 user.setAccountNonLocked(false);
             } else {
@@ -52,7 +52,7 @@ public class LoginFailureEventListener {
         String clientInfo = auth.getDetails().toString();
         String failureType = ex.getClass().getSimpleName();
         String message = ex.getMessage();
-        logger.debug("\n★★認証失敗★★:\nログインID: {}\n・失敗理由: {} ({})\n・詳細: {}\n・ログイン失敗回数: {}\n・アカウントロック状態: {}\n", loginId, failureType,
+        logger.info("\n★★認証失敗★★:\nログインID: {}\n・失敗理由: {} ({})\n・詳細: {}\n・ログイン失敗回数: {}\n・アカウントロック状態: {}\n", loginId, failureType,
                 message, clientInfo, user.getLoginFailureCount(), user.isAccountNonLocked() ? Constants.ACCOUNT_NOT_LOCKED : Constants.ACCOUNT_LOCKED);
     }
 

@@ -11,11 +11,15 @@ import com.example.prototype.base.common.constants.Constants;
 @Controller
 @RequestMapping("system")
 public class GlobalErrorController {
-    
+    /**
+     * 共通エラー画面表示
+     * @param code
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/error")
     public String handleError(
         @RequestParam(name = "code", required = false) String code, Model model) {
-
         String message = "";
         switch (code) {
             case "403":

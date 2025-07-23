@@ -24,14 +24,17 @@ public class LoginSuccessEventListener {
     @Autowired
     private UsersService usersService;
 
-    /** 認証成功後に呼ばれるイベントリスナー */
+    /**
+     * 認証成功後に呼ばれるイベントリスナーをハンドリング
+     * @param event
+     */
     @EventListener
     public void handleLoginSuccess(InteractiveAuthenticationSuccessEvent event) {
         // ログイン利用者存在確認 （※認証成功した場合、getPrincipal()にてUserDetailsオブジェクトを取得する）
-        ExtendedUser authUser = (ExtendedUser) event.getAuthentication().getPrincipal();
+        var authUser = (ExtendedUser) event.getAuthentication().getPrincipal();
         ExtendedUser user = usersService.findByLoginId(authUser.getLoginId());
         if (user == null) {
-            logger.error("\n認証成功後にユーザー情報が見つかりません: {}\n", authUser.getLoginId());
+            logger.warn("\n認証成功後にユーザー情報が見つかりません: {}\n", authUser.getLoginId());
             throw new IllegalStateException("\nユーザー情報が存在しません: {}\n" + authUser.getLoginId());
         }
 
@@ -41,7 +44,7 @@ public class LoginSuccessEventListener {
         usersService.save(user);
 
         // 認証成功ログ
-        logger.debug("\n★★認証成功★★\n・利用者： {}\n・ログイン失敗回数: {}\n・アカウントロック状態: {}\n", user.getLoginId(),
+        logger.info("\n★★認証成功★★\n・利用者： {}\n・ログイン失敗回数: {}\n・アカウントロック状態: {}\n", user.getLoginId(),
                 user.getLoginFailureCount(), user.isAccountNonLocked() ? Constants.ACCOUNT_NOT_LOCKED : Constants.ACCOUNT_LOCKED);
     }
 }

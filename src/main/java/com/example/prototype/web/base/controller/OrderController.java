@@ -20,7 +20,6 @@ import com.example.prototype.web.base.dto.CartDto;
 @Controller
 @RequestMapping("order")
 public class OrderController {
-
     /** ロガー */
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
     

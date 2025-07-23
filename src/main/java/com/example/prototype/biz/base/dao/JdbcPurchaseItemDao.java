@@ -2,6 +2,8 @@ package com.example.prototype.biz.base.dao;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -13,7 +15,9 @@ import com.example.prototype.base.entity.PurchaseItem;
 
 @Repository
 public class JdbcPurchaseItemDao {
-
+    /** ロガー */
+    private static final Logger logger = LoggerFactory.getLogger(JdbcPurchaseItemDao.class);
+    
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     /** エンティティマッパー */
@@ -34,9 +38,10 @@ public class JdbcPurchaseItemDao {
      */
     public void insert(PurchaseItem purchaseItem) {
         var sql = "INSERT INTO purchase_item (purchase_id, item_id, quantity, price) VALUES (:purchaseId, :itemId, :quantity, :price);";
-        BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(purchaseItem);
+        var param = new BeanPropertySqlParameterSource(purchaseItem);
 
-        namedParameterJdbcTemplate.update(sql, paramSource);
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcPurchaseItemDao\n・メソッド=insert\n・SQL={}\n・パラメータ={}\n", sql, param);
+        namedParameterJdbcTemplate.update(sql, param);
     }
 
     /**
@@ -46,12 +51,10 @@ public class JdbcPurchaseItemDao {
      */
     public List<PurchaseItem> findByPurchaseId(int purchaseId) {
         var sql = "SELECT p.id, p.purchase_id, p.item_id, p.quantity, p.price, i.name AS item_name FROM purchase_item p JOIN item i ON p.item_id = i.id WHERE p.purchase_id = :purchaseId ";
-
-        // パラメータ設定
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        var param = new MapSqlParameterSource();
         param.addValue("purchaseId", purchaseId);
 
-        // 実行
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcPurchaseItemDao\n・メソッド=findByPurchaseId\n・SQL={}\n・パラメータ={}\n", sql, param);
         return namedParameterJdbcTemplate.query(sql, param, purHistoryRowMapper);
     }
 }

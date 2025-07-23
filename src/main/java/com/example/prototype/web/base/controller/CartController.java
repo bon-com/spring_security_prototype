@@ -15,7 +15,6 @@ import com.example.prototype.web.base.dto.CartDto;
 @Controller
 @RequestMapping("cart")
 public class CartController {
-
     /** カート（セッション管理） */
     @Autowired
     private CartDto cart;

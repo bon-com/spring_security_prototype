@@ -18,9 +18,9 @@
 	<hr />
 	<h3>商品の登録・更新</h3>
 	<hr />
-	<h5 style="color: red;">
+	<p>
 		<c:out value="${message}" />
-	</h5>
+	</p>
 	<table>
 		<tr>
 			<th>商品ID</th>

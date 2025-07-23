@@ -20,7 +20,6 @@ import com.example.prototype.web.base.dto.PurchaseHistoryDto;
 @Controller
 @RequestMapping("history")
 public class PurchaseHistoryController {
-
     @Autowired
     private PurchaseHistoryService purchaseHistoryService;
     
@@ -33,6 +32,10 @@ public class PurchaseHistoryController {
         return purchaseHistoryService.getPurchaseDateList();
     }
     
+    /**
+     * 購入履歴検索フォームをモデルに追加
+     * @return
+     */
     @ModelAttribute("historyForm")
     public PurchaseHistoryConditionsForm setPurchaseHistoryConditionsForm() {
         return new PurchaseHistoryConditionsForm();

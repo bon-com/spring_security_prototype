@@ -17,10 +17,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * 認証情報ロギングフィルター
  */
 public class AuthLoggingFilter implements Filter {
-
     /** ロガー */
     private static final Logger logger = LoggerFactory.getLogger(AuthLoggingFilter.class);
 
+    /**
+     * 認証情報をログ出力する
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {

@@ -7,9 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SessionCleaner {
-    
+    /**
+     * セッションをクリアする
+     * @param session
+     */
     public void clearSession(HttpSession session) {
-        
         // 認証情報クリア
         SecurityContextHolder.clearContext();
         

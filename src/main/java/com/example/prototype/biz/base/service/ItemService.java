@@ -16,11 +16,13 @@ import com.example.prototype.web.base.dto.ItemDto;
  */
 @Service
 public class ItemService {
-
     @Autowired
     private JdbcItemDao jdbcItemDao;
 
-    /** 商品一覧取得 */
+    /**
+     * 商品一覧取得
+     * @return
+     */
     public List<ItemDto> findAll() {
         List<ItemDto> itemList = new ArrayList<>();
 
@@ -33,7 +35,11 @@ public class ItemService {
         return itemList;
     }
 
-    /** 商品検索 */
+    /**
+     * 商品ID検索
+     * @param id
+     * @return
+     */
     public ItemDto findById(int id) {
         Item res = jdbcItemDao.findById(id);
         var dto = new ItemDto();
@@ -42,12 +48,19 @@ public class ItemService {
         return dto;
     }
     
-    /** 商品削除フラグ更新 */
-    public void updateDeleted(int id, boolean deleted) {
-        jdbcItemDao.updateDeleted(id, deleted);
+    /**
+     * 商品削除フラグ更新（管理者用）
+     * @param id
+     * @param deleted
+     */
+    public void updateDeletedByAdmin(int id, boolean deleted) {
+        jdbcItemDao.updateDeletedByAdmin(id, deleted);
     }
     
-    /** 商品一覧取得 */
+    /**
+     * 商品一覧取得（管理者用）
+     * @return
+     */
     public List<ItemDto> findAllByAdmin() {
         List<ItemDto> itemList = new ArrayList<>();
 

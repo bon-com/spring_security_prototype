@@ -12,10 +12,12 @@ import com.example.prototype.base.entity.PurchaseHistory;
 import com.example.prototype.base.entity.PurchaseItem;
 
 /**
- * 購入履歴、購入商品履歴テーブルの結合情報をエンティティにマッピング
+ * 購入履歴、購入商品履歴テーブルの結合情報をエンティティにマッピングするクラス
  */
 public class PurchaseHistoryExtractor implements ResultSetExtractor<PurchaseHistory> {
-
+    /**
+     * マッピング処理
+     */
     @Override
     public PurchaseHistory extractData(ResultSet rs) throws SQLException, DataAccessException {
         PurchaseHistory purchaseHistory = null;

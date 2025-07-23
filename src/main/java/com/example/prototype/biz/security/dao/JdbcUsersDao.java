@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -20,13 +22,16 @@ import com.example.prototype.security.entity.ExtendedUser;
 
 @Repository
 public class JdbcUsersDao {
+    /** ロガー */
+    private static final Logger logger = LoggerFactory.getLogger(JdbcUsersDao.class);
+    
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     
     /** エンティティマッパー */
     private final ResultSetExtractor<ExtendedUser> userExtractor = rs -> {
         if (!rs.next()) {
-            throw new UsernameNotFoundException(Constants.USER_AUTHENTICATION_BAD_CREDENTIALS);
+            throw new UsernameNotFoundException(Constants.ERR_MSG_AUTHENTICATION_BAD_CREDENTIALS);
         }
         
         String loginId = rs.getString("login_id");
@@ -49,7 +54,7 @@ public class JdbcUsersDao {
 
         return new ExtendedUser(
             loginId, // ログインID
-            username, // 利用者指名
+            username, // 利用者氏名
             password, // パスワード
             enabled, // enabled（アカウント有効可否）
             true, // accountNonExpired（アカウント有効期限切れ可否 ⇒ falseならログイン不可）
@@ -71,10 +76,10 @@ public class JdbcUsersDao {
                 + "u.account_non_locked as account_non_locked, u.login_failure_count as login_failure_count,"
                 + " u.last_login_at as last_login_at, a.authority as authority FROM users u "
                 + "INNER JOIN authorities a ON u.login_id = a.login_id WHERE u.login_id = :loginId";
-        // パラメータ設定
         var param = new MapSqlParameterSource();
         param.addValue("loginId", loginId);
 
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findByLoginId\n・SQL={}\n・パラメータ={}\n", sql, param);
         return namedParameterJdbcTemplate.query(sql, param, userExtractor);
     }
     
@@ -84,25 +89,29 @@ public class JdbcUsersDao {
      */
     public void save(ExtendedUser user) {
         // 存在チェック
-        String checkSql = "SELECT COUNT(*) FROM users WHERE login_id = :loginId";
+        var checkSql = "SELECT COUNT(*) FROM users WHERE login_id = :loginId";
         var param = new MapSqlParameterSource("loginId", user.getLoginId());
+        
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=save\n・SQL={}\n・パラメータ={}\n", checkSql, param);
         int count = namedParameterJdbcTemplate.queryForObject(checkSql, param, Integer.class);
 
         var beanParam = new BeanPropertySqlParameterSource(user);
         if (count > 0) {
             // UPDATE
-            String updateSql = "UPDATE users SET enabled = :enabled, "
+            var updateSql = "UPDATE users SET enabled = :enabled, "
                     + "account_non_locked = :accountNonLocked, login_failure_count = :loginFailureCount, "
                     + "last_login_at = :lastLoginAt WHERE login_id = :loginId";
 
+            logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=save\n・SQL={}\n・パラメータ={}\n", updateSql, beanParam);
             namedParameterJdbcTemplate.update(updateSql, beanParam);
 
         } else {
             // INSERT
-            String insertSql = "INSERT INTO users (login_id, username, password, enabled, account_non_locked, "
+            var insertSql = "INSERT INTO users (login_id, username, password, enabled, account_non_locked, "
                     + "login_failure_count, last_login_at) VALUES (:loginId, :username, :password, :enabled, :accountNonLocked, "
                     + ":loginFailureCount, :lastLoginAt)";
 
+            logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=save\n・SQL={}\n・パラメータ={}\n", insertSql, beanParam);
             namedParameterJdbcTemplate.update(insertSql, beanParam);
         }
     }

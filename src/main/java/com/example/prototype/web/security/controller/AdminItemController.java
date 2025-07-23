@@ -14,7 +14,6 @@ import com.example.prototype.biz.base.service.ItemService;
 @Controller
 @RequestMapping("admin/items")
 public class AdminItemController {
-    
     /** 商品サービス */
     @Autowired
     private ItemService itemService;
@@ -29,7 +28,7 @@ public class AdminItemController {
         // 商品一覧を取得
         model.addAttribute("items", itemService.findAllByAdmin());
         if (Constants.UPDATE_SUCCESS_KEY.equals(msgKey)) {
-            model.addAttribute("message", Constants.UPDATE_SUCCESS_MSG);
+            model.addAttribute("message", Constants.MSG_UPDATE_SUCCESS);
         }
         
         return "security/admin_items";
@@ -43,7 +42,7 @@ public class AdminItemController {
     @GetMapping(value = "/update-deleted/{id}")
     public String deleteItem(@PathVariable int id, @RequestParam boolean deleted) {
         // 商品を削除
-        itemService.updateDeleted(id, deleted);
+        itemService.updateDeletedByAdmin(id, deleted);
         return "redirect:/admin/items/?msgKey=" + Constants.UPDATE_SUCCESS_KEY;
     }
 }
