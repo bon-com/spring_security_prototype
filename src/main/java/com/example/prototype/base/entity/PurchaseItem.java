@@ -23,4 +23,6 @@ public class PurchaseItem {
     private int quantity;
     /** 購入時の値段 */
     private int price;
+    /** 購入時の合計金額 */
+    private int totalPrice;
 }

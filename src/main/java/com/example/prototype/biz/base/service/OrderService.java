@@ -53,6 +53,7 @@ public class OrderService {
             var item = cartItem.getItem();
             dto.setItemId(item.getId());
             dto.setPrice(item.getPrice());
+            dto.setTotalPrice(cartItem.getTotal());
             dto.setQuantity(cartItem.getQuantity());
 
             purchaceItemList.add(dto);
