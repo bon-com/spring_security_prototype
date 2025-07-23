@@ -9,9 +9,13 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
+import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.security.service.UsersService;
 import com.example.prototype.security.entity.ExtendedUser;
 
+/**
+ * 認証成功時のイベントをハンドリングするクラス
+ */
 @Component
 public class LoginSuccessEventListener {
     /** ロガー */
@@ -27,8 +31,8 @@ public class LoginSuccessEventListener {
         ExtendedUser authUser = (ExtendedUser) event.getAuthentication().getPrincipal();
         ExtendedUser user = usersService.findByLoginId(authUser.getLoginId());
         if (user == null) {
-            logger.error("認証成功後にユーザー情報が見つかりません: {}", authUser.getLoginId());
-            throw new IllegalStateException("ユーザー情報が存在しません: " + authUser.getLoginId());
+            logger.error("\n認証成功後にユーザー情報が見つかりません: {}\n", authUser.getLoginId());
+            throw new IllegalStateException("\nユーザー情報が存在しません: {}\n" + authUser.getLoginId());
         }
 
         // ログイン失敗回数と最終ログイン日時を更新
@@ -38,6 +42,6 @@ public class LoginSuccessEventListener {
 
         // 認証成功ログ
         logger.debug("\n★★認証成功★★\n・利用者： {}\n・ログイン失敗回数: {}\n・アカウントロック状態: {}\n", user.getLoginId(),
-                user.getLoginFailureCount(), user.isAccountNonLocked()?"ロックなし":"ロックあり");
+                user.getLoginFailureCount(), user.isAccountNonLocked() ? Constants.ACCOUNT_NOT_LOCKED : Constants.ACCOUNT_LOCKED);
     }
 }

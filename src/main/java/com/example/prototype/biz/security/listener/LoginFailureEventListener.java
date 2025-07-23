@@ -7,9 +7,13 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.stereotype.Component;
 
+import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.security.service.UsersService;
 import com.example.prototype.security.entity.ExtendedUser;
 
+/**
+ * 認証失敗時のイベントをハンドリングするクラス
+ */
 @Component
 public class LoginFailureEventListener {
     /** ロガー */
@@ -49,7 +53,7 @@ public class LoginFailureEventListener {
         String failureType = ex.getClass().getSimpleName();
         String message = ex.getMessage();
         logger.debug("\n★★認証失敗★★:\nログインID: {}\n・失敗理由: {} ({})\n・詳細: {}\n・ログイン失敗回数: {}\n・アカウントロック状態: {}\n", loginId, failureType,
-                message, clientInfo, user.getLoginFailureCount(), user.isAccountNonLocked()?"ロックなし":"ロックあり");
+                message, clientInfo, user.getLoginFailureCount(), user.isAccountNonLocked() ? Constants.ACCOUNT_NOT_LOCKED : Constants.ACCOUNT_LOCKED);
     }
 
 }

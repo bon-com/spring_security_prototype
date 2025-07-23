@@ -15,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
+import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.security.entity.ExtendedUser;
 
 @Repository
@@ -23,9 +24,9 @@ public class JdbcUsersDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     
     /** エンティティマッパー */
-    private static final ResultSetExtractor<ExtendedUser> userExtractor = rs -> {
+    private final ResultSetExtractor<ExtendedUser> userExtractor = rs -> {
         if (!rs.next()) {
-            throw new UsernameNotFoundException("ログインIDまたはパスワードが間違っています");
+            throw new UsernameNotFoundException(Constants.USER_AUTHENTICATION_BAD_CREDENTIALS);
         }
         
         String loginId = rs.getString("login_id");
