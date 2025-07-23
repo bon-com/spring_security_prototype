@@ -11,4 +11,7 @@ public class Constants {
     public static final String USER_AUTHENTICATION_BAD_CREDENTIALS = "ログインIDまたはパスワードが間違っています";
     public static final String ACCOUNT_LOCKED = "ロックあり";
     public static final String ACCOUNT_NOT_LOCKED = "ロックなし";
+    public static final String UPDATE_SUCCESS_MSG = "更新完了しました";
+    public static final String UPDATE_ERR_MSG = "更新に失敗しました";
+    public static final String UPDATE_SUCCESS_KEY = "update-success";
 }

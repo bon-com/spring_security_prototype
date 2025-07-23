@@ -41,4 +41,22 @@ public class ItemService {
 
         return dto;
     }
+    
+    /** 商品削除フラグ更新 */
+    public void updateDeleted(int id, boolean deleted) {
+        jdbcItemDao.updateDeleted(id, deleted);
+    }
+    
+    /** 商品一覧取得 */
+    public List<ItemDto> findAllByAdmin() {
+        List<ItemDto> itemList = new ArrayList<>();
+
+        jdbcItemDao.findAllByAdmin().forEach(item -> {
+            var dto = new ItemDto();
+            BeanUtils.copyProperties(item, dto);
+            itemList.add(dto);
+        });
+
+        return itemList;
+    }
 }

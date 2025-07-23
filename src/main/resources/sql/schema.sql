@@ -1,13 +1,14 @@
 -- 商品テーブル
 CREATE TABLE item (
-    id INT AUTO_INCREMENT PRIMARY KEY,  -- 商品ID
-    name VARCHAR(100) NOT NULL,         -- 商品名
-    price INT NOT NULL                  -- 値段
+    id INT AUTO_INCREMENT PRIMARY KEY,        -- 商品ID
+    name VARCHAR(100) NOT NULL,               -- 商品名
+    price INT NOT NULL,                       -- 値段
+    deleted BOOLEAN NOT NULL DEFAULT FALSE    -- 論理削除フラグ（false: 有効, true: 削除済）
 );
 
 -- 購入履歴テーブル
 CREATE TABLE purchase_history (
-    id INT AUTO_INCREMENT PRIMARY KEY,         -- 購入履歴ID
+    id INT AUTO_INCREMENT PRIMARY KEY,        -- 購入履歴ID
     purchase_date DATE NOT NULL               -- 購入日付
 );
 

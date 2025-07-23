@@ -1,19 +1,25 @@
-<beans:beans xmlns:sec="http://www.springframework.org/schema/security"
-             xmlns:beans="http://www.springframework.org/schema/beans"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="
-               http://www.springframework.org/schema/security
-               http://www.springframework.org/schema/security/spring-security.xsd
-               http://www.springframework.org/schema/beans
-               http://www.springframework.org/schema/beans/spring-beans.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           https://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/security
+           https://www.springframework.org/schema/security/spring-security.xsd">
 
 	<!-- 静的リソース（CSS, JS, 画像など）へのセキュリティ除外 -->
 	<sec:http pattern="/resources/**" security="none" />
 
+	<bean id="accessDeniedHandler" class="com.example.prototype.biz.security.listener.ExtendedAccessDeniedHandler" />
 	<!-- 認証と認可の設定をここに記載していく -->
 	<sec:http>
 		<!-- 自作したログイン画面のパス「/login」は認証不要とする（※isAuthenticated()の設定よりも先に定義すること） -->
 		<sec:intercept-url pattern="/login" access="permitAll()" />
+		<!-- admin配下は管理者ロールのみ許可 -->
+		<sec:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<!-- すべてのパスで認証が必要 -->
 		<sec:intercept-url pattern="/**" access="isAuthenticated()" />
 		<!-- 
@@ -39,6 +45,7 @@
 			logout-url="/logout" 
 			logout-success-url="/login?logout=true" 
 			invalidate-session="true" />
+		<sec:access-denied-handler ref="accessDeniedHandler" />
 	</sec:http>
 
 	<!-- 認証プロバイダーの設定 -->
@@ -49,5 +56,5 @@
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 	<!-- 認証時のパスワードエンコーダー -->
-	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
-</beans:beans>
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+</beans>

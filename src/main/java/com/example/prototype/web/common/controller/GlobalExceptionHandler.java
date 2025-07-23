@@ -28,6 +28,12 @@ public class GlobalExceptionHandler {
         return handleCommonError(ex, session, Constants.ERR_MSG_500);
     }
     
+    @ExceptionHandler({ IllegalStateException.class })
+    public ModelAndView handleIllegalStateException(IllegalStateException ex, HttpSession session) {
+        // 共通処理
+        return handleCommonError(ex, session, Constants.ERR_MSG_DEFAULT);
+    }
+    
     /** エラー時の共通処理 */
     public ModelAndView handleCommonError(Exception ex, HttpSession session, String msg) {
         // セッションクリア

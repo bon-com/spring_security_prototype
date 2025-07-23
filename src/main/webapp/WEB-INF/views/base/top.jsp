@@ -7,7 +7,7 @@
 </head>
 <body>
 	<h5>
-		こんにちは、
+		<c:out value="${greeting}" />
 		<sec:authentication property="name" />
 		さん
 	</h5>
@@ -16,10 +16,18 @@
 		<input type="submit" value="ログアウト" />
 	</form>
 	<hr />
-	<h3>${greeting}</h3>
+	<h3>利用者メニュー</h3>
 	<ul>
 		<li>カートの利用： <a href="${pageContext.request.contextPath}/items/">こちら</a></li>
 		<li>購入履歴： <a href="${pageContext.request.contextPath}/history/">こちら</a></li>
 	</ul>
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+		<hr />
+		<h3>管理者メニュー</h3>
+		<ul>
+			<li>商品の登録・更新： <a href="${pageContext.request.contextPath}/admin/items/">こちら</a></li>
+			<li>利用者情報の登録・更新： <a href="${pageContext.request.contextPath}/admin/users/">こちら</a></li>
+		</ul>
+	</sec:authorize>
 </body>
 </html>

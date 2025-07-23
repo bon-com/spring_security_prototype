@@ -1,8 +1,8 @@
-INSERT INTO item (name, price) VALUES
-('大葉', 100),
-('小松菜', 120),
-('キャベツ', 200),
-('ほうれん草', 150);
+INSERT INTO item (name, price, deleted) VALUES
+('大葉', 100, false),
+('小松菜', 120, false),
+('キャベツ', 200, false),
+('ほうれん草', 150, false);
 
 -- 例（BCryptで暗号化済み）
 INSERT INTO users (login_id, username, password, enabled, account_non_locked, login_failure_count, last_login_at) VALUES

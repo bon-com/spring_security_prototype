@@ -17,4 +17,6 @@ public class ItemDto {
     private String name;
     /** 値段 */
     private int price;
+    /** 削除フラグ */
+    private boolean deleted;
 }
