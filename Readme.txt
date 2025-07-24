@@ -25,7 +25,6 @@ Spring Security機能を使用するため、Bean定義を行う。
 補足４：<sec:authentication-manager />
 　⇒認証処理の中心となるAuthenticationManagerを定義
 　⇒DB認証を使う場合は<authentication-provider>を追加する必要あり
- ⇒@Service("userDetailsService")のBeanを紐づけている
 
 補足５：DIコンテナに登録
 作成したapplicationContext-security.xmlをweb.xmlのコンテキストローダーに指定する
@@ -162,4 +161,17 @@ AbstractUserDetailsAuthenticationProvider.credentialsExpired=パスワードの�
 ３．認証イベント成功と失敗時にDB更新追加
 　　ログイン失敗回数とアカウントロックまわりを更新している
 
+・管理者用画面の追加
+１．applicationContext-security.xml：
+　　<sec:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+　　adminから始まるURLパターンは管理者のみアクセス可能とする
+
+２．JSP側：
+　　<sec:authorize access="hasRole('ROLE_ADMIN')">
+　　上記タグを使用することで、ロールごとに表示制御可能
+
+３．認可エラーハンドリング
+　　AccessDeniedHandlerを継承したクラスを使用することでハンドリング可能。
+　　applicationContext-security.xmlにてBean定義した継承クラスを以下のように設定することで認可エラーをハンドリングできる
+　　<sec:access-denied-handler ref="accessDeniedHandler" />
 
