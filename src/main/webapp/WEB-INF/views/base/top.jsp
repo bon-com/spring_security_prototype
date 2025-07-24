@@ -17,6 +17,9 @@
 	</form>
 	<hr />
 	<h3>利用者メニュー</h3>
+	<p style="color: red;">
+		<c:out value="${warning}" />
+	</p>
 	<ul>
 		<li>カートの利用： <a href="${pageContext.request.contextPath}/items/">こちら</a></li>
 		<li>購入履歴： <a href="${pageContext.request.contextPath}/history/">こちら</a></li>

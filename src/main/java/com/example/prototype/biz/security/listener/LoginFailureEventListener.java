@@ -3,6 +3,7 @@ package com.example.prototype.biz.security.listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,10 @@ public class LoginFailureEventListener {
 
     @Autowired
     private UsersService usersService;
+    
+    /** ログイン失敗回数の閾値 */
+    @Value("${auth.login.max.failure.count}")
+    private int maxFailureCount;
 
     /**
      * 認証失敗後に呼ばれるイベントリスナー（※すべての失敗イベントを取得）をハンドリング
@@ -37,7 +42,7 @@ public class LoginFailureEventListener {
         if (user != null) {
             // ログイン失敗回数取得
             int failureCount = user.getLoginFailureCount();
-            if (failureCount + 1 > Constants.MAX_FAILURES) {
+            if (failureCount + 1 > maxFailureCount) {
                 // アカウントロック
                 user.setAccountNonLocked(false);
             } else {

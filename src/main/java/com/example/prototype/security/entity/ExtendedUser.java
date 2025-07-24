@@ -29,6 +29,7 @@ public class ExtendedUser implements UserDetails {
     @SuppressWarnings("unused")
     private boolean accountNonExpired;
     /** パスワード有効期限切れ可否（true:有効/false:期限切れ） */
+    @SuppressWarnings("unused")
     private boolean credentialsNonExpired;
     /** アカウントロック可否（true:ロックなし/false:ロックあり） */
     private boolean accountNonLocked;
@@ -43,6 +44,8 @@ public class ExtendedUser implements UserDetails {
     private LocalDateTime lastLoginAt;
     /** アカウント有効期限日時 */
     private LocalDateTime accountExpiryAt;
+    /** パスワード有効期限日時 */
+    private LocalDateTime passwordExpiryAt;
 
     public ExtendedUser(
         String loginId,
@@ -55,7 +58,8 @@ public class ExtendedUser implements UserDetails {
         Collection<? extends GrantedAuthority> authorities,
         int loginFailureCount,
         LocalDateTime lastLoginAt,
-        LocalDateTime accountExpiryAt
+        LocalDateTime accountExpiryAt,
+        LocalDateTime passwordExpiryAt
     ) {
         this.loginId = loginId;
         this.username = username;
@@ -68,15 +72,25 @@ public class ExtendedUser implements UserDetails {
         this.loginFailureCount = loginFailureCount;
         this.lastLoginAt = lastLoginAt;
         this.accountExpiryAt = accountExpiryAt;
+        this.passwordExpiryAt = passwordExpiryAt;
     }
     
     @Override
     public boolean isAccountNonExpired() {
         /*
          * このメソッドをオーバーライドすることで、falseが返却された場合
-         * Spring Securityが自動でAccountExpiredExceptionをスローして認証時にアカウント有効期限エラーになる
+         * Spring Securityが自動でAccountExpiredExceptionをスローして認証時にアカウント有効期限切れエラーになる
          */
-        return accountExpiryAt == null || LocalDateTime.now().isBefore(accountExpiryAt);
+        return LocalDateTime.now().isBefore(accountExpiryAt);
+    }
+    
+    @Override
+    public boolean isCredentialsNonExpired() {
+        /*
+         * このメソッドをオーバーライドすることで、falseが返却された場合
+         * Spring Securityが自動でCredentialsExpiredExceptionをスローして認証時にパスワード有効期限切れエラーになる
+         */
+        return LocalDateTime.now().isBefore(passwordExpiryAt);
     }
 }
 

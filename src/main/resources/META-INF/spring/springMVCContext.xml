@@ -37,4 +37,13 @@
     <mvc:view-resolvers>
         <mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp" />
     </mvc:view-resolvers>
+
+	<!-- プロパティファイル参照 -->
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:auth.properties</value>
+			</list>
+		</property>
+	</bean>
 </beans>

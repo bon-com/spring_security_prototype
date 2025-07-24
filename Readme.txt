@@ -181,3 +181,32 @@ AbstractUserDetailsAuthenticationProvider.credentialsExpired=パスワードの�
 ２．UserDetailsのisAccountNonExpiredメソッドをオーバーライドする
 　　アカウント有効期限切れ日時と現在日付を比較し、期限が過ぎている場合はfalseを返却するようにすると、
 　　Spring Securityが認証時に自動で上記メソッドを参照して、アカウント有効期限切れならAccountExpiredExceptionをスローする
+　　あとは上記例外に対応したメッセージが自動で返却される
+
+・パスワード有効期限切れ機能の追加
+１．テーブルにパスワード有効期限切れ日時を用意する
+
+２．UserDetailsのisCredentialsNonExpiredメソッドをオーバーライドする
+　　パスワード有効期限切れ日時と現在日付を比較し、期限が過ぎている場合はfalseを返却するようにすると、
+　　Spring Securityが認証時に自動で上記メソッドを参照して、パスワード有効期限切れならCredentialsExpiredExceptionをスローする
+　　あとは上記例外に対応したメッセージが自動で返却される
+
+３．パスワード有効期限切れ事前通知機能
+　　ログイン後のリダイレクト先コントローラーにて
+　　認証後のユーザー＞パスワード有効期限切れ日時を取得し、現在日時と比較して
+　　パスワード有効期限切れ日事前通知の閾値の範囲の場合はメッセージ表示
+
+・プロパティファイルからの値取得
+①パスワード有効期限切れ事前通知と②ログイン失敗回数の許容閾値を定数ではなくプロパティファイルに移動
+①はWebアプリケーションコンテキスト配下で管理しているBean、②はルートアプリケーションコンテキスト配下で管理しているBeanのため
+以下のBean定義をそれぞれのコンテキストファイルに定義する
+--------------------------------------------------------------------------
+<bean id="propertyConfigurer" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+    <property name="locations">
+        <list>
+            <value>classpath:auth.properties</value>
+        </list>
+    </property>
+</bean>
+--------------------------------------------------------------------------
+使用したいクラスにて、@Valueでプロパティ値をフィールドにマッピングする

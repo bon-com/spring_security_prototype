@@ -1,17 +1,27 @@
 package com.example.prototype.web.base.controller;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.utils.MessageUtil;
+import com.example.prototype.security.entity.ExtendedUser;
 
 @Controller
 public class WelcomeController {
     @Autowired
     private MessageUtil messageUtil;
+    
+    /** パスワード有効期限切れ事前通知日の閾値 */
+    @Value("${auth.login.password.expiry.warning.days}")
+    private int passwordExpiryWarningDays;
     
     /**
      * TOP画面表示
@@ -20,6 +30,16 @@ public class WelcomeController {
      */
     @GetMapping(value = "/")
     public String top(Model model) {
+        // パスワード有効期限日時取得
+        var authUser = (ExtendedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LocalDateTime passwordExpiryAt = authUser.getPasswordExpiryAt();
+        
+        if (ChronoUnit.DAYS.between(LocalDateTime.now(), passwordExpiryAt) <= passwordExpiryWarningDays) {
+            // パスワード有効期限前の警告メッセージ
+            long daysLeft = ChronoUnit.DAYS.between(LocalDateTime.now(), passwordExpiryAt);
+            model.addAttribute("warning", String.format(Constants.MSG_PASSWORD_EXPIRY_TEMPLATE, daysLeft));
+        }
+        
         // プロパティからメッセージ取得
         model.addAttribute("greeting", messageUtil.getMessage(Constants.WELCOME_MSG_KEY));
         return "base/top";

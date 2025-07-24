@@ -43,6 +43,7 @@ public class JdbcUsersDao {
         Timestamp lastLoginTs = rs.getTimestamp("last_login_at");
         LocalDateTime lastLoginAt = (lastLoginTs != null) ? lastLoginTs.toLocalDateTime() : null;
         LocalDateTime accountExpiryAt = rs.getTimestamp("account_expiry_at").toLocalDateTime();
+        LocalDateTime passwordExpiryAt = rs.getTimestamp("password_expiry_at").toLocalDateTime();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         do {
@@ -63,7 +64,8 @@ public class JdbcUsersDao {
             authorities, // 権限リスト
             failureCount, // ログイン失敗回数
             lastLoginAt, // 最終ログイン日時
-            accountExpiryAt // アカウント有効期限日時
+            accountExpiryAt, // アカウント有効期限日時
+            passwordExpiryAt // パスワード有効期限日時
         );
     };
 
@@ -75,7 +77,8 @@ public class JdbcUsersDao {
     public ExtendedUser findByLoginId(String loginId) {
         var sql = "SELECT u.login_id as login_id, u.username as username, u.password as password, u.enabled as enabled, "
                 + "u.account_non_locked as account_non_locked, u.login_failure_count as login_failure_count,"
-                + " u.last_login_at as last_login_at, u.account_expiry_at as account_expiry_at, a.authority as authority FROM users u "
+                + " u.last_login_at as last_login_at, u.account_expiry_at as account_expiry_at, u.password_expiry_at as password_expiry_at,"
+                + "a.authority as authority FROM users u "
                 + "INNER JOIN authorities a ON u.login_id = a.login_id WHERE u.login_id = :loginId";
         var param = new MapSqlParameterSource();
         param.addValue("loginId", loginId);
