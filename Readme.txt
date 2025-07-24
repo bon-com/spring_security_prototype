@@ -175,3 +175,9 @@ AbstractUserDetailsAuthenticationProvider.credentialsExpired=パスワードの�
 　　applicationContext-security.xmlにてBean定義した継承クラスを以下のように設定することで認可エラーをハンドリングできる
 　　<sec:access-denied-handler ref="accessDeniedHandler" />
 
+・アカウント有効期限切れ機能の追加
+１．テーブルにアカウント有効期限切れ日時を用意する
+
+２．UserDetailsのisAccountNonExpiredメソッドをオーバーライドする
+　　アカウント有効期限切れ日時と現在日付を比較し、期限が過ぎている場合はfalseを返却するようにすると、
+　　Spring Securityが認証時に自動で上記メソッドを参照して、アカウント有効期限切れならAccountExpiredExceptionをスローする

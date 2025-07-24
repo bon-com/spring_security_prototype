@@ -40,9 +40,9 @@ public class JdbcUsersDao {
         boolean enabled = rs.getBoolean("enabled");
         boolean accountNonLocked = rs.getBoolean("account_non_locked");
         int failureCount = rs.getInt("login_failure_count");
-
         Timestamp lastLoginTs = rs.getTimestamp("last_login_at");
         LocalDateTime lastLoginAt = (lastLoginTs != null) ? lastLoginTs.toLocalDateTime() : null;
+        LocalDateTime accountExpiryAt = rs.getTimestamp("account_expiry_at").toLocalDateTime();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         do {
@@ -62,7 +62,8 @@ public class JdbcUsersDao {
             accountNonLocked, // accountNonLocked（アカウントロック可否 ⇒ falseならログイン不可）
             authorities, // 権限リスト
             failureCount, // ログイン失敗回数
-            lastLoginAt // 最終ログイン日時
+            lastLoginAt, // 最終ログイン日時
+            accountExpiryAt // アカウント有効期限日時
         );
     };
 
@@ -74,7 +75,7 @@ public class JdbcUsersDao {
     public ExtendedUser findByLoginId(String loginId) {
         var sql = "SELECT u.login_id as login_id, u.username as username, u.password as password, u.enabled as enabled, "
                 + "u.account_non_locked as account_non_locked, u.login_failure_count as login_failure_count,"
-                + " u.last_login_at as last_login_at, a.authority as authority FROM users u "
+                + " u.last_login_at as last_login_at, u.account_expiry_at as account_expiry_at, a.authority as authority FROM users u "
                 + "INNER JOIN authorities a ON u.login_id = a.login_id WHERE u.login_id = :loginId";
         var param = new MapSqlParameterSource();
         param.addValue("loginId", loginId);
@@ -108,8 +109,8 @@ public class JdbcUsersDao {
         } else {
             // INSERT
             var insertSql = "INSERT INTO users (login_id, username, password, enabled, account_non_locked, "
-                    + "login_failure_count, last_login_at) VALUES (:loginId, :username, :password, :enabled, :accountNonLocked, "
-                    + ":loginFailureCount, :lastLoginAt)";
+                    + "login_failure_count, last_login_at, account_expiry_at) VALUES (:loginId, :username, :password, :enabled, :accountNonLocked, "
+                    + ":loginFailureCount, :lastLoginAt, :accountExpiryAt)";
 
             logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=save\n・SQL={}\n・パラメータ={}\n", insertSql, beanParam);
             namedParameterJdbcTemplate.update(insertSql, beanParam);

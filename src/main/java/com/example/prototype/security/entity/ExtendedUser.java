@@ -26,6 +26,7 @@ public class ExtendedUser implements UserDetails {
     /** アカウント有効可否（true:有効/false:無効） */
     private boolean enabled;
     /** アカウント有効期限切れ可否（true:有効/false:期限切れ） */
+    @SuppressWarnings("unused")
     private boolean accountNonExpired;
     /** パスワード有効期限切れ可否（true:有効/false:期限切れ） */
     private boolean credentialsNonExpired;
@@ -40,6 +41,8 @@ public class ExtendedUser implements UserDetails {
     private int loginFailureCount;
     /** 最終ログイン日時 */
     private LocalDateTime lastLoginAt;
+    /** アカウント有効期限日時 */
+    private LocalDateTime accountExpiryAt;
 
     public ExtendedUser(
         String loginId,
@@ -51,7 +54,8 @@ public class ExtendedUser implements UserDetails {
         boolean accountNonLocked,
         Collection<? extends GrantedAuthority> authorities,
         int loginFailureCount,
-        LocalDateTime lastLoginAt
+        LocalDateTime lastLoginAt,
+        LocalDateTime accountExpiryAt
     ) {
         this.loginId = loginId;
         this.username = username;
@@ -63,6 +67,16 @@ public class ExtendedUser implements UserDetails {
         this.authorities = authorities;
         this.loginFailureCount = loginFailureCount;
         this.lastLoginAt = lastLoginAt;
+        this.accountExpiryAt = accountExpiryAt;
+    }
+    
+    @Override
+    public boolean isAccountNonExpired() {
+        /*
+         * このメソッドをオーバーライドすることで、falseが返却された場合
+         * Spring Securityが自動でAccountExpiredExceptionをスローして認証時にアカウント有効期限エラーになる
+         */
+        return accountExpiryAt == null || LocalDateTime.now().isBefore(accountExpiryAt);
     }
 }
 
