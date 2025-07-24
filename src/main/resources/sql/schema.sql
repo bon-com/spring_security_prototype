@@ -29,9 +29,9 @@ CREATE TABLE users (
   username VARCHAR(50) NOT NULL,
   password VARCHAR(100) NOT NULL,
   enabled BOOLEAN NOT NULL,                             -- アカウント有効可否（true:有効/false:無効）
-  account_non_locked BOOLEAN NOT NULL DEFAULT TRUE,     -- ロック状態（true:ロック無し/false:ロック有り）
-  login_failure_count INT NOT NULL DEFAULT 0,           -- 失敗回数
-  last_login_at TIMESTAMP,                              -- 最終ログイン成功日時
+  account_non_locked BOOLEAN NOT NULL DEFAULT TRUE,     -- アカウントロック状態（true:ロック無し/false:ロック有り）
+  login_failure_count INT NOT NULL DEFAULT 0,           -- ログイン失敗回数
+  last_login_at TIMESTAMP,                              -- 最終ログイン日時
   account_expiry_at TIMESTAMP NOT NULL,                 -- アカウント有効期限日時
   password_expiry_at TIMESTAMP NOT NULL                 -- パスワード有効期限日時
 );

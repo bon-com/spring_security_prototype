@@ -24,16 +24,16 @@ import com.example.prototype.security.entity.ExtendedUser;
 public class JdbcUsersDao {
     /** ロガー */
     private static final Logger logger = LoggerFactory.getLogger(JdbcUsersDao.class);
-    
+
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    
+
     /** エンティティマッパー */
     private final ResultSetExtractor<ExtendedUser> userExtractor = rs -> {
         if (!rs.next()) {
             throw new UsernameNotFoundException(Constants.ERR_MSG_AUTHENTICATION_BAD_CREDENTIALS);
         }
-        
+
         String loginId = rs.getString("login_id");
         String username = rs.getString("username");
         String password = rs.getString("password");
@@ -54,18 +54,18 @@ public class JdbcUsersDao {
         } while (rs.next());
 
         return new ExtendedUser(
-            loginId, // ログインID
-            username, // 利用者氏名
-            password, // パスワード
-            enabled, // enabled（アカウント有効可否）
-            true, // accountNonExpired（アカウント有効期限切れ可否 ⇒ falseならログイン不可）
-            true, // credentialsNonExpired（パスワード有効期限切れ可否 ⇒ falseならログイン不可）
-            accountNonLocked, // accountNonLocked（アカウントロック可否 ⇒ falseならログイン不可）
-            authorities, // 権限リスト
-            failureCount, // ログイン失敗回数
-            lastLoginAt, // 最終ログイン日時
-            accountExpiryAt, // アカウント有効期限日時
-            passwordExpiryAt // パスワード有効期限日時
+                loginId, // ログインID
+                username, // 利用者氏名
+                password, // パスワード
+                enabled, // enabled（アカウント有効可否）
+                true, // accountNonExpired（アカウント有効期限切れ可否 ⇒ falseならログイン不可）
+                true, // credentialsNonExpired（パスワード有効期限切れ可否 ⇒ falseならログイン不可）
+                accountNonLocked, // accountNonLocked（アカウントロック可否 ⇒ falseならログイン不可）
+                authorities, // 権限リスト
+                failureCount, // ログイン失敗回数
+                lastLoginAt, // 最終ログイン日時
+                accountExpiryAt, // アカウント有効期限日時
+                passwordExpiryAt // パスワード有効期限日時
         );
     };
 
@@ -86,39 +86,33 @@ public class JdbcUsersDao {
         logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findByLoginId\n・SQL={}\n・パラメータ={}\n", sql, param);
         return namedParameterJdbcTemplate.query(sql, param, userExtractor);
     }
-    
+
     /**
-     * 利用者情報登録更新
+     * 認証情報更新
+     * アカウントロック状態、ログイン失敗回数、最終ログイン日時を更新する
      * @param user
      */
-    public void save(ExtendedUser user) {
-        // 存在チェック
+    public void updateAuthStatus(ExtendedUser user) {
+        // 更新対象の存在チェック
         var checkSql = "SELECT COUNT(*) FROM users WHERE login_id = :loginId";
         var param = new MapSqlParameterSource("loginId", user.getLoginId());
-        
-        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=save\n・SQL={}\n・パラメータ={}\n", checkSql, param);
+
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={}\n", checkSql, param);
         int count = namedParameterJdbcTemplate.queryForObject(checkSql, param, Integer.class);
 
-        var beanParam = new BeanPropertySqlParameterSource(user);
-        if (count > 0) {
-            // UPDATE
-            var updateSql = "UPDATE users SET enabled = :enabled, "
-                    + "account_non_locked = :accountNonLocked, login_failure_count = :loginFailureCount, "
-                    + "last_login_at = :lastLoginAt WHERE login_id = :loginId";
-
-            logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=save\n・SQL={}\n・パラメータ={}\n", updateSql, beanParam);
-            namedParameterJdbcTemplate.update(updateSql, beanParam);
-
-        } else {
-            // INSERT
-            var insertSql = "INSERT INTO users (login_id, username, password, enabled, account_non_locked, "
-                    + "login_failure_count, last_login_at, account_expiry_at) VALUES (:loginId, :username, :password, :enabled, :accountNonLocked, "
-                    + ":loginFailureCount, :lastLoginAt, :accountExpiryAt)";
-
-            logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=save\n・SQL={}\n・パラメータ={}\n", insertSql, beanParam);
-            namedParameterJdbcTemplate.update(insertSql, beanParam);
+        if (count == 0) {
+            // 更新対象なし
+            throw new IllegalStateException(Constants.MSG_UPDATE_ERR + ": loginId=" + user.getLoginId());
         }
-    }
+        
+        // 認証情報更新
+        var beanParam = new BeanPropertySqlParameterSource(user);
+        var updateSql = "UPDATE users SET enabled = :enabled, "
+                + "account_non_locked = :accountNonLocked, login_failure_count = :loginFailureCount, "
+                + "last_login_at = :lastLoginAt WHERE login_id = :loginId";
 
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={}\n", updateSql, beanParam);
+        namedParameterJdbcTemplate.update(updateSql, beanParam);
+    }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.base.entity.Item;
 
 @Repository
@@ -68,7 +69,7 @@ public class JdbcItemDao {
         logger.debug("\n★★SQL実行★★\n・クラス=JdbcItemDao\n・メソッド=updateDeleted\n・SQL={}\n・パラメータ={}\n", sql, id);
         int count = namedParameterJdbcTemplate.update(sql, param);
         if (count == 0) {
-            throw new IllegalStateException("更新対象が存在しません");
+            throw new IllegalStateException(Constants.MSG_UPDATE_ERR);
         }
     }
 

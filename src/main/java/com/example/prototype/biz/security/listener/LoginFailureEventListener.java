@@ -38,7 +38,7 @@ public class LoginFailureEventListener {
         String loginId = auth.getName(); // 認証失敗したusernameにあたる値
         ExtendedUser user = usersService.findByLoginId(loginId);
 
-        // 利用者情報が存在する場合
+        // 利用者情報が存在する場合、認証情報を更新
         if (user != null) {
             // ログイン失敗回数取得
             int failureCount = user.getLoginFailureCount();
@@ -49,7 +49,7 @@ public class LoginFailureEventListener {
                 // ログイン失敗回数カウント
                 user.setLoginFailureCount(failureCount + 1);
             }
-            usersService.save(user);
+            usersService.updateAuthStatus(user);
         }
 
         // 認証失敗ログ

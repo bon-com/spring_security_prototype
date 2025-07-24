@@ -12,11 +12,11 @@ public class UsersService {
     private JdbcUsersDao jdbcUsersDao;
     
     /**
-     * 利用者登録更新
+     * 認証情報更新
      * @param user
      */
-    public void save(ExtendedUser user) {
-        jdbcUsersDao.save(user);
+    public void updateAuthStatus(ExtendedUser user) {
+        jdbcUsersDao.updateAuthStatus(user);
     }
     
     /**

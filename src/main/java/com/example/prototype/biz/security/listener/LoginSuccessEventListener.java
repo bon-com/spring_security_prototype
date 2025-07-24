@@ -38,10 +38,10 @@ public class LoginSuccessEventListener {
             throw new IllegalStateException("\nユーザー情報が存在しません: {}\n" + authUser.getLoginId());
         }
 
-        // ログイン失敗回数と最終ログイン日時を更新
+        // 認証情報の更新
         user.setLoginFailureCount(0);
         user.setLastLoginAt(LocalDateTime.now());
-        usersService.save(user);
+        usersService.updateAuthStatus(user);
 
         // 認証成功ログ
         logger.info("\n★★認証成功★★\n・利用者： {}\n・ログイン失敗回数: {}\n・アカウントロック状態: {}\n", user.getLoginId(),
