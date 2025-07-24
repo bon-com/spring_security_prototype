@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.exapmle</groupId>
-	<artifactId>base_prototype</artifactId>
+	<artifactId>spring_security_prototype</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>base_prototype Maven Webapp</name>
+	<name>spring_security_prototype Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -129,6 +129,6 @@
 	</dependencies>
 
 	<build>
-		<finalName>base_prototype</finalName>
+		<finalName>spring_security_prototype</finalName>
 	</build>
 </project>
