@@ -34,9 +34,9 @@ public class WelcomeController {
         var authUser = (ExtendedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LocalDateTime passwordExpiryAt = authUser.getPasswordExpiryAt();
         
-        if (ChronoUnit.DAYS.between(LocalDateTime.now(), passwordExpiryAt) <= passwordExpiryWarningDays) {
-            // パスワード有効期限前の警告メッセージ
-            long daysLeft = ChronoUnit.DAYS.between(LocalDateTime.now(), passwordExpiryAt);
+        // パスワード有効期限前の警告メッセージチェック
+        long daysLeft = ChronoUnit.DAYS.between(LocalDateTime.now(), passwordExpiryAt);
+        if (daysLeft <= passwordExpiryWarningDays) {
             model.addAttribute("warning", String.format(Constants.MSG_PASSWORD_EXPIRY_TEMPLATE, daysLeft));
         }
         
