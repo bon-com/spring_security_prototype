@@ -83,7 +83,7 @@ public class JdbcUsersDao {
         var param = new MapSqlParameterSource();
         param.addValue("loginId", loginId);
 
-        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findByLoginId\n・SQL={}\n・パラメータ={}\n", sql, param);
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findByLoginId\n・SQL={}\n・パラメータ={}\n", sql, loginId);
         return namedParameterJdbcTemplate.query(sql, param, userExtractor);
     }
 
@@ -97,7 +97,7 @@ public class JdbcUsersDao {
         var checkSql = "SELECT COUNT(*) FROM users WHERE login_id = :loginId";
         var param = new MapSqlParameterSource("loginId", user.getLoginId());
 
-        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={}\n", checkSql, param);
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={{ loginId={} }}\n", checkSql, user.getLoginId());
         int count = namedParameterJdbcTemplate.queryForObject(checkSql, param, Integer.class);
 
         if (count == 0) {
@@ -111,7 +111,9 @@ public class JdbcUsersDao {
                 + "account_non_locked = :accountNonLocked, login_failure_count = :loginFailureCount, "
                 + "last_login_at = :lastLoginAt WHERE login_id = :loginId";
 
-        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={}\n", updateSql, beanParam);
+        logger.debug(
+                "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={{ enabled={} accountNonLocked={} loginFailureCount={} loginId={} }}\n",
+                updateSql, user.isEnabled(), user.isAccountNonLocked(), user.getLoginFailureCount(), user.getLoginId());
         namedParameterJdbcTemplate.update(updateSql, beanParam);
     }
 
