@@ -1,10 +1,15 @@
 package com.example.prototype.security.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.example.prototype.base.common.constants.Constants;
 
 import lombok.Data;
 
@@ -48,19 +53,18 @@ public class ExtendedUser implements UserDetails {
     private LocalDateTime passwordExpiryAt;
 
     public ExtendedUser(
-        String loginId,
-        String username,
-        String password,
-        boolean enabled,
-        boolean accountNonExpired,
-        boolean credentialsNonExpired,
-        boolean accountNonLocked,
-        Collection<? extends GrantedAuthority> authorities,
-        int loginFailureCount,
-        LocalDateTime lastLoginAt,
-        LocalDateTime accountExpiryAt,
-        LocalDateTime passwordExpiryAt
-    ) {
+            String loginId,
+            String username,
+            String password,
+            boolean enabled,
+            boolean accountNonExpired,
+            boolean credentialsNonExpired,
+            boolean accountNonLocked,
+            Collection<? extends GrantedAuthority> authorities,
+            int loginFailureCount,
+            LocalDateTime lastLoginAt,
+            LocalDateTime accountExpiryAt,
+            LocalDateTime passwordExpiryAt) {
         this.loginId = loginId;
         this.username = username;
         this.password = password;
@@ -74,7 +78,7 @@ public class ExtendedUser implements UserDetails {
         this.accountExpiryAt = accountExpiryAt;
         this.passwordExpiryAt = passwordExpiryAt;
     }
-    
+
     @Override
     public boolean isAccountNonExpired() {
         /*
@@ -83,7 +87,7 @@ public class ExtendedUser implements UserDetails {
          */
         return LocalDateTime.now().isBefore(accountExpiryAt);
     }
-    
+
     @Override
     public boolean isCredentialsNonExpired() {
         /*
@@ -92,5 +96,136 @@ public class ExtendedUser implements UserDetails {
          */
         return LocalDateTime.now().isBefore(passwordExpiryAt);
     }
-}
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    /**
+     * ビルダークラス
+     * 利用者拡張エンティティを作成する
+     */
+    @Data
+    public static class Builder {
+        private String loginId;
+        private String username;
+        private String password;
+        private boolean enabled;
+        private boolean accountNonExpired;
+        private boolean credentialsNonExpired;
+        private boolean accountNonLocked;
+        private List<GrantedAuthority> authorities = new ArrayList<>();
+        private int loginFailureCount;
+        private LocalDateTime lastLoginAt;
+        private LocalDateTime accountExpiryAt;
+        private LocalDateTime passwordExpiryAt;
+
+        public Builder loginId(String loginId) {
+            this.loginId = loginId;
+            return this;
+        }
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder enabled(boolean enabled) {
+            this.enabled = enabled;
+            return this;
+        }
+
+        public Builder accountNonExpired(boolean accountNonExpired) {
+            this.accountNonExpired = accountNonExpired;
+            return this;
+        }
+
+        public Builder credentialsNonExpired(boolean credentialsNonExpired) {
+            this.credentialsNonExpired = credentialsNonExpired;
+            return this;
+        }
+
+        public Builder accountNonLocked(boolean accountNonLocked) {
+            this.accountNonLocked = accountNonLocked;
+            return this;
+        }
+
+        public Builder loginFailureCount(int loginFailureCount) {
+            this.loginFailureCount = loginFailureCount;
+            return this;
+        }
+
+        public Builder lastLoginAt(LocalDateTime lastLoginAt) {
+            this.lastLoginAt = lastLoginAt;
+            return this;
+        }
+
+        public Builder accountExpiryAt(LocalDateTime accountExpiryAt) {
+            this.accountExpiryAt = accountExpiryAt;
+            return this;
+        }
+
+        public Builder passwordExpiryAt(LocalDateTime passwordExpiryAt) {
+            this.passwordExpiryAt = passwordExpiryAt;
+            return this;
+        }
+
+        public void addAuthority(GrantedAuthority authority) {
+            this.authorities.add(authority);
+        }
+
+        public ExtendedUser build() {
+            // 入力不足フィールド集計
+            List<String> missingFields = new ArrayList<>();
+            if (loginId == null) {
+                missingFields.add("loginId");
+            }
+            if (username == null) {
+                missingFields.add("username");
+            }
+            if (password == null) {
+                missingFields.add("password");
+            }
+            if (CollectionUtils.isEmpty(authorities)) {
+                missingFields.add("authorities");
+            }
+            if (accountExpiryAt == null) {
+                missingFields.add("accountExpiryAt");
+            }
+            if (passwordExpiryAt == null) {
+                missingFields.add("passwordExpiryAt");
+            }
+
+            if (!missingFields.isEmpty()) {
+                // 必須項目チェックエラー
+                throw new IllegalStateException(
+                        Constants.ERR_MSG_DEFAULT + " 必須フィールド: " + String.join(", ", missingFields));
+            }
+
+            var now = LocalDateTime.now();
+            // アカウント有効期限切れ判定
+            boolean accountNonExpired = accountExpiryAt == null || accountExpiryAt.isAfter(now);
+            // パスワード有効期限切れ判定
+            boolean credentialsNonExpired = passwordExpiryAt == null || passwordExpiryAt.isAfter(now);
+
+            return new ExtendedUser(
+                    this.loginId,
+                    this.username,
+                    this.password,
+                    this.enabled,
+                    accountNonExpired,
+                    credentialsNonExpired,
+                    this.accountNonLocked,
+                    this.authorities,
+                    this.loginFailureCount,
+                    this.lastLoginAt,
+                    this.accountExpiryAt,
+                    this.passwordExpiryAt);
+        }
+    }
+}

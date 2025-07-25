@@ -1,9 +1,9 @@
 package com.example.prototype.biz.security.dao;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -28,45 +27,75 @@ public class JdbcUsersDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    /** エンティティマッパー */
+    /** エンティティマッパー（1件取得用） */
     private final ResultSetExtractor<ExtendedUser> userExtractor = rs -> {
         if (!rs.next()) {
             throw new UsernameNotFoundException(Constants.ERR_MSG_AUTHENTICATION_BAD_CREDENTIALS);
         }
 
-        String loginId = rs.getString("login_id");
-        String username = rs.getString("username");
-        String password = rs.getString("password");
-        boolean enabled = rs.getBoolean("enabled");
-        boolean accountNonLocked = rs.getBoolean("account_non_locked");
-        int failureCount = rs.getInt("login_failure_count");
-        Timestamp lastLoginTs = rs.getTimestamp("last_login_at");
-        LocalDateTime lastLoginAt = (lastLoginTs != null) ? lastLoginTs.toLocalDateTime() : null;
-        LocalDateTime accountExpiryAt = rs.getTimestamp("account_expiry_at").toLocalDateTime();
-        LocalDateTime passwordExpiryAt = rs.getTimestamp("password_expiry_at").toLocalDateTime();
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        var builder = ExtendedUser.builder()
+        .loginId(rs.getString("login_id")) // ログインID
+        .username(rs.getString("username")) // 利用者氏名
+        .password(rs.getString("password")) // パスワード
+        .enabled(rs.getBoolean("enabled")) // enabled（アカウント有効可否）
+        .accountNonLocked(rs.getBoolean("account_non_locked")) // アカウントロック状態（true:ロック無し/false:ロック有り）
+        .loginFailureCount(rs.getInt("login_failure_count")) // ログイン失敗回数
+        .lastLoginAt(rs.getTimestamp("last_login_at") != null // 最終ログイン日時
+                ? rs.getTimestamp("last_login_at").toLocalDateTime()
+                : null)
+        .accountExpiryAt(rs.getTimestamp("account_expiry_at").toLocalDateTime()) // アカウント有効期限日時
+        .passwordExpiryAt(rs.getTimestamp("password_expiry_at").toLocalDateTime()); // パスワード有効期限日時
+        
         do {
             String authority = rs.getString("authority");
             if (authority != null) {
-                authorities.add(new SimpleGrantedAuthority(authority));
+                builder.addAuthority(new SimpleGrantedAuthority(authority));
             }
         } while (rs.next());
 
-        return new ExtendedUser(
-                loginId, // ログインID
-                username, // 利用者氏名
-                password, // パスワード
-                enabled, // enabled（アカウント有効可否）
-                true, // accountNonExpired（アカウント有効期限切れ可否 ⇒ falseならログイン不可）
-                true, // credentialsNonExpired（パスワード有効期限切れ可否 ⇒ falseならログイン不可）
-                accountNonLocked, // accountNonLocked（アカウントロック可否 ⇒ falseならログイン不可）
-                authorities, // 権限リスト
-                failureCount, // ログイン失敗回数
-                lastLoginAt, // 最終ログイン日時
-                accountExpiryAt, // アカウント有効期限日時
-                passwordExpiryAt // パスワード有効期限日時
-        );
+        return builder.build();
+    };
+
+    /** エンティティマッパー（リスト用） */
+    private ResultSetExtractor<List<ExtendedUser>> userListExtractor = rs -> {
+        // 拡張ユーザーマップ（key:ログインID、val:ビルダー）
+        Map<String, ExtendedUser.Builder> userBuilderMap = new LinkedHashMap<>();
+
+        while (rs.next()) {
+            // ビルダー取得
+            String loginId = rs.getString("login_id");
+            var builder = userBuilderMap.get(loginId);
+
+            if (builder == null) {
+                // ビルダー生成
+                builder = ExtendedUser.builder()
+                        .loginId(loginId)
+                        .username(rs.getString("username"))
+                        .password(rs.getString("password"))
+                        .enabled(rs.getBoolean("enabled"))
+                        .accountNonLocked(rs.getBoolean("account_non_locked"))
+                        .loginFailureCount(rs.getInt("login_failure_count"))
+                        .lastLoginAt(rs.getTimestamp("last_login_at") != null
+                                ? rs.getTimestamp("last_login_at").toLocalDateTime()
+                                : null)
+                        .accountExpiryAt(rs.getTimestamp("account_expiry_at").toLocalDateTime())
+                        .passwordExpiryAt(rs.getTimestamp("password_expiry_at").toLocalDateTime());
+
+                userBuilderMap.put(loginId, builder);
+            }
+
+            // 権限追加
+            String authority = rs.getString("authority");
+            if (authority != null) {
+                builder.addAuthority(new SimpleGrantedAuthority(authority));
+            }
+        }
+
+        // BuilderからExtendedUserに変換
+        return userBuilderMap.values().stream()
+                .map(ExtendedUser.Builder::build)
+                .collect(Collectors.toList());
+
     };
 
     /**
@@ -99,7 +128,7 @@ public class JdbcUsersDao {
             // 更新対象なし
             throw new IllegalStateException(Constants.MSG_UPDATE_ERR + ": loginId=" + user.getLoginId());
         }
-        
+
         // 認証情報更新
         var param = new BeanPropertySqlParameterSource(user);
         var sql = "UPDATE users SET enabled = :enabled, "
@@ -111,7 +140,7 @@ public class JdbcUsersDao {
                 sql, user.isEnabled(), user.isAccountNonLocked(), user.getLoginFailureCount(), user.getLoginId());
         namedParameterJdbcTemplate.update(sql, param);
     }
-    
+
     /**
      * パスワード更新
      * @param user
@@ -124,7 +153,7 @@ public class JdbcUsersDao {
             // 更新対象なし
             throw new IllegalStateException(Constants.MSG_UPDATE_ERR + ": loginId=" + loginId);
         }
-        
+
         var beanParam = new BeanPropertySqlParameterSource(user);
         var sql = "UPDATE users SET password = :password, password_expiry_at = :passwordExpiryAt WHERE login_id = :loginId";
         logger.debug(
@@ -143,7 +172,23 @@ public class JdbcUsersDao {
         var sql = "SELECT COUNT(*) FROM users WHERE login_id = :loginId";
         var param = new MapSqlParameterSource("loginId", loginId);
 
-        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findCountByLoginId\n・SQL={}\n・パラメータ={{ loginId={} }}\n", sql, loginId);
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findCountByLoginId\n・SQL={}\n・パラメータ={{ loginId={} }}\n",
+                sql, loginId);
         return namedParameterJdbcTemplate.queryForObject(sql, param, Integer.class);
+    }
+
+    /**
+     * 利用者一覧取得
+     * @return
+     */
+    public List<ExtendedUser> findAll() {
+        var sql = "SELECT u.login_id as login_id, u.username as username, u.password as password, u.enabled as enabled, "
+                + "u.account_non_locked as account_non_locked, u.login_failure_count as login_failure_count,"
+                + " u.last_login_at as last_login_at, u.account_expiry_at as account_expiry_at, u.password_expiry_at as password_expiry_at,"
+                + "a.authority as authority FROM users u "
+                + "INNER JOIN authorities a ON u.login_id = a.login_id";
+
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findAll\n・SQL={}\n", sql);
+        return namedParameterJdbcTemplate.query(sql, userListExtractor);
     }
 }
