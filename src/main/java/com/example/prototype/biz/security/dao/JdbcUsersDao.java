@@ -94,27 +94,56 @@ public class JdbcUsersDao {
      */
     public void updateAuthStatus(ExtendedUser user) {
         // 更新対象の存在チェック
-        var checkSql = "SELECT COUNT(*) FROM users WHERE login_id = :loginId";
-        var param = new MapSqlParameterSource("loginId", user.getLoginId());
-
-        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={{ loginId={} }}\n", checkSql, user.getLoginId());
-        int count = namedParameterJdbcTemplate.queryForObject(checkSql, param, Integer.class);
-
+        int count = findCountByLoginId(user.getLoginId());
         if (count == 0) {
             // 更新対象なし
             throw new IllegalStateException(Constants.MSG_UPDATE_ERR + ": loginId=" + user.getLoginId());
         }
         
         // 認証情報更新
-        var beanParam = new BeanPropertySqlParameterSource(user);
-        var updateSql = "UPDATE users SET enabled = :enabled, "
+        var param = new BeanPropertySqlParameterSource(user);
+        var sql = "UPDATE users SET enabled = :enabled, "
                 + "account_non_locked = :accountNonLocked, login_failure_count = :loginFailureCount, "
                 + "last_login_at = :lastLoginAt WHERE login_id = :loginId";
 
         logger.debug(
                 "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={{ enabled={} accountNonLocked={} loginFailureCount={} loginId={} }}\n",
-                updateSql, user.isEnabled(), user.isAccountNonLocked(), user.getLoginFailureCount(), user.getLoginId());
-        namedParameterJdbcTemplate.update(updateSql, beanParam);
+                sql, user.isEnabled(), user.isAccountNonLocked(), user.getLoginFailureCount(), user.getLoginId());
+        namedParameterJdbcTemplate.update(sql, param);
+    }
+    
+    /**
+     * パスワード更新
+     * @param user
+     */
+    public void updatePassword(ExtendedUser user) {
+        // 更新対象の存在チェック
+        String loginId = user.getLoginId();
+        int count = findCountByLoginId(loginId);
+        if (count == 0) {
+            // 更新対象なし
+            throw new IllegalStateException(Constants.MSG_UPDATE_ERR + ": loginId=" + loginId);
+        }
+        
+        var beanParam = new BeanPropertySqlParameterSource(user);
+        var sql = "UPDATE users SET password = :password, password_expiry_at = :passwordExpiryAt WHERE login_id = :loginId";
+        logger.debug(
+                "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updatePassword\n・SQL={}\n・パラメータ={{ password_expiry_at={} loginId={} }}\n",
+                sql, user.getPasswordExpiryAt(), loginId);
+        namedParameterJdbcTemplate.update(sql, beanParam);
     }
 
+    /**
+     * ログインID検索
+     * 検索結果件数を返却
+     * @param loginId
+     * @return
+     */
+    private int findCountByLoginId(String loginId) {
+        var sql = "SELECT COUNT(*) FROM users WHERE login_id = :loginId";
+        var param = new MapSqlParameterSource("loginId", loginId);
+
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findCountByLoginId\n・SQL={}\n・パラメータ={{ loginId={} }}\n", sql, loginId);
+        return namedParameterJdbcTemplate.queryForObject(sql, param, Integer.class);
+    }
 }

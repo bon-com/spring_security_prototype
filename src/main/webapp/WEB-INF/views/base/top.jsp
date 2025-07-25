@@ -21,7 +21,8 @@
 		<c:out value="${warning}" />
 	</p>
 	<ul>
-		<li>カートの利用： <a href="${pageContext.request.contextPath}/items/">こちら</a></li>
+		<li>パスワードの更新： <a href="${pageContext.request.contextPath}/user/password-update">こちら</a></li>
+		<li>商品の購入： <a href="${pageContext.request.contextPath}/items/">こちら</a></li>
 		<li>購入履歴： <a href="${pageContext.request.contextPath}/history/">こちら</a></li>
 	</ul>
 	<sec:authorize access="hasRole('ROLE_ADMIN')">

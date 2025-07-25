@@ -1,6 +1,10 @@
 package com.example.prototype.biz.security.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.prototype.biz.security.dao.JdbcUsersDao;
@@ -10,6 +14,13 @@ import com.example.prototype.security.entity.ExtendedUser;
 public class UsersService {
     @Autowired
     private JdbcUsersDao jdbcUsersDao;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
+    /** パスワード有効期間 */
+    @Value("${auth.password.expiry.period.days}")
+    private int passwordExpiryPeriodDays;
     
     /**
      * 認証情報更新
@@ -26,5 +37,21 @@ public class UsersService {
      */
     public ExtendedUser findByLoginId(String loginId) {
         return jdbcUsersDao.findByLoginId(loginId);
+    }
+    
+    /**
+     * 認証情報更新
+     * @param user
+     */
+    public void updatePassword(ExtendedUser user) {
+        // パスワードのハッシュ化
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+        
+        // パスワード有効期間更新
+        LocalDateTime expiryDate = LocalDateTime.now().plusDays(passwordExpiryPeriodDays);
+        user.setPasswordExpiryAt(expiryDate);
+        
+        jdbcUsersDao.updatePassword(user);
     }
 }

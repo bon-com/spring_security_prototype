@@ -112,19 +112,28 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.1.7.Final</version>
 		</dependency>
-		
+
 		<!-- @PostConstructを使用するためのモジュール-->
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
 			<version>1.3.2</version>
 		</dependency>
+
 		<!-- StringUtils-->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.12.0</version> <!-- 最新安定版を指定 -->
+			<version>3.12.0</version>
 		</dependency>
+
+		<!-- BeanUtils -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.4</version>
+		</dependency>
+
 
 	</dependencies>
 

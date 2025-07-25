@@ -12,6 +12,10 @@ public class Constants {
     public static final String ERR_MSG_DEFAULT = "予期せぬエラーが発生しました";
     /** 認証エラーメッセージ */
     public static final String ERR_MSG_AUTHENTICATION_BAD_CREDENTIALS = "ログインIDまたはパスワードが間違っています";
+    /** パスワード相関チェックエラーメッセージ */
+    public static final String ERR_MSG_PASSWORDS_NOT_MATCH = "パスワードと確認用パスワードが一致しません";
+    /** 相関チェック異常エラーメッセージ */
+    public static final String ERR_MSG_PROPERTY_ACCESS_FAILED = "指定されたフィールドの取得に失敗しました";
     /** 更新完了メッセージ */
     public static final String MSG_UPDATE_SUCCESS = "更新完了しました";
     /** 更新失敗メッセージ */
