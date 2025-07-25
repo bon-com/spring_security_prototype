@@ -25,13 +25,14 @@
 		<li>商品の購入： <a href="${pageContext.request.contextPath}/items/">こちら</a></li>
 		<li>購入履歴： <a href="${pageContext.request.contextPath}/history/">こちら</a></li>
 	</ul>
-	<sec:authorize access="hasRole('ROLE_ADMIN')">
+	<sec:authorize var="isAdmin" access="hasRole('ROLE_ADMIN')"/>
+	<c:if test="${isAdmin}">
 		<hr />
 		<h3>管理者メニュー</h3>
 		<ul>
 			<li>商品の登録・更新： <a href="${pageContext.request.contextPath}/admin/items">こちら</a></li>
 			<li>利用者情報の登録・更新： <a href="${pageContext.request.contextPath}/admin/users/">こちら</a></li>
 		</ul>
-	</sec:authorize>
+	</c:if>
 </body>
 </html>
