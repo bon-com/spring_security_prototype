@@ -34,7 +34,7 @@ public class LoginSuccessEventListener {
         var authUser = (ExtendedUser) event.getAuthentication().getPrincipal();
         ExtendedUser user = usersService.findByLoginId(authUser.getLoginId());
         if (user == null) {
-            logger.warn("\n認証成功後にユーザー情報が見つかりません: {}\n", authUser.getLoginId());
+            logger.warn("\n★★認証ユーザー取得失敗★★\n認証成功後にユーザー情報が見つかりません: {}\n", authUser.getLoginId());
             throw new IllegalStateException("\nユーザー情報が存在しません: {}\n" + authUser.getLoginId());
         }
 
