@@ -32,14 +32,14 @@
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="user" items="${userList}">
+            <c:forEach var="exUser" items="${userList}">
                 <tr>
-                    <td><c:out value="${user.loginId}" /></td>
-                    <td><c:out value="${user.username}" /></td>
-                    <td><c:out value="${user.enabled ? '有効' : '無効'}" /></td>
-                    <td><c:out value="${user.accountNonExpired ? '有効' : '無効'}" /></td>
-                    <td><c:out value="${user.credentialsNonExpired ? '有効' : '無効'}" /></td>
-                    <td><c:out value="${user.accountNonLocked ? 'ロックなし' : 'ロックあり' }" /></td>
+                    <td><c:out value="${exUser.loginId}" /></td>
+                    <td><c:out value="${exUser.username}" /></td>
+                    <td><c:out value="${exUser.enabled ? '有効' : '無効'}" /></td>
+                    <td><c:out value="${exUser.accountNonExpired ? '有効' : '無効'}" /></td>
+                    <td><c:out value="${exUser.credentialsNonExpired ? '有効' : '無効'}" /></td>
+                    <td><c:out value="${exUser.accountNonLocked ? 'ロックなし' : 'ロックあり' }" /></td>
                     <td>
                         <form method="get" action="${pageContext.request.contextPath}/admin/users/${user.loginId}/edit">
                             <input type="submit" value="変更" />

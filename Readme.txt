@@ -1,5 +1,9 @@
 ◆Spring Securityについてのメモ
 
+◆認証用利用者
+user01:passowrd
+admin01:adminpass
+
 ◆認証（Authentication）とは？
 ログイン画面でユーザー名とパスワードを入力し、利用者テーブル（users）などのDBと照合して本人確認を行うこと
 
