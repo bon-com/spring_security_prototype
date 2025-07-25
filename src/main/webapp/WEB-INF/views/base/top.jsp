@@ -28,7 +28,7 @@
 		<hr />
 		<h3>管理者メニュー</h3>
 		<ul>
-			<li>商品の登録・更新： <a href="${pageContext.request.contextPath}/admin/items/">こちら</a></li>
+			<li>商品の登録・更新： <a href="${pageContext.request.contextPath}/admin/items">こちら</a></li>
 			<li>利用者情報の登録・更新： <a href="${pageContext.request.contextPath}/admin/users/">こちら</a></li>
 		</ul>
 	</sec:authorize>
