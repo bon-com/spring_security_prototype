@@ -6,7 +6,12 @@
 <title>購入履歴一覧画面</title>
 </head>
 <body>
-	<h5>こんにちは、<sec:authentication property="name" />さん</h5>
+	<h5>
+		<c:out value="${greeting}" />
+		<sec:authentication var="user" property="principal" />
+		<c:out value="${user.username}" />
+		さん
+	</h5>
 	<form action="${pageContext.request.contextPath}/logout" method="post">
 		<sec:csrfInput/>
 		<input type="submit" value="ログアウト" />

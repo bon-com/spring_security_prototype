@@ -3,7 +3,6 @@ package com.example.prototype.web.base.controller;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -11,14 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.prototype.base.common.constants.Constants;
-import com.example.prototype.biz.utils.MessageUtil;
 import com.example.prototype.security.entity.ExtendedUser;
 
 @Controller
 public class WelcomeController {
-    @Autowired
-    private MessageUtil messageUtil;
-    
     /** パスワード有効期限切れ事前通知日の閾値 */
     @Value("${auth.login.password.expiry.warning.days}")
     private int passwordExpiryWarningDays;
@@ -39,9 +34,7 @@ public class WelcomeController {
         if (daysLeft <= passwordExpiryWarningDays) {
             model.addAttribute("warning", String.format(Constants.MSG_PASSWORD_EXPIRY_TEMPLATE, daysLeft));
         }
-        
-        // プロパティからメッセージ取得
-        model.addAttribute("greeting", messageUtil.getMessage(Constants.WELCOME_MSG_KEY));
+
         return "base/top";
     }
 }

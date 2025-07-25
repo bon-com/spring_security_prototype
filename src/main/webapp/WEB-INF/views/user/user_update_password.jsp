@@ -7,8 +7,9 @@
 </head>
 <body>
 	<h5>
-		こんにちは、
-		<sec:authentication property="name" />
+		<c:out value="${greeting}" />
+		<sec:authentication var="user" property="principal" />
+		<c:out value="${user.username}" />
 		さん
 	</h5>
 	<hr />

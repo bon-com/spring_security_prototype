@@ -8,7 +8,8 @@
 <body>
 	<h5>
 		<c:out value="${greeting}" />
-		<sec:authentication property="name" />
+		<sec:authentication var="user" property="principal" />
+		<c:out value="${user.username}" />
 		さん
 	</h5>
 	<form action="${pageContext.request.contextPath}/logout" method="post">
