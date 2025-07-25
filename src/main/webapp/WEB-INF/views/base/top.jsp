@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TOP</title>
+<title>TOP画面</title>
 </head>
 <body>
 	<h5>

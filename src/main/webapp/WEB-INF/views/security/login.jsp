@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title>ログイン</title>
+<title>ログイン画面</title>
 </head>
 <body>
 	<h2>ログイン</h2>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>エラー</title>
+<title>共通エラー画面</title>
 </head>
 <body>
 	<h3>エラー発生</h3>
