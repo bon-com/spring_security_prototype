@@ -22,7 +22,7 @@
 	<p>
 		<c:out value="${message}" />
 	</p>
-	<table>
+	<table border="1">
 		<tr>
 			<th>商品ID</th>
 			<th>商品名</th>
@@ -38,14 +38,12 @@
 					<form method="get" action="${pageContext.request.contextPath}/admin/items/update-deleted/${item.id}">
 						<sec:csrfInput />
 						<label>
-							<input type="radio" name="deleted" value="false" ${!item.deleted ? 'checked' : ''} />
-							有効
+							<input type="radio" name="deleted" value="false" ${!item.deleted ? 'checked' : ''} /> 有効
 						</label>
 						<label>
-							<input type="radio" name="deleted" value="true" ${item.deleted ? 'checked' : ''} />
-							削除済
+							<input type="radio" name="deleted" value="true" ${item.deleted ? 'checked' : ''} /> 削除済
 						</label>
-						　<button type="submit">更新</button>
+						<input type="submit" value="更新" />
 					</form>
 				</td>
 			</tr>

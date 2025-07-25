@@ -22,11 +22,12 @@
 	<spring:eval var="cart" expression="@cart"/><%-- オブジェクトだけ取得したり --%>
 	<h5>カートの数量：　${cart.total}</h5>
 	<hr />
-	<table>
+	<table border="1">
 		<tr>
 			<th>商品名</th>
 			<th>値段</th>
 			<th>数量</th>
+			<th>操作</th>
 		</tr>
 		<c:forEach var="item" items="${items}">
 			<form method="post" action="${pageContext.request.contextPath}/cart/add">
@@ -42,7 +43,7 @@
 					</select>
 				</td>
 				<td>
-					<button type="submit" name="send">カートに追加</button>
+					<input type="submit" value="カートに追加" />
 					<input type="hidden" name="itemId" value="${item.id}" />
 				</td>
 			</tr>

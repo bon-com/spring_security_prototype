@@ -24,8 +24,7 @@
 
 		<label for="password">パスワード:</label> <input type="password" id="password" name="password" />
 		<br />
-
-		<button type="submit">ログイン</button>
+		<input type="submit" value="ログイン" />
 	</form>
 </body>
 </html>

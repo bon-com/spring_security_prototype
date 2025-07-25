@@ -25,13 +25,13 @@
 			<form:option value="" label="選択してください" />
 			<form:options items="${availableDates}" />
 		</form:select>
-		<button type="submit">検索</button>　<form:errors path="purchaseDate" cssStyle="color: red;"/>
+		<input type="submit" value="検索" />　<form:errors path="purchaseDate" cssStyle="color: red;"/>
 	</form:form>
 	<c:if test="${not empty purchaseHistory}">
 		<hr />
 		<h4>購入日： ${purchaseHistory.purchaseDate}</h4>
 		<h4>合計金額： ${totalPrice} 円</h4>
-		<table>
+		<table border="1">
 			<thead>
 				<tr>
 					<th>商品名</th>
