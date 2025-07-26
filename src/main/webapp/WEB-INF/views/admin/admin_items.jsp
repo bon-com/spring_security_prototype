@@ -17,7 +17,7 @@
 		<input type="submit" value="ログアウト" />
 	</form>
 	<hr />
-	<h3>商品の登録・更新</h3>
+	<h3>商品の更新</h3>
 	<hr />
 	<p>
 		<c:out value="${message}" />
@@ -32,25 +32,47 @@
 		</tr>
 		<c:forEach var="item" items="${items}">
 			<form method="get" action="${pageContext.request.contextPath}/admin/items/update-deleted/${item.id}">
-			<sec:csrfInput />
+				<sec:csrfInput />
 				<tr>
 					<td>${item.id}</td>
 					<td>${item.name}</td>
 					<td>${item.price}円</td>
-					<td><label>
-							<input type="radio" name="deleted" value="false" ${!item.deleted ? 'checked' : ''} />
-							有効
+					<td>
+						<label>
+							<input type="radio" name="deleted" value="false" ${!item.deleted ? 'checked' : ''} /> 有効
 						</label>
 						<label>
-							<input type="radio" name="deleted" value="true" ${item.deleted ? 'checked' : ''} />
-							削除済
+							<input type="radio" name="deleted" value="true" ${item.deleted ? 'checked' : ''} /> 削除済
 						</label>
 					</td>
-					<td><input type="submit" value="更新" /></td>
+					<td>
+						<input type="submit" value="更新" />
+					</td>
 			</form>
 			</tr>
 		</c:forEach>
 	</table>
+	<hr />
+	<h3>商品の登録</h3>
+	<form:form modelAttribute="itemForm" method="post" action="${pageContext.request.contextPath}/admin/items/register">
+		<table>
+			<tr>
+				<th>商品名</th>
+				<td>
+					<form:input path="name" />
+					<form:errors path="name" cssStyle="color: red;" />
+				</td>
+			</tr>
+			<tr>
+				<th>値段</th>
+				<td>
+					<form:input path="price" />
+					<form:errors path="price" cssStyle="color: red;" />
+				</td>
+			</tr>
+		</table>
+		<input type="submit" value="登録" />
+	</form:form>
 	<hr />
 	<a href="<c:url value='/'/>">TOP</a>
 </body>

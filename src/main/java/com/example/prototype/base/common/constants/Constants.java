@@ -20,6 +20,8 @@ public class Constants {
     public static final String MSG_UPDATE_SUCCESS = "更新完了しました";
     /** 更新失敗メッセージ */
     public static final String MSG_UPDATE_ERR = "更新に失敗しました";
+    /** 登録完了メッセージ */
+    public static final String MSG_INSERT_SUCCESS = "登録完了しました";
     /** パスワード有効期限切れ事前通知メッセージ */
     public static final String MSG_PASSWORD_EXPIRY_TEMPLATE = "パスワードの有効期限まで%d日のため、パスワードを変更してください";
     /** 一度の商品購入限度数メッセージ */
@@ -32,6 +34,8 @@ public class Constants {
     public static final String WELCOME_MSG_KEY = "welcome.msg";
     /** 更新成功メッセージキー */
     public static final String UPDATE_SUCCESS_KEY = "update-success";
+    /** 登録成功メッセージキー */
+    public static final String INSERT_SUCCESS_KEY = "insert-success";
     /** 一度の商品購入限度数 */
     public static final int MAX_PURCHASE_QUANTITY = 10;
 }

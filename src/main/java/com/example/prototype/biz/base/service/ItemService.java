@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.prototype.base.entity.Item;
 import com.example.prototype.biz.base.dao.JdbcItemDao;
 import com.example.prototype.web.base.dto.ItemDto;
+import com.example.prototype.web.base.dto.ItemForm;
 
 /**
  * 商品サービス
@@ -71,5 +72,16 @@ public class ItemService {
         });
 
         return itemList;
+    }
+    
+    /**
+     * 商品登録
+     * @param itemDto
+     */
+    public void insert(ItemForm form) {
+        var item = new Item();
+        BeanUtils.copyProperties(form, item);
+        
+        jdbcItemDao.insert(item);
     }
 }

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -82,5 +83,17 @@ public class JdbcItemDao {
         
         logger.debug("\n★★SQL実行★★\n・クラス=JdbcItemDao\n・メソッド=findAllByAdmin\n・SQL={}\n", sql);
         return namedParameterJdbcTemplate.query(sql, itemRowMapper);
+    }
+    
+    /**
+     * 商品登録
+     * @param item
+     */
+    public void insert(Item item) {
+        var sql = "INSERT INTO item (name, price, deleted) VALUES (:name, :price, :deleted)";
+        var param = new BeanPropertySqlParameterSource(item);
+        
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcItemDao\n・メソッド=insert\n・SQL={}\n・パラメータ={}\n", sql, param);
+        namedParameterJdbcTemplate.update(sql, param);
     }
 }
