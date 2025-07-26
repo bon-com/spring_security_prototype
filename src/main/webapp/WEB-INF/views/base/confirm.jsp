@@ -43,10 +43,14 @@
 	<hr />
 	<c:choose>
 		<c:when test="${totalPrice != 0}">
-			<a href="${pageContext.request.contextPath}/order/complete">購入する</a>
+			<form method="get" action="${pageContext.request.contextPath}/order/complete">
+				<input type="submit" value="購入する" />
+			</form>
 		</c:when>
 		<c:otherwise>
-			<a href="${pageContext.request.contextPath}/items/">商品一覧に戻る</a>
+			<form method="get" action="${pageContext.request.contextPath}/items/">
+				<input type="submit" value="商品一覧に戻る" />
+			</form>
 		</c:otherwise>
 	</c:choose>
 </body>
