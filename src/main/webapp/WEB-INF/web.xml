@@ -72,7 +72,7 @@
 	<!-- 認証情報ロギングフィルター -->
 	<filter>
 		<filter-name>authLoggingFilter</filter-name>
-		<filter-class>com.example.prototype.web.security.filter.AuthLoggingFilter</filter-class>
+		<filter-class>com.example.prototype.web.users.filter.AuthLoggingFilter</filter-class>
 	</filter>
 
 	<filter-mapping>

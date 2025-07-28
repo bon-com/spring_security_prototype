@@ -14,11 +14,11 @@
 	<sec:http pattern="/resources/**" security="none" />
 
 	<!-- 認証クラス -->
-	<bean id="userDetailsService" class="com.example.prototype.biz.security.service.AuthenticationUserService" />
+	<bean id="userDetailsService" class="com.example.prototype.biz.users.service.AuthenticationUserService" />
 	<!-- 認証時のパスワードエンコーダー -->
 	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 	<!-- 認可エラー時のハンドリングクラス -->
-	<bean id="accessDeniedHandler" class="com.example.prototype.biz.security.listener.ExtendedAccessDeniedHandler" />
+	<bean id="accessDeniedHandler" class="com.example.prototype.biz.users.listener.ExtendedAccessDeniedHandler" />
 	
 	<!-- 認証と認可の設定をここに記載していく -->
 	<sec:http>

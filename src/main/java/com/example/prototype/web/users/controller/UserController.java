@@ -1,4 +1,4 @@
-package com.example.prototype.web.security.controller;
+package com.example.prototype.web.users.controller;
 
 import javax.validation.Valid;
 
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.prototype.base.common.constants.Constants;
-import com.example.prototype.biz.security.service.UsersService;
-import com.example.prototype.security.entity.ExtendedUser;
-import com.example.prototype.web.security.dto.UserPasswordForm;
+import com.example.prototype.biz.users.entity.ExtendedUser;
+import com.example.prototype.biz.users.service.UsersService;
+import com.example.prototype.web.users.dto.UserPasswordForm;
 
 @Controller
 @RequestMapping("user")

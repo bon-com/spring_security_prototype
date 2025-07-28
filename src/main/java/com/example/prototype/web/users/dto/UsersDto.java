@@ -1,4 +1,4 @@
-package com.example.prototype.web.security.dto;
+package com.example.prototype.web.users.dto;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

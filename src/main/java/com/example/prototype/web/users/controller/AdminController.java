@@ -1,4 +1,4 @@
-package com.example.prototype.web.security.controller;
+package com.example.prototype.web.users.controller;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.base.service.ItemService;
-import com.example.prototype.biz.security.service.UsersService;
+import com.example.prototype.biz.users.service.UsersService;
 import com.example.prototype.web.base.dto.ItemDto;
 import com.example.prototype.web.base.dto.ItemForm;
 

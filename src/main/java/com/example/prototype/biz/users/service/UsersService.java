@@ -1,4 +1,4 @@
-package com.example.prototype.biz.security.service;
+package com.example.prototype.biz.users.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.prototype.biz.security.dao.JdbcUsersDao;
-import com.example.prototype.security.entity.ExtendedUser;
-import com.example.prototype.web.security.dto.UsersDto;
+import com.example.prototype.biz.userrs.dao.JdbcUsersDao;
+import com.example.prototype.biz.users.entity.ExtendedUser;
+import com.example.prototype.web.users.dto.UsersDto;
 
 @Service
 public class UsersService {

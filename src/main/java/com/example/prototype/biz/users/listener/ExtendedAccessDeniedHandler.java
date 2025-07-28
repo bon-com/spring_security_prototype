@@ -1,4 +1,4 @@
-package com.example.prototype.biz.security.listener;
+package com.example.prototype.biz.users.listener;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import com.example.prototype.security.entity.ExtendedUser;
+import com.example.prototype.biz.users.entity.ExtendedUser;
 
 /**
  * 認可エラー時のエラーをハンドリングするクラス

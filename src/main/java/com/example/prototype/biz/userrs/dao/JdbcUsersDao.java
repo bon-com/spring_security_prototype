@@ -1,4 +1,4 @@
-package com.example.prototype.biz.security.dao;
+package com.example.prototype.biz.userrs.dao;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.example.prototype.base.common.constants.Constants;
-import com.example.prototype.security.entity.ExtendedUser;
+import com.example.prototype.biz.users.entity.ExtendedUser;
 
 @Repository
 public class JdbcUsersDao {

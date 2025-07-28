@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.prototype.base.common.constants.Constants;
-import com.example.prototype.security.entity.ExtendedUser;
+import com.example.prototype.biz.users.entity.ExtendedUser;
 
 @Controller
 public class WelcomeController {

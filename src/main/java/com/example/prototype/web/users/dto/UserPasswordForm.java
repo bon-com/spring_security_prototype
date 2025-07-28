@@ -1,4 +1,4 @@
-package com.example.prototype.web.security.dto;
+package com.example.prototype.web.users.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

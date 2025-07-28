@@ -1,11 +1,11 @@
-package com.example.prototype.biz.security.service;
+package com.example.prototype.biz.users.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.example.prototype.biz.security.dao.JdbcUsersDao;
+import com.example.prototype.biz.userrs.dao.JdbcUsersDao;
 
 /**
  * 認証クラス

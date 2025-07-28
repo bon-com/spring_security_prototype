@@ -1,4 +1,4 @@
-package com.example.prototype.web.security.filter;
+package com.example.prototype.web.users.filter;
 
 import java.io.IOException;
 

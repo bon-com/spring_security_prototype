@@ -1,4 +1,4 @@
-package com.example.prototype.biz.security.listener;
+package com.example.prototype.biz.users.listener;
 
 import java.time.LocalDateTime;
 
@@ -10,8 +10,8 @@ import org.springframework.security.authentication.event.InteractiveAuthenticati
 import org.springframework.stereotype.Component;
 
 import com.example.prototype.base.common.constants.Constants;
-import com.example.prototype.biz.security.service.UsersService;
-import com.example.prototype.security.entity.ExtendedUser;
+import com.example.prototype.biz.users.entity.ExtendedUser;
+import com.example.prototype.biz.users.service.UsersService;
 
 /**
  * 認証成功時のイベントをハンドリングするクラス

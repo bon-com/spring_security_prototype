@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.prototype.biz.base.service.CartService;
 import com.example.prototype.biz.base.service.OrderService;
+import com.example.prototype.biz.users.entity.ExtendedUser;
 import com.example.prototype.biz.utils.MessageUtil;
-import com.example.prototype.security.entity.ExtendedUser;
 import com.example.prototype.web.base.dto.CartDto;
 
 @Controller

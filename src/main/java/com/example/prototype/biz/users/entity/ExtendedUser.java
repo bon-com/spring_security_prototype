@@ -1,4 +1,4 @@
-package com.example.prototype.security.entity;
+package com.example.prototype.biz.users.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
