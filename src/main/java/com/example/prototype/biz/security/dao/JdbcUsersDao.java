@@ -143,14 +143,18 @@ public class JdbcUsersDao {
 
         // 認証情報更新
         var param = new BeanPropertySqlParameterSource(user);
-        var sql = "UPDATE users SET enabled = :enabled, "
-                + "account_non_locked = :accountNonLocked, login_failure_count = :loginFailureCount, "
-                + "last_login_at = :lastLoginAt WHERE login_id = :loginId";
+        var sql = new StringBuilder();
+        sql.append("UPDATE users SET ");
+        sql.append("enabled = :enabled, ");
+        sql.append("account_non_locked = :accountNonLocked, ");
+        sql.append("login_failure_count = :loginFailureCount, ");
+        sql.append("last_login_at = :lastLoginAt ");
+        sql.append("WHERE login_id = :loginId");
 
         logger.debug(
                 "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={{ enabled={} accountNonLocked={} loginFailureCount={} loginId={} }}\n",
                 sql, user.isEnabled(), user.isAccountNonLocked(), user.getLoginFailureCount(), user.getLoginId());
-        namedParameterJdbcTemplate.update(sql, param);
+        namedParameterJdbcTemplate.update(sql.toString(), param);
     }
 
     /**
@@ -167,11 +171,16 @@ public class JdbcUsersDao {
         }
 
         var beanParam = new BeanPropertySqlParameterSource(user);
-        var sql = "UPDATE users SET password = :password, password_expiry_at = :passwordExpiryAt WHERE login_id = :loginId";
+        var sql = new StringBuilder();
+        sql.append("UPDATE users SET ");
+        sql.append("password = :password, ");
+        sql.append("password_expiry_at = :passwordExpiryAt ");
+        sql.append("WHERE login_id = :loginId");
+
         logger.debug(
                 "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updatePassword\n・SQL={}\n・パラメータ={{ password_expiry_at={} loginId={} }}\n",
                 sql, user.getPasswordExpiryAt(), loginId);
-        namedParameterJdbcTemplate.update(sql, beanParam);
+        namedParameterJdbcTemplate.update(sql.toString(), beanParam);
     }
 
     /**
@@ -194,13 +203,23 @@ public class JdbcUsersDao {
      * @return
      */
     public List<ExtendedUser> findAll() {
-        var sql = "SELECT u.login_id as login_id, u.username as username, u.password as password, u.enabled as enabled, "
-                + "u.account_non_locked as account_non_locked, u.login_failure_count as login_failure_count,"
-                + " u.last_login_at as last_login_at, u.account_expiry_at as account_expiry_at, u.password_expiry_at as password_expiry_at,"
-                + "a.authority as authority FROM users u "
-                + "INNER JOIN authorities a ON u.login_id = a.login_id";
+        var sql = new StringBuilder();
+        sql.append("SELECT ");
+        sql.append("u.login_id as login_id, ");
+        sql.append("u.username as username, ");
+        sql.append("u.password as password, ");
+        sql.append("u.enabled as enabled, ");
+        sql.append("u.account_non_locked as account_non_locked, ");
+        sql.append("u.login_failure_count as login_failure_count, ");
+        sql.append("u.last_login_at as last_login_at, ");
+        sql.append("u.account_expiry_at as account_expiry_at, ");
+        sql.append("u.password_expiry_at as password_expiry_at, ");
+        sql.append("am.authority_code as authority ");
+        sql.append("FROM users u ");
+        sql.append("INNER JOIN authorities a ON u.login_id = a.login_id ");
+        sql.append("INNER JOIN authority_master am ON a.authority_id = am.authority_id"); // ← 追加
 
         logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findAll\n・SQL={}\n", sql);
-        return namedParameterJdbcTemplate.query(sql, userListExtractor);
+        return namedParameterJdbcTemplate.query(sql.toString(), userListExtractor);
     }
 }

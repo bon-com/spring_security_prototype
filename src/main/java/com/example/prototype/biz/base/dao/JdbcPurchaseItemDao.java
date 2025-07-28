@@ -50,11 +50,22 @@ public class JdbcPurchaseItemDao {
      * @return
      */
     public List<PurchaseItem> findByPurchaseId(int purchaseId) {
-        var sql = "SELECT p.id, p.purchase_id, p.item_id, p.quantity, p.price, i.name AS item_name FROM purchase_item p JOIN item i ON p.item_id = i.id WHERE p.purchase_id = :purchaseId ";
+        var sql = new StringBuilder();
+        sql.append("SELECT ");
+        sql.append("p.id, ");
+        sql.append("p.purchase_id, ");
+        sql.append("p.item_id, ");
+        sql.append("p.quantity, ");
+        sql.append("p.price, ");
+        sql.append("i.name AS item_name ");
+        sql.append("FROM purchase_item p ");
+        sql.append("JOIN item i ON p.item_id = i.id ");
+        sql.append("WHERE p.purchase_id = :purchaseId");
+
         var param = new MapSqlParameterSource();
         param.addValue("purchaseId", purchaseId);
 
         logger.debug("\n★★SQL実行★★\n・クラス=JdbcPurchaseItemDao\n・メソッド=findByPurchaseId\n・SQL={}\n・パラメータ={}\n", sql, param);
-        return namedParameterJdbcTemplate.query(sql, param, purHistoryRowMapper);
+        return namedParameterJdbcTemplate.query(sql.toString(), param, purHistoryRowMapper);
     }
 }

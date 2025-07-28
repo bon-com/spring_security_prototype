@@ -57,13 +57,27 @@ public class JdbcPurchaseHistoryDao {
      * @return
      */
     public PurchaseHistory findByPurchaseDate(LocalDate purchaseDate) {
-        var sql = "SELECT  h.id AS history_id, h.purchase_date, pi.id AS purchase_item_id, pi.purchase_id, pi.item_id, pi.quantity, pi.price, i.name AS item_name "
-                + "FROM  purchase_history h JOIN purchase_item pi ON h.id = pi.purchase_id JOIN  item i ON pi.item_id = i.id WHERE  h.purchase_date = :purchaseDate ORDER BY h.id, pi.id";
+        var sql = new StringBuilder();
+        sql.append("SELECT ");
+        sql.append("h.id AS history_id, ");
+        sql.append("h.purchase_date, ");
+        sql.append("pi.id AS purchase_item_id, ");
+        sql.append("pi.purchase_id, ");
+        sql.append("pi.item_id, ");
+        sql.append("pi.quantity, ");
+        sql.append("pi.price, ");
+        sql.append("i.name AS item_name ");
+        sql.append("FROM purchase_history h ");
+        sql.append("JOIN purchase_item pi ON h.id = pi.purchase_id ");
+        sql.append("JOIN item i ON pi.item_id = i.id ");
+        sql.append("WHERE h.purchase_date = :purchaseDate ");
+        sql.append("ORDER BY h.id, pi.id");
+
         var param = new MapSqlParameterSource();
         param.addValue("purchaseDate", purchaseDate);
 
         logger.debug("\n★★SQL実行★★\n・クラス=JdbcPurchaseHistoryDao\n・メソッド=findByPurchaseDate\n・SQL={}\n・パラメータ={}\n", sql, param);
-        return namedParameterJdbcTemplate.query(sql, param, new PurchaseHistoryExtractor());
+        return namedParameterJdbcTemplate.query(sql.toString(), param, new PurchaseHistoryExtractor());
     }
 
 }
