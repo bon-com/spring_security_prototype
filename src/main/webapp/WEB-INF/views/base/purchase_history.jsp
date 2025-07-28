@@ -6,17 +6,7 @@
 <title>購入履歴一覧画面</title>
 </head>
 <body>
-	<h5>
-		<c:out value="${greeting}" />
-		<sec:authentication var="user" property="principal" />
-		<c:out value="${user.username}" />
-		さん
-	</h5>
-	<form action="${pageContext.request.contextPath}/logout" method="post">
-		<sec:csrfInput/>
-		<input type="submit" value="ログアウト" />
-	</form>
-	<hr />
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<h3>購入履歴一覧</h3>
 	<hr />
 	<form:form method="get" modelAttribute="historyForm" action="${pageContext.request.contextPath}/history/purchase-history">

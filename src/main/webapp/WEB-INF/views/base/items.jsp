@@ -6,17 +6,7 @@
 <title>商品一覧画面</title>
 </head>
 <body>
-	<h5>
-		<c:out value="${greeting}" />
-		<sec:authentication var="user" property="principal" />
-		<c:out value="${user.username}" />
-		さん
-	</h5>
-	<form action="${pageContext.request.contextPath}/logout" method="post">
-		<sec:csrfInput />
-		<input type="submit" value="ログアウト" />
-	</form>
-	<hr />
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<h3>商品一覧</h3>
 	<%-- DIコンテナで管理しているセッションスコープBeanはSpELを利用して参照する --%>
 	<spring:eval var="cart" expression="@cart" />

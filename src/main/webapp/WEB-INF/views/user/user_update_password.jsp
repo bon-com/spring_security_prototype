@@ -6,13 +6,7 @@
 <title>パスワード更新画面</title>
 </head>
 <body>
-	<h5>
-		<c:out value="${greeting}" />
-		<sec:authentication var="user" property="principal" />
-		<c:out value="${user.username}" />
-		さん
-	</h5>
-	<hr />
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<h3>パスワード更新</h3>
 	<hr />
 	<p>
