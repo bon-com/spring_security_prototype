@@ -104,16 +104,28 @@ public class JdbcUsersDao {
      * @return
      */
     public ExtendedUser findByLoginId(String loginId) {
-        var sql = "SELECT u.login_id as login_id, u.username as username, u.password as password, u.enabled as enabled, "
-                + "u.account_non_locked as account_non_locked, u.login_failure_count as login_failure_count,"
-                + " u.last_login_at as last_login_at, u.account_expiry_at as account_expiry_at, u.password_expiry_at as password_expiry_at,"
-                + "a.authority as authority FROM users u "
-                + "INNER JOIN authorities a ON u.login_id = a.login_id WHERE u.login_id = :loginId";
+        var sql = new StringBuilder();
+        sql.append("SELECT ");
+        sql.append("u.login_id AS login_id, ");
+        sql.append("u.username AS username, ");
+        sql.append("u.password AS password, ");
+        sql.append("u.enabled AS enabled, ");
+        sql.append("u.account_non_locked AS account_non_locked, ");
+        sql.append("u.login_failure_count AS login_failure_count, ");
+        sql.append("u.last_login_at AS last_login_at, ");
+        sql.append("u.account_expiry_at AS account_expiry_at, ");
+        sql.append("u.password_expiry_at AS password_expiry_at, ");
+        sql.append("am.authority_code AS authority ");
+        sql.append("FROM users u ");
+        sql.append("INNER JOIN authorities a ON u.login_id = a.login_id ");
+        sql.append("INNER JOIN authority_master am ON a.authority_id = am.authority_id ");
+        sql.append("WHERE u.login_id = :loginId");
+
         var param = new MapSqlParameterSource();
         param.addValue("loginId", loginId);
 
         logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findByLoginId\n・SQL={}\n・パラメータ={}\n", sql, loginId);
-        return namedParameterJdbcTemplate.query(sql, param, userExtractor);
+        return namedParameterJdbcTemplate.query(sql.toString(), param, userExtractor);
     }
 
     /**

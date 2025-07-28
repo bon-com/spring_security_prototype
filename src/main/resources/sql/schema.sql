@@ -36,9 +36,21 @@ CREATE TABLE users (
   password_expiry_at TIMESTAMP NOT NULL                 -- パスワード有効期限日時
 );
 
--- 権限テーブル
-CREATE TABLE authorities (
-  login_id VARCHAR(50),
-  authority VARCHAR(50),
-  FOREIGN KEY (login_id) REFERENCES users(login_id)
+-- 権限マスタ
+CREATE TABLE authority_master (
+    authority_id INT PRIMARY KEY AUTO_INCREMENT,
+    authority_code VARCHAR(50) NOT NULL UNIQUE, -- 例: ROLE_ADMIN
+    authority_name VARCHAR(100) NOT NULL,       -- 表示名
+    display_order INT,
+    is_active BOOLEAN DEFAULT TRUE
 );
+
+-- 権限紐づきテーブル
+CREATE TABLE authorities (
+  login_id VARCHAR(50) NOT NULL,
+  authority_id INT NOT NULL,
+  PRIMARY KEY (login_id, authority_id),
+  FOREIGN KEY (login_id) REFERENCES users(login_id),
+  FOREIGN KEY (authority_id) REFERENCES authority_master(authority_id)
+);
+
