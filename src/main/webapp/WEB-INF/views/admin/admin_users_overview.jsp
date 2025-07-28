@@ -37,8 +37,8 @@
                     <td><c:out value="${exUser.loginId}" /></td>
                     <td><c:out value="${exUser.username}" /></td>
                     <td><c:out value="${exUser.enabled ? '有効' : '無効'}" /></td>
-                    <td><c:out value="${exUser.accountNonExpired ? '有効' : '無効'}" /></td>
-                    <td><c:out value="${exUser.credentialsNonExpired ? '有効' : '無効'}" /></td>
+                    <td><c:out value="${exUser.accountNonExpired ? '有効' : '有効期限切れ'}" /></td>
+                    <td><c:out value="${exUser.credentialsNonExpired ? '有効' : '有効期限切れ'}" /></td>
                     <td><c:out value="${exUser.accountNonLocked ? 'ロックなし' : 'ロックあり' }" /></td>
                     <td>
                         <form method="get" action="${pageContext.request.contextPath}/admin/users/${user.loginId}/edit">
