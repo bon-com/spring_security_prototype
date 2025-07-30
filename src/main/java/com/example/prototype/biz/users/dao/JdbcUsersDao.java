@@ -142,7 +142,6 @@ public class JdbcUsersDao {
         }
 
         // 認証情報更新
-        var param = new BeanPropertySqlParameterSource(user);
         var sql = new StringBuilder();
         sql.append("UPDATE users SET ");
         sql.append("enabled = :enabled, ");
@@ -150,10 +149,11 @@ public class JdbcUsersDao {
         sql.append("login_failure_count = :loginFailureCount, ");
         sql.append("last_login_at = :lastLoginAt ");
         sql.append("WHERE login_id = :loginId");
+        var param = new BeanPropertySqlParameterSource(user);
 
         logger.debug(
-                "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={{ enabled={} accountNonLocked={} loginFailureCount={} loginId={} }}\n",
-                sql, user.isEnabled(), user.isAccountNonLocked(), user.getLoginFailureCount(), user.getLoginId());
+                "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updateAuthStatus\n・SQL={}\n・パラメータ={}\n",
+                sql, user);
         namedParameterJdbcTemplate.update(sql.toString(), param);
     }
 
@@ -170,17 +170,17 @@ public class JdbcUsersDao {
             throw new IllegalStateException(Constants.MSG_UPDATE_ERR + ": loginId=" + loginId);
         }
 
-        var beanParam = new BeanPropertySqlParameterSource(user);
         var sql = new StringBuilder();
         sql.append("UPDATE users SET ");
         sql.append("password = :password, ");
         sql.append("password_expiry_at = :passwordExpiryAt ");
         sql.append("WHERE login_id = :loginId");
+        var param = new BeanPropertySqlParameterSource(user);
 
         logger.debug(
                 "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=updatePassword\n・SQL={}\n・パラメータ={{ password_expiry_at={} loginId={} }}\n",
                 sql, user.getPasswordExpiryAt(), loginId);
-        namedParameterJdbcTemplate.update(sql.toString(), beanParam);
+        namedParameterJdbcTemplate.update(sql.toString(), param);
     }
 
     /**

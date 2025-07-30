@@ -106,6 +106,13 @@ public class ExtendedUser implements UserDetails {
      */
     @Data
     public static class Builder {
+        /*
+         * 以下のフィールドは必須となる
+         * ・loginId
+         * ・username
+         * ・accountExpiryAt
+         * ・passwordExpiryAt
+         */
         private String loginId;
         private String username;
         private String password;
@@ -225,12 +232,15 @@ public class ExtendedUser implements UserDetails {
         }
     }
     
+    /*
+     * toString時にパスワードをマスキング
+     */
     @Override
     public String toString() {
         return "ExtendedUser{" +
                 "loginId='" + loginId + '\'' +
                 ", username='" + username + '\'' +
-                ", password='*****'" +
+                ", password=" + Constants.MASKING_ITEM +
                 ", enabled=" + enabled +
                 ", accountNonLocked=" + accountNonLocked +
                 ", loginFailureCount=" + loginFailureCount +

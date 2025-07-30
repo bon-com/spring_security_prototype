@@ -37,7 +37,7 @@ public class AdminItemController {
     }
 
     /**
-     * 商品一覧表示
+     * 商品一覧画面表示
      * @param model
      * @return
      */

@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 権限マスタエンティティ
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

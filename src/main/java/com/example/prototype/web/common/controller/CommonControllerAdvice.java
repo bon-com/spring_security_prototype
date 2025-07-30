@@ -22,6 +22,7 @@ public class CommonControllerAdvice {
         /*
          * StringTrimmerEditorは文字列の前後にある不要な空白（スペース、タブ、改行など）を自動的にトリミングする
          * また、コンストラクタにtrueを設定することで、トリミング後に空文字だった場合NULLに変換する
+         * ※BeanバリデーションのNULLチェックのためにNULL変換する
          */
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }

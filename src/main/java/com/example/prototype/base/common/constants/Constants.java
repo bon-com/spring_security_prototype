@@ -38,4 +38,6 @@ public class Constants {
     public static final String INSERT_SUCCESS_KEY = "insert-success";
     /** 一度の商品購入限度数 */
     public static final int MAX_PURCHASE_QUANTITY = 10;
+    /** マスキング項目 */
+    public static final String MASKING_ITEM = "*****";
 }

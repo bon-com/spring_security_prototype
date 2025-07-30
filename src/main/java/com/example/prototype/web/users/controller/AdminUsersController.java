@@ -40,7 +40,7 @@ public class AdminUsersController {
     }
 
     /**
-     * 利用者情報の一覧表示
+     * 利用者情報の一覧画面表示
      * @param model
      * @return
      */
@@ -59,7 +59,7 @@ public class AdminUsersController {
     }
 
     /**
-     * 利用者新規登録の表示
+     * 利用者新規登録画面表示
      * @param model
      * @return
      */
