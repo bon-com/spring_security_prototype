@@ -9,6 +9,13 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<h3>利用者情報の一覧</h3>
 	<hr />
+	<p>
+		<c:out value="${message}" />
+	</p>
+	<form method="get" action="${pageContext.request.contextPath}/admin/users/register">
+		<input type="submit" value="新規登録" />
+	</form>
+	<hr />
     <table border="1">
         <thead>
             <tr>

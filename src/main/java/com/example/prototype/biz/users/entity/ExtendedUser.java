@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -191,9 +190,6 @@ public class ExtendedUser implements UserDetails {
             if (password == null) {
                 missingFields.add("password");
             }
-            if (CollectionUtils.isEmpty(authorities)) {
-                missingFields.add("authorities");
-            }
             if (accountExpiryAt == null) {
                 missingFields.add("accountExpiryAt");
             }
@@ -227,5 +223,21 @@ public class ExtendedUser implements UserDetails {
                     this.accountExpiryAt,
                     this.passwordExpiryAt);
         }
+    }
+    
+    @Override
+    public String toString() {
+        return "ExtendedUser{" +
+                "loginId='" + loginId + '\'' +
+                ", username='" + username + '\'' +
+                ", password='*****'" +
+                ", enabled=" + enabled +
+                ", accountNonLocked=" + accountNonLocked +
+                ", loginFailureCount=" + loginFailureCount +
+                ", lastLoginAt=" + lastLoginAt +
+                ", accountExpiryAt=" + accountExpiryAt +
+                ", passwordExpiryAt=" + passwordExpiryAt +
+                ", authorities=" + authorities +
+                '}';
     }
 }

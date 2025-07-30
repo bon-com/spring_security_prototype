@@ -25,9 +25,9 @@ CREATE TABLE purchase_item (
 
 -- 利用者テーブル
 CREATE TABLE users (
-  login_id VARCHAR(50) PRIMARY KEY,
-  username VARCHAR(50) NOT NULL,
-  password VARCHAR(100) NOT NULL,
+  login_id VARCHAR(50) PRIMARY KEY,                     -- ログインID 
+  username VARCHAR(50) NOT NULL,                        -- 利用者指名
+  password VARCHAR(100) NOT NULL,                        -- パスワード
   enabled BOOLEAN NOT NULL,                             -- アカウント有効可否（true:有効/false:無効）
   account_non_locked BOOLEAN NOT NULL DEFAULT TRUE,     -- アカウントロック状態（true:ロック無し/false:ロック有り）
   login_failure_count INT NOT NULL DEFAULT 0,           -- ログイン失敗回数
@@ -38,17 +38,17 @@ CREATE TABLE users (
 
 -- 権限マスタ
 CREATE TABLE authority_master (
-    authority_id INT PRIMARY KEY AUTO_INCREMENT,
-    authority_code VARCHAR(50) NOT NULL UNIQUE, -- 例: ROLE_ADMIN
-    authority_name VARCHAR(100) NOT NULL,       -- 表示名
-    display_order INT,
-    is_active BOOLEAN DEFAULT TRUE
+    authority_id INT PRIMARY KEY AUTO_INCREMENT,        -- 権限マスタID
+    authority_code VARCHAR(50) NOT NULL UNIQUE,         -- 権限コード（例: ROLE_ADMIN）
+    authority_name VARCHAR(100) NOT NULL,               -- 権限表示名
+    display_order INT,                                  -- 表示順
+    is_active BOOLEAN DEFAULT TRUE                      -- 権限マスタ有効可否（true:有効/false:無効）
 );
 
 -- 権限紐づきテーブル
 CREATE TABLE authorities (
-  login_id VARCHAR(50) NOT NULL,
-  authority_id INT NOT NULL,
+  login_id VARCHAR(50) NOT NULL,                        -- ログインID
+  authority_id INT NOT NULL,                            -- 権限マスタID
   PRIMARY KEY (login_id, authority_id),
   FOREIGN KEY (login_id) REFERENCES users(login_id),
   FOREIGN KEY (authority_id) REFERENCES authority_master(authority_id)

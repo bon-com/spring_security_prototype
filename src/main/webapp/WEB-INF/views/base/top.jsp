@@ -16,7 +16,7 @@
 		<li>商品の購入： <a href="${pageContext.request.contextPath}/items/">こちら</a></li>
 		<li>購入履歴： <a href="${pageContext.request.contextPath}/history/">こちら</a></li>
 	</ul>
-	<sec:authorize var="isAdmin" access="hasRole('ROLE_ADMIN')"/>
+	<sec:authorize var="isAdmin" access="hasAnyRole('ROLE_ADMIN', 'ROLE_DEVELOPER')"/>
 	<c:if test="${isAdmin}">
 		<hr />
 		<h3>管理者メニュー</h3>

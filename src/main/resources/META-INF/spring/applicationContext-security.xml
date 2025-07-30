@@ -22,10 +22,12 @@
 	
 	<!-- 認証と認可の設定をここに記載していく -->
 	<sec:http>
+		<!-- user配下は利用者、マネジャー、管理者、開発者ロールを許可 -->
+		<sec:intercept-url pattern="/user/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_DEVELOPER')" />
+		<!-- admin配下は管理者、開発者ロールを許可 -->
+		<sec:intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN','ROLE_DEVELOPER')" />
 		<!-- 自作したログイン画面のパス「/login」は認証不要とする（※isAuthenticated()の設定よりも先に定義すること） -->
 		<sec:intercept-url pattern="/login" access="permitAll()" />
-		<!-- admin配下は管理者ロールのみ許可 -->
-		<sec:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<!-- すべてのパスで認証が必要 -->
 		<sec:intercept-url pattern="/**" access="isAuthenticated()" />
 		<!-- 

@@ -10,9 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.prototype.biz.userrs.dao.JdbcUsersDao;
+import com.example.prototype.biz.users.dao.JdbcAuthoritiesDao;
+import com.example.prototype.biz.users.dao.JdbcUsersDao;
+import com.example.prototype.biz.users.entity.Authorities;
 import com.example.prototype.biz.users.entity.ExtendedUser;
 import com.example.prototype.web.users.dto.UsersDto;
+import com.example.prototype.web.users.dto.UsersForm;
 
 @Service
 public class UsersService {
@@ -21,6 +24,9 @@ public class UsersService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private JdbcAuthoritiesDao jdbcAuthoritiesDao;
 
     /** パスワード有効期間 */
     @Value("${auth.password.expiry.period.days}")
@@ -73,5 +79,30 @@ public class UsersService {
         });
         
         return userList;
+    }
+    
+    /**
+     * 利用者情報の登録
+     * @param form
+     */
+    public void insertUser(UsersForm form) {
+        // 登録エンティティ作成
+        var user = ExtendedUser.builder()
+                .loginId(form.getLoginId())
+                .username(form.getUsername())
+                .password(passwordEncoder.encode(form.getPassword()))
+                .enabled(form.isEnabled())
+                .accountNonLocked(form.isAccountNonLocked())
+                .accountExpiryAt(form.getAccountExpiryAt())
+                .passwordExpiryAt(form.getPasswordExpiryAt())
+                .build();
+        
+        // 利用者登録
+        jdbcUsersDao.insert(user);
+        // 権限登録
+        form.getAuthorityIds().forEach(authorityId -> {
+            var authority = new Authorities(form.getLoginId(), authorityId);
+            jdbcAuthoritiesDao.insert(authority);
+        });
     }
 }
