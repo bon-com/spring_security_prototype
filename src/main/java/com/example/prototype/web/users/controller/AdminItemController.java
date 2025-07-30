@@ -17,18 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.base.service.ItemService;
-import com.example.prototype.biz.users.service.UsersService;
 import com.example.prototype.web.base.dto.ItemDto;
 import com.example.prototype.web.base.dto.ItemForm;
 
 @Controller
 @RequestMapping("admin")
-public class AdminController {
+public class AdminItemController {
     @Autowired
     private ItemService itemService;
-
-    @Autowired
-    private UsersService userService;
 
     @ModelAttribute
     public ItemForm setUpItemForm() {
@@ -86,16 +82,4 @@ public class AdminController {
         itemService.updateDeletedByAdmin(id, deleted);
         return "redirect:/admin/items?msgKey=" + Constants.UPDATE_SUCCESS_KEY;
     }
-
-    /**
-     * 利用者情報の一覧表示
-     * @param model
-     * @return
-     */
-    @GetMapping(value = "/users")
-    public String users(Model model) {
-        model.addAttribute("userList", userService.findAll());
-        return "admin/admin_users_overview";
-    }
-
 }

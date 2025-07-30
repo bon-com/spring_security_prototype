@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.example.prototype.biz.userrs.dao.JdbcUsersDao;
+import com.example.prototype.biz.users.dao.JdbcUsersDao;
 
 /**
  * 認証クラス
