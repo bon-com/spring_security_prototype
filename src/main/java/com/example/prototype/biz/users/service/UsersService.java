@@ -41,11 +41,11 @@ public class UsersService {
     }
 
     /**
-     * ログインID検索
+     * ログインID検索（認証用）
      * @param username
      * @return
      */
-    public ExtendedUser findByLoginId(String loginId) {
+    public ExtendedUser findByLoginIdForAuth(String loginId) {
         return jdbcUsersDao.findByLoginId(loginId);
     }
 

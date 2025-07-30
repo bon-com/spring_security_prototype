@@ -5,6 +5,8 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.example.prototype.base.common.constants.Constants;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +23,7 @@ public class UsersDto {
     /** 利用者氏名 */
     private String username;
     /** マスク済みパスワード */
-    private String maskedPassword = "*****";
+    private String maskedPassword = Constants.MASKING_ITEM;
     /** アカウント有効可否（true:有効/false:無効） */
     private boolean enabled;
     /** アカウント有効期限切れ可否（true:有効/false:期限切れ） */

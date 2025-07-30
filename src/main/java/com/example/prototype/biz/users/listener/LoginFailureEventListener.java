@@ -36,7 +36,7 @@ public class LoginFailureEventListener {
         // 利用者検索
         var auth = event.getAuthentication();
         String loginId = auth.getName(); // 認証失敗したusernameにあたる値
-        ExtendedUser user = usersService.findByLoginId(loginId);
+        ExtendedUser user = usersService.findByLoginIdForAuth(loginId);
 
         // 利用者情報が存在する場合、認証情報を更新
         if (user != null) {

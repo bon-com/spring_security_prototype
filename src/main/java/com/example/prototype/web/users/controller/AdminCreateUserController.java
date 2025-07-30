@@ -22,7 +22,7 @@ import com.example.prototype.web.users.dto.UsersForm;
 
 @Controller
 @RequestMapping("admin")
-public class AdminUsersController {
+public class AdminCreateUserController {
     @Autowired
     private UsersService userService;
     
