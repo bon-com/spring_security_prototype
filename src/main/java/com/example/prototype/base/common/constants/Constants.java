@@ -16,6 +16,8 @@ public class Constants {
     public static final String ERR_MSG_PASSWORDS_NOT_MATCH = "パスワードと確認用パスワードが一致しません";
     /** 相関チェック異常エラーメッセージ */
     public static final String ERR_MSG_PROPERTY_ACCESS_FAILED = "指定されたフィールドの取得に失敗しました";
+    /** ログインID重複エラーメッセージ */
+    public static final String ERR_MSG_LOGIN_ID_DUPLICATE = "ログインIDが既に登録されています";
     /** 更新完了メッセージ */
     public static final String MSG_UPDATE_SUCCESS = "更新完了しました";
     /** 更新失敗メッセージ */

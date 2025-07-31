@@ -31,17 +31,14 @@
 	</table>
 	<h5>${totalPriceMsg}</h5>
 	<hr />
-	<c:choose>
-		<c:when test="${totalPrice != 0}">
-			<form method="get" action="${pageContext.request.contextPath}/order/complete">
-				<input type="submit" value="購入する" />
-			</form>
-		</c:when>
-		<c:otherwise>
-			<form method="get" action="${pageContext.request.contextPath}/items/">
-				<input type="submit" value="商品一覧に戻る" />
-			</form>
-		</c:otherwise>
-	</c:choose>
+	<c:if test="${totalPrice != 0}">
+		<form method="get" action="${pageContext.request.contextPath}/order/complete">
+			<input type="submit" value="購入する" />
+		</form>
+	</c:if>
+	<br>
+	<form method="get" action="${pageContext.request.contextPath}/items/">
+		<input type="submit" value="商品一覧に戻る" />
+	</form>
 </body>
 </html>

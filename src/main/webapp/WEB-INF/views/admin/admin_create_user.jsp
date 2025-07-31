@@ -8,6 +8,9 @@
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<h3>利用者新規登録</h3>
+	<p style="color: red;">
+		<c:out value="${warning}" />
+	</p>
 	<hr />
 	<form:form modelAttribute="usersForm" method="post" action="${pageContext.request.contextPath}/admin/users/register">
 		<sec:csrfInput />
@@ -117,6 +120,10 @@
 		<br>
 		<input type="submit" value="登録" />
 	</form:form>
+	<br>
+	<form method="get" action="${pageContext.request.contextPath}/admin/users">
+		<input type="submit" value="戻る">
+	</form>
 	<hr />
 	<a href="<c:url value='/'/>">TOP</a>
 </body>

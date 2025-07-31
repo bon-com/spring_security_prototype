@@ -22,7 +22,6 @@
 		</tr>
 		<c:forEach var="item" items="${items}">
 			<form method="get" action="${pageContext.request.contextPath}/admin/items/update-deleted/${item.id}">
-				<sec:csrfInput />
 				<tr>
 					<td>${item.id}</td>
 					<td>${item.name}</td>
@@ -45,6 +44,7 @@
 	<hr />
 	<h3>商品の登録</h3>
 	<form:form modelAttribute="itemForm" method="post" action="${pageContext.request.contextPath}/admin/items/register">
+		<sec:csrfInput />
 		<table>
 			<tr>
 				<th>商品名</th>
@@ -56,7 +56,7 @@
 			<tr>
 				<th>値段</th>
 				<td>
-					<form:input path="price" />
+					<form:input path="price" type="number" />
 					<form:errors path="price" cssStyle="color: red;" />
 				</td>
 			</tr>

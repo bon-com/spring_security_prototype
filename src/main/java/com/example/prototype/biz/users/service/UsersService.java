@@ -105,4 +105,13 @@ public class UsersService {
             jdbcAuthoritiesDao.insert(authority);
         });
     }
+    
+    /**
+     * ログインID検索
+     * @param loginId
+     * @return
+     */
+    public int findCountByLoginId(String loginId) {
+        return jdbcUsersDao.findCountByLoginId(loginId);
+    }
 }

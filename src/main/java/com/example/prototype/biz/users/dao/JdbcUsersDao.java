@@ -189,7 +189,7 @@ public class JdbcUsersDao {
      * @param loginId
      * @return
      */
-    private int findCountByLoginId(String loginId) {
+    public int findCountByLoginId(String loginId) {
         var sql = "SELECT COUNT(*) FROM users WHERE login_id = :loginId";
         var param = new MapSqlParameterSource("loginId", loginId);
 
