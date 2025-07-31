@@ -44,48 +44,9 @@ th {
 			<td>*****</td>
 		</tr>
 		<tr>
-			<th>アカウント有効</th>
+			<th>アカウント有効状態</th>
 			<td>
 				<c:out value="${user.enabled ? '有効' : '無効'}" />
-			</td>
-		</tr>
-		<tr>
-			<th>アカウント期限切れ</th>
-			<td>
-				<c:out value="${user.accountNonExpired ? '有効' : '有効期限切れ'}" />
-			</td>
-		</tr>
-		<tr>
-			<th>パスワード期限切れ</th>
-			<td>
-				<c:out value="${user.credentialsNonExpired ? '有効' : '有効期限切れ'}" />
-			</td>
-		</tr>
-		<tr>
-			<th>アカウントロック</th>
-			<td>
-				<c:out value="${user.accountNonLocked ? 'ロックなし' : 'ロックあり' }" />
-			</td>
-		</tr>
-		<tr>
-			<th>権限</th>
-			<td>
-				<c:forEach var="auth" items="${authorities}">
-					<span><c:out value="${auth.authorityName}" /></span>
-					<br />
-				</c:forEach>
-			</td>
-		</tr>
-		<tr>
-			<th>ログイン失敗回数</th>
-			<td>
-				<c:out value="${user.loginFailureCount}" /> 回
-			</td>
-		</tr>
-		<tr>
-			<th>最終ログイン日時</th>
-			<td>
-				<fmt:formatDate value="${lastLoginAt}" pattern="yyyy年MM月dd日 HH時mm分" />
 			</td>
 		</tr>
 		<tr>
@@ -98,6 +59,33 @@ th {
 			<th>パスワード有効期限</th>
 			<td>
 				<fmt:formatDate value="${passwordExpiryAt}" pattern="yyyy年MM月dd日 HH時mm分" />
+			</td>
+		</tr>
+		<tr>
+			<th>ログイン失敗回数</th>
+			<td>
+				<c:out value="${user.loginFailureCount}" /> 回
+			</td>
+		</tr>
+		<tr>
+			<th>アカウントロック</th>
+			<td>
+				<c:out value="${user.accountNonLocked ? 'ロックなし' : 'ロックあり' }" />
+			</td>
+		</tr>
+		<tr>
+			<th>利用者権限</th>
+			<td>
+				<c:forEach var="auth" items="${authorities}">
+					<span><c:out value="${auth.authorityName}" /></span>
+					<br />
+				</c:forEach>
+			</td>
+		</tr>
+		<tr>
+			<th>最終ログイン日時</th>
+			<td>
+				<fmt:formatDate value="${lastLoginAt}" pattern="yyyy年MM月dd日 HH時mm分" />
 			</td>
 		</tr>
 	</table>

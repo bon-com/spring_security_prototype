@@ -52,7 +52,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>アカウント有効</th>
+				<th>アカウント有効状態</th>
 				<td>
 					<label>
 						<form:radiobutton path="enabled" value="true" />
@@ -65,22 +65,6 @@
 				</td>
 				<td>
 					<form:errors path="enabled" cssStyle="color: red;" />
-				</td>
-			</tr>
-			<tr>
-				<th>アカウントロック状態</th>
-				<td>
-					<label>
-						<form:radiobutton path="accountNonLocked" value="true" />
-						ロックなし
-					</label>
-					<label>
-						<form:radiobutton path="accountNonLocked" value="false" />
-						ロックあり
-					</label>
-				</td>
-				<td>
-					<form:errors path="accountNonLocked" cssStyle="color: red;" />
 				</td>
 			</tr>
 			<tr>
@@ -99,6 +83,22 @@
 				</td>
 				<td>
 					<form:errors path="passwordExpiryAt" cssStyle="color: red;" />
+				</td>
+			</tr>
+			<tr>
+				<th>アカウントロック状態</th>
+				<td>
+					<label>
+						<form:radiobutton path="accountNonLocked" value="true" />
+						ロックなし
+					</label>
+					<label>
+						<form:radiobutton path="accountNonLocked" value="false" />
+						ロックあり
+					</label>
+				</td>
+				<td>
+					<form:errors path="accountNonLocked" cssStyle="color: red;" />
 				</td>
 			</tr>
 			<tr>
