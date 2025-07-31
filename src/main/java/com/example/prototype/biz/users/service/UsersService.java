@@ -3,6 +3,7 @@ package com.example.prototype.biz.users.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import com.example.prototype.biz.users.dao.JdbcAuthoritiesDao;
 import com.example.prototype.biz.users.dao.JdbcUsersDao;
 import com.example.prototype.biz.users.entity.Authorities;
 import com.example.prototype.biz.users.entity.ExtendedUser;
+import com.example.prototype.web.users.dto.AuthoritiesDto;
+import com.example.prototype.web.users.dto.AuthorityMasterDto;
 import com.example.prototype.web.users.dto.UsersDto;
 import com.example.prototype.web.users.dto.UsersForm;
 
@@ -27,6 +30,12 @@ public class UsersService {
     
     @Autowired
     private JdbcAuthoritiesDao jdbcAuthoritiesDao;
+    
+    @Autowired
+    private AuthoritiesService authoritiesService;
+    
+    @Autowired
+    private AuthorityMasterService authorityMasterService;
 
     /** パスワード有効期間 */
     @Value("${auth.password.expiry.period.days}")
@@ -104,6 +113,38 @@ public class UsersService {
             var authority = new Authorities(form.getLoginId(), authorityId);
             jdbcAuthoritiesDao.insert(authority);
         });
+    }
+
+    /**
+     * ログインID検索
+     * @param username
+     * @return
+     */
+    public UsersDto findByLoginId(String loginId) {
+        ExtendedUser user = jdbcUsersDao.findByLoginId(loginId);
+        
+        var dto = new UsersDto();
+        BeanUtils.copyProperties(user, dto);
+        
+        return dto;
+    }
+
+    
+    /**
+     * 利用者の権限一覧取得
+     * @param loginId
+     * @return
+     */
+    public List<AuthorityMasterDto> findAuthorityByLoginId(String loginId) {
+        // 権限マスタ一覧取得
+        List<AuthorityMasterDto> authorityMasterList = authorityMasterService.findAllActive();
+        // 利用者の権限取得
+        List<AuthoritiesDto> authoritiesList = authoritiesService.findByLoginId(loginId);
+        
+        return authorityMasterList.stream()
+                .filter(master -> authoritiesList.stream()
+                        .anyMatch(dto -> dto.getAuthorityId().equals(master.getAuthorityId())))
+                    .collect(Collectors.toList());
     }
     
     /**

@@ -10,12 +10,12 @@ import com.example.prototype.biz.users.dao.JdbcAuthorityMasterDao;
 import com.example.prototype.web.users.dto.AuthorityMasterDto;
 
 @Service
-public class AuthorityService {
+public class AuthorityMasterService {
     @Autowired
     private JdbcAuthorityMasterDao jdbcAuthorityMasterDao;
     
     /**
-     * 権限一覧取得
+     * 権限マスタ一覧取得
      * @return
      */
     public List<AuthorityMasterDto> findAllActive() {
@@ -28,4 +28,5 @@ public class AuthorityService {
         
         return authorityList;
     }
+    
 }

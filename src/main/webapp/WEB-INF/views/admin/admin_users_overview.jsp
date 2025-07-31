@@ -38,8 +38,8 @@
                     <td><c:out value="${exUser.credentialsNonExpired ? '有効' : '有効期限切れ'}" /></td>
                     <td><c:out value="${exUser.accountNonLocked ? 'ロックなし' : 'ロックあり' }" /></td>
                     <td>
-                        <form method="get" action="${pageContext.request.contextPath}/admin/users/${user.loginId}/edit">
-                            <input type="submit" value="変更" />
+                        <form method="get" action="${pageContext.request.contextPath}/admin/users/${exUser.loginId}">
+                            <input type="submit" value="詳細" />
                         </form>
                     </td>
                 </tr>
