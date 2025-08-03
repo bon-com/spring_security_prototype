@@ -87,7 +87,6 @@ public class AdminCreateUserController {
         model.addAttribute("loginId", form.getLoginId());
         model.addAttribute("username", form.getUsername());
         model.addAttribute("enabled", form.isEnabled());
-        model.addAttribute("enabled", form.isEnabled());
         model.addAttribute("accountExpiryAt", DataUtil.convertDateFromLocalDateTime(form.getAccountExpiryAt()));
         model.addAttribute("passwordExpiryAt", DataUtil.convertDateFromLocalDateTime(form.getPasswordExpiryAt()));
         model.addAttribute("accountNonLocked", form.isAccountNonLocked());
