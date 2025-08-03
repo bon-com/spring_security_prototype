@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -33,7 +32,6 @@ public class AdminCreateUserController {
     @Autowired
     private MasterLoader masterLoader; 
     
-    
     @ModelAttribute
     public UsersForm setUpUsersForm() {
         return new UsersForm();
@@ -50,14 +48,7 @@ public class AdminCreateUserController {
      * @return
      */
     @GetMapping(value = "/users/register")
-    public String register(@RequestParam(name = "msgKey", required = false) String msgKey, Model model) {
-        if (Constants.UPDATE_SUCCESS_KEY.equals(msgKey)) {
-            // 更新メッセージ制御
-            model.addAttribute("message", Constants.MSG_UPDATE_SUCCESS);
-        } else if (Constants.INSERT_SUCCESS_KEY.equals(msgKey)) {
-            // 登録メッセージ制御
-            model.addAttribute("message", Constants.MSG_INSERT_SUCCESS);
-        }
+    public String register(Model model) {
         return "admin/admin_create_user";
     }
     
