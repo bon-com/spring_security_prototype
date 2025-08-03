@@ -16,7 +16,7 @@
 	<form:form modelAttribute="usersForm" method="post" action="${pageContext.request.contextPath}/admin/users/register">
 		<sec:csrfInput />
 		<%-- 利用者入力フォームタグ参照 --%>
-		<t:user_form />
+		<t:user_form showLoginId="true" />
 		<br>
 		<input type="submit" value="登録" />
 	</form:form>

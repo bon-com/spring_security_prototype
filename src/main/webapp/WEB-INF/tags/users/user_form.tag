@@ -1,16 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ attribute name="showLoginId" required="false" type="java.lang.Boolean" %>
 <%@ tag description="利用者入力フォーム" pageEncoding="UTF-8"%>
 <table>
-	<tr>
-		<th>ログインID</th>
-		<td>
-			<form:input path="loginId" />
-		</td>
-		<td>
-			<form:errors path="loginId" cssStyle="color: red;" />
-		</td>
-	</tr>
+	<c:if test="${showLoginId}">
+		<tr>
+			<th>ログインID</th>
+			<td>
+				<form:input path="loginId" />
+			</td>
+			<td>
+				<form:errors path="loginId" cssStyle="color: red;" />
+			</td>
+		</tr>
+	</c:if>
 	<tr>
 		<th>利用者氏名</th>
 		<td>
