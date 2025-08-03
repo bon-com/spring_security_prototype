@@ -13,21 +13,26 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.example.prototype.base.common.constants.Constants;
-import com.example.prototype.biz.users.service.AuthorityMasterService;
+import com.example.prototype.biz.app.initializer.MasterLoader;
 import com.example.prototype.biz.users.service.UsersService;
+import com.example.prototype.biz.utils.DataUtil;
 import com.example.prototype.web.users.dto.AuthorityMasterDto;
 import com.example.prototype.web.users.dto.UsersForm;
 
 @Controller
 @RequestMapping("admin")
+@SessionAttributes(types = { UsersForm.class })
 public class AdminCreateUserController {
     @Autowired
     private UsersService userService;
     
     @Autowired
-    private AuthorityMasterService authorityService; 
+    private MasterLoader masterLoader; 
+    
     
     @ModelAttribute
     public UsersForm setUpUsersForm() {
@@ -36,7 +41,7 @@ public class AdminCreateUserController {
     
     @ModelAttribute("authorityList")
     public List<AuthorityMasterDto> setUpAuthorityList() {
-        return authorityService.findAllActive();
+        return masterLoader.getCachedAuthorityList();
     }
 
     /**
@@ -45,7 +50,7 @@ public class AdminCreateUserController {
      * @return
      */
     @GetMapping(value = "/users/register")
-    public String register(Model model, @RequestParam(name = "msgKey", required = false) String msgKey) {
+    public String register(@RequestParam(name = "msgKey", required = false) String msgKey, Model model) {
         if (Constants.UPDATE_SUCCESS_KEY.equals(msgKey)) {
             // 更新メッセージ制御
             model.addAttribute("message", Constants.MSG_UPDATE_SUCCESS);
@@ -76,8 +81,35 @@ public class AdminCreateUserController {
             return "admin/admin_create_user";
         }
         
-        // 利用者登録
+        // 確認画面に遷移
+        return "redirect:/admin/users/register/confirm";
+    }
+    
+    /**
+     * 利用者新規登録確認画面表示
+     * @param form
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/users/register/confirm")
+    public String confirm(UsersForm form, Model model) {
+        model.addAttribute("loginId", form.getLoginId());
+        model.addAttribute("username", form.getUsername());
+        model.addAttribute("enabled", form.isEnabled());
+        model.addAttribute("enabled", form.isEnabled());
+        model.addAttribute("accountExpiryAt", DataUtil.convertDateFromLocalDateTime(form.getAccountExpiryAt()));
+        model.addAttribute("passwordExpiryAt", DataUtil.convertDateFromLocalDateTime(form.getPasswordExpiryAt()));
+        model.addAttribute("accountNonLocked", form.isAccountNonLocked());
+        model.addAttribute("authorities", userService.getAuthority(form.getAuthorityIds()));
+        
+        return "admin/admin_create_user_confirm";
+    }
+    
+    @GetMapping(value = "/users/register/complete")
+    public String complate(UsersForm form, SessionStatus sessionStatus) {
         userService.insertUser(form);
+        // @SessionAttributesで指定した属性の削除
+        sessionStatus.setComplete(); 
         return "redirect:/admin/users?msgKey=" + Constants.INSERT_SUCCESS_KEY;
     }
 }

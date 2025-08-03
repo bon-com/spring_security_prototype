@@ -214,3 +214,12 @@ AbstractUserDetailsAuthenticationProvider.credentialsExpired=パスワードの�
 </bean>
 --------------------------------------------------------------------------
 使用したいクラスにて、@Valueでプロパティ値をフィールドにマッピングする
+
+・Springコンテナ内のすべてのシングルトンBeanが初期化された後に、追加の初期化処理を行いたいとき
+SmartInitializingSingletonを使用する
+上記を実装したクラスをDIコンテナで管理して、afterSingletonsInstantiatedメソッドをオーバーライドして
+初期化したい処理を記載することができる
+以下のような用途で使用する
+・アプリ起動時に マスターデータを一括ロードして保持したい
+・全ての@Autowiredや@PostConstructが終わったあとに処理したい
+・他のBeanへの依存関係がすべて確立されたあとで動作させたい

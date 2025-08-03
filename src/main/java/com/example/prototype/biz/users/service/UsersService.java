@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.prototype.biz.app.initializer.MasterLoader;
 import com.example.prototype.biz.users.dao.JdbcAuthoritiesDao;
 import com.example.prototype.biz.users.dao.JdbcUsersDao;
 import com.example.prototype.biz.users.entity.Authorities;
@@ -35,7 +36,7 @@ public class UsersService {
     private AuthoritiesService authoritiesService;
     
     @Autowired
-    private AuthorityMasterService authorityMasterService;
+    private MasterLoader masterLoader;
 
     /** パスワード有効期間 */
     @Value("${auth.password.expiry.period.days}")
@@ -129,7 +130,6 @@ public class UsersService {
         return dto;
     }
 
-    
     /**
      * 利用者の権限一覧取得
      * @param loginId
@@ -137,13 +137,13 @@ public class UsersService {
      */
     public List<AuthorityMasterDto> findAuthorityByLoginId(String loginId) {
         // 権限マスタ一覧取得
-        List<AuthorityMasterDto> authorityMasterList = authorityMasterService.findAllActive();
+        List<AuthorityMasterDto> authorityMasterList = masterLoader.getCachedAuthorityList();
         // 利用者の権限取得
         List<AuthoritiesDto> authoritiesList = authoritiesService.findByLoginId(loginId);
         
         return authorityMasterList.stream()
                 .filter(master -> authoritiesList.stream()
-                        .anyMatch(dto -> dto.getAuthorityId().equals(master.getAuthorityId())))
+                        .anyMatch(dto -> dto.getAuthorityId() == master.getAuthorityId()))
                     .collect(Collectors.toList());
     }
     
@@ -154,5 +154,20 @@ public class UsersService {
      */
     public int findCountByLoginId(String loginId) {
         return jdbcUsersDao.findCountByLoginId(loginId);
+    }
+
+    /**
+     * 利用者の権限一覧取得
+     * @param loginId
+     * @return
+     */
+    public List<AuthorityMasterDto> getAuthority(List<Integer> authorityIds) {
+        // 権限マスタ一覧取得
+        List<AuthorityMasterDto> authorityMasterList = masterLoader.getCachedAuthorityList();
+        
+        return authorityMasterList.stream()
+                .filter(master -> authorityIds.stream()
+                        .anyMatch(i -> i == master.getAuthorityId()))
+                    .collect(Collectors.toList());
     }
 }
