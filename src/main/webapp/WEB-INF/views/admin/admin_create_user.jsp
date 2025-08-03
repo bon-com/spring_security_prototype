@@ -18,7 +18,7 @@
 		<%-- 利用者入力フォームタグ参照 --%>
 		<t:user_form showLoginId="true" />
 		<br>
-		<input type="submit" value="登録" />
+		<input type="submit" value="登録確認" />
 	</form:form>
 	<br>
 	<form method="get" action="${pageContext.request.contextPath}/admin/users">
