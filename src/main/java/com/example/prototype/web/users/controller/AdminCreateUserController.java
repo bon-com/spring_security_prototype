@@ -95,6 +95,12 @@ public class AdminCreateUserController {
         return "admin/admin_create_user_confirm";
     }
     
+    /**
+     * 新規登録処理間完了
+     * @param form
+     * @param sessionStatus
+     * @return
+     */
     @GetMapping(value = "/users/register/complete")
     public String complate(UsersForm form, SessionStatus sessionStatus) {
         userService.insertUser(form);
