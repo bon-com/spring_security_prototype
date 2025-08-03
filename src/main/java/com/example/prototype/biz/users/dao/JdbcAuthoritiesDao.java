@@ -60,4 +60,22 @@ public class JdbcAuthoritiesDao {
         logger.debug("\n★★SQL実行★★\n・クラス=JdbcAuthoritiesDao\n・メソッド=findByLoginId\n・SQL={}\n・パラメータ={}\n", sql, loginId);
         return namedParameterJdbcTemplate.query(sql.toString(), param, authoritiesRowMapper);
     }
+    
+    /**
+     * 利用者権限削除
+     * @param loginId
+     */
+    public void delete(String loginId) {
+        var sql = new StringBuilder();
+        sql.append("DELETE FROM authorities ");
+        sql.append("WHERE login_id = :loginId");
+        
+        var param = new MapSqlParameterSource();
+        param.addValue("loginId", loginId);
+        
+        logger.debug(
+                "\n★★SQL実行★★\n・クラス=JdbcAuthoritiesDao\n・メソッド=delete\n・SQL={}\n・パラメータ={}\n",
+                sql, loginId);
+        namedParameterJdbcTemplate.update(sql.toString(), param);
+    }
 }

@@ -170,4 +170,31 @@ public class UsersService {
                         .anyMatch(i -> i == master.getAuthorityId()))
                     .collect(Collectors.toList());
     }
+    
+    /**
+     * 利用者情報の更新
+     * @param form
+     */
+    public void updateUser(UsersForm form) {
+        // 更新エンティティ作成
+        var user = ExtendedUser.builder()
+                .loginId(form.getLoginId())
+                .username(form.getUsername())
+                .password(passwordEncoder.encode(form.getPassword()))
+                .enabled(form.isEnabled())
+                .accountNonLocked(form.isAccountNonLocked())
+                .accountExpiryAt(form.getAccountExpiryAt())
+                .passwordExpiryAt(form.getPasswordExpiryAt())
+                .build();
+        
+        // 利用者更新
+        jdbcUsersDao.update(user);
+        
+        // 利用者権限の削除登録
+        jdbcAuthoritiesDao.delete(user.getLoginId());
+        form.getAuthorityIds().forEach(authorityId -> {
+            var authority = new Authorities(form.getLoginId(), authorityId);
+            jdbcAuthoritiesDao.insert(authority);
+        });
+    }
 }

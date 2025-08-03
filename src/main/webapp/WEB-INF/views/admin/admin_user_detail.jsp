@@ -89,6 +89,9 @@ th {
 			</td>
 		</tr>
 	</table>
+	<form method="get" action="${pageContext.request.contextPath}/admin/users/edit/${user.loginId}">
+		<input type="submit" value="編集">
+	</form>
 	<br>
 	<form method="get" action="${pageContext.request.contextPath}/admin/users">
 		<input type="submit" value="戻る">

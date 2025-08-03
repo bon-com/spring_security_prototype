@@ -243,4 +243,35 @@ public class JdbcUsersDao {
                 sql, user);
         namedParameterJdbcTemplate.update(sql.toString(), param);
     }
+    
+    /**
+     * 利用者情報更新
+     * @param user
+     */
+    public void update(ExtendedUser user) {
+        // 利用者チェック
+        String loginId = user.getLoginId();
+        int count = findCountByLoginId(user.getLoginId());
+        if (count == 0) {
+            // 更新対象なし
+            throw new IllegalStateException(Constants.MSG_UPDATE_ERR + ": loginId=" + loginId);
+        }
+        
+        var sql = new StringBuilder();
+        sql.append("UPDATE users SET ");
+        sql.append("username = :username, ");
+        sql.append("password = :password, ");
+        sql.append("enabled = :enabled, ");
+        sql.append("account_non_locked = :accountNonLocked, ");
+        sql.append("login_failure_count = :loginFailureCount, ");
+        sql.append("account_expiry_at = :accountExpiryAt, ");
+        sql.append("password_expiry_at = :passwordExpiryAt ");
+        sql.append("WHERE login_id = :loginId");
+        var param = new BeanPropertySqlParameterSource(user);
+
+        logger.debug(
+                "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=update\n・SQL={}\n・パラメータ={}\n",
+                sql, user);
+        namedParameterJdbcTemplate.update(sql.toString(), param);
+    }
 }

@@ -19,7 +19,7 @@ public class AdminShowUserDetailController {
 
     @GetMapping(value = "/users/{loginId}")
     public String detail(@PathVariable String loginId, Model model) {
-        // 利用者取得
+        // 利用者情報取得
         UsersDto user = userService.findByLoginId(loginId);
         model.addAttribute("user", user);
 

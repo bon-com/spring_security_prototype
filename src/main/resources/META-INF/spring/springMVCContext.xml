@@ -49,11 +49,12 @@
 
 	<!-- HandlerInterceptorを適用させるためのBean定義 -->
 	<mvc:interceptors>
-		<!-- SessionCleanupInterceptor -->
+		<!-- UsersFormSessionCleanupInterceptor -->
 		<mvc:interceptor>
 			<mvc:mapping path="/**" /><!-- 適用対象のパス -->
 			<mvc:exclude-mapping path="/resources/**" /><!-- 除外対象のパス -->
 			<mvc:exclude-mapping path="/admin/users/register/**" /><!-- 除外対象のパス -->
+			<mvc:exclude-mapping path="/admin/users/edit/**" /><!-- 除外対象のパス -->
 			<bean class="com.example.prototype.web.interceptor.UsersFormSessionCleanupInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
