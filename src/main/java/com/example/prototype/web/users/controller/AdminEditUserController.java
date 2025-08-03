@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.app.initializer.MasterLoader;
 import com.example.prototype.biz.users.service.UsersService;
 import com.example.prototype.biz.utils.DataUtil;
+import com.example.prototype.common.constants.Constants;
 import com.example.prototype.web.users.dto.AuthorityMasterDto;
 import com.example.prototype.web.users.dto.UsersDto;
 import com.example.prototype.web.users.dto.UsersForm;
@@ -53,19 +54,27 @@ public class AdminEditUserController {
      * @return
      */
     @GetMapping(value = "/users/edit/{loginId}")
-    public String edit(@PathVariable String loginId, UsersForm form, Model model) {
-        // 利用者情報取得
-        UsersDto user = userService.findByLoginId(loginId);
-        BeanUtils.copyProperties(user, form);
-        
-        // 利用者権限情報編集
-        List<AuthorityMasterDto> authorities = userService.findAuthorityByLoginId(loginId);
-        List<Integer> authorityIds = UsersViewHelper.convertAuthorities(authorities);
-        form.setAuthorityIds(authorityIds);
+    public String edit(@PathVariable String loginId, @RequestParam(required = false) String back, UsersForm form, Model model) {
+        if (back == null) {
+            // 利用者情報取得
+            UsersDto user = userService.findByLoginId(loginId);
+            BeanUtils.copyProperties(user, form);
+            
+            // 利用者権限情報編集
+            List<AuthorityMasterDto> authorities = userService.findAuthorityByLoginId(loginId);
+            List<Integer> authorityIds = UsersViewHelper.convertAuthorities(authorities);
+            form.setAuthorityIds(authorityIds);
+        }
         
         return "admin/admin_edit_user";
     }
     
+    /**
+     * 利用者情報編集
+     * @param form
+     * @param rs
+     * @return
+     */
     @PostMapping(value = "/users/edit/{loginId}")
     public String editReq(@Valid UsersForm form, BindingResult rs) {
         if (rs.hasErrors()) {

@@ -34,6 +34,7 @@ th {
 	</form>
 	<br>
 	<form method="get" action="${pageContext.request.contextPath}/admin/users/edit/${loginId}">
+		<input type="hidden" name="back" value="1">
 		<input type="submit" value="戻る">
 	</form>
 </body>
