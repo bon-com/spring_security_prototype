@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.users.service.UsersService;
+import com.example.prototype.common.constants.Constants;
 
 @Controller
 @RequestMapping("admin")
@@ -22,7 +22,7 @@ public class AdminShowUserController {
      * @return
      */
     @GetMapping(value = "/users")
-    public String users(Model model, @RequestParam(name = "msgKey", required = false) String msgKey) {
+    public String users(@RequestParam(name = "msgKey", required = false) String msgKey, Model model) {
         if (Constants.UPDATE_SUCCESS_KEY.equals(msgKey)) {
             // 更新メッセージ制御
             model.addAttribute("message", Constants.MSG_UPDATE_SUCCESS);
