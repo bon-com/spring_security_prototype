@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.prototype.base.common.constants.Constants;
+import com.example.prototype.common.constants.Constants;
 
 import lombok.Data;
 

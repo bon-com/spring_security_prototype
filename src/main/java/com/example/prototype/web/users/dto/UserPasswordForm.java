@@ -3,7 +3,7 @@ package com.example.prototype.web.users.dto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import com.example.prototype.base.common.constants.Constants;
+import com.example.prototype.common.constants.Constants;
 import com.example.prototype.web.common.validator.FieldsMatch;
 
 import lombok.Data;

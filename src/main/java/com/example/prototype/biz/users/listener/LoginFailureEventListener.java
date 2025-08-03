@@ -8,9 +8,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.stereotype.Component;
 
-import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.users.entity.ExtendedUser;
 import com.example.prototype.biz.users.service.UsersService;
+import com.example.prototype.common.constants.Constants;
 
 /**
  * 認証失敗時のイベントをハンドリングするクラス

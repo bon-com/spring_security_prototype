@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import com.example.prototype.base.common.constants.Constants;
+import com.example.prototype.common.constants.Constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

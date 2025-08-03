@@ -7,7 +7,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.prototype.base.common.constants.Constants;
+import com.example.prototype.common.constants.Constants;
 
 /**
  * 相関チェックカスタムBeanバリデーター

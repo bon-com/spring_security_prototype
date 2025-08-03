@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.app.initializer.MasterLoader;
 import com.example.prototype.biz.users.service.UsersService;
 import com.example.prototype.biz.utils.DataUtil;
+import com.example.prototype.common.constants.Constants;
 import com.example.prototype.web.users.dto.AuthorityMasterDto;
 import com.example.prototype.web.users.dto.UsersForm;
 

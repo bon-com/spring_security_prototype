@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.utils.MessageUtil;
+import com.example.prototype.common.constants.Constants;
 
 @Component
 @ControllerAdvice("com.example.prototype.web")

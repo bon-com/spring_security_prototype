@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.users.entity.ExtendedUser;
+import com.example.prototype.common.constants.Constants;
 
 @Controller
 public class WelcomeController {

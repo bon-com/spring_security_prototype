@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.utils.SessionCleaner;
+import com.example.prototype.common.constants.Constants;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

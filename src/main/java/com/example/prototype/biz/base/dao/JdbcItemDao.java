@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.base.entity.Item;
+import com.example.prototype.common.constants.Constants;
 
 @Repository
 public class JdbcItemDao {

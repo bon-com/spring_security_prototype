@@ -16,8 +16,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.users.entity.ExtendedUser;
+import com.example.prototype.common.constants.Constants;
 
 @Repository
 public class JdbcUsersDao {
@@ -193,7 +193,7 @@ public class JdbcUsersDao {
         var sql = "SELECT COUNT(*) FROM users WHERE login_id = :loginId";
         var param = new MapSqlParameterSource("loginId", loginId);
 
-        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findCountByLoginId\n・SQL={}\n・パラメータ={{ loginId={} }}\n",
+        logger.debug("\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=findCountByLoginId\n・SQL={}\n・パラメータ={}\n",
                 sql, loginId);
         return namedParameterJdbcTemplate.queryForObject(sql, param, Integer.class);
     }
@@ -239,7 +239,7 @@ public class JdbcUsersDao {
         var param = new BeanPropertySqlParameterSource(user);
 
         logger.debug(
-                "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=insertUser\n・SQL={}\n・パラメータ={}\n",
+                "\n★★SQL実行★★\n・クラス=JdbcUsersDao\n・メソッド=insert\n・SQL={}\n・パラメータ={}\n",
                 sql, user);
         namedParameterJdbcTemplate.update(sql.toString(), param);
     }

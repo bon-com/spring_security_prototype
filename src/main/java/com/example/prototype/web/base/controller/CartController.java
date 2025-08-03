@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.prototype.base.common.constants.Constants;
 import com.example.prototype.biz.base.service.CartService;
 import com.example.prototype.biz.base.service.ItemService;
+import com.example.prototype.common.constants.Constants;
 import com.example.prototype.web.base.dto.CartAddForm;
 import com.example.prototype.web.base.dto.CartDto;
 import com.example.prototype.web.base.dto.CartItemDto;

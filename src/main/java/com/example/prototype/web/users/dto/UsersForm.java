@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.example.prototype.base.common.constants.Constants;
+import com.example.prototype.common.constants.Constants;
 import com.example.prototype.web.common.validator.FieldsMatch;
 
 import lombok.Data;

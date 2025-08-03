@@ -1,4 +1,4 @@
-package com.example.prototype.base.common.constants;
+package com.example.prototype.common.constants;
 
 /**
  * 定数クラス
