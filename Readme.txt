@@ -243,3 +243,18 @@ SmartInitializingSingletonを使用する
 　⇒messages_ja.properties
 　　①以下のキーを追加
 　　　　ConcurrentSessionControlAuthenticationStrategy.exceededAllowed
+
+・セッションタイムアウト管理について
+セッションタイムアウトを以下の手順でハンドリングする
+⇒applicationContext-security.xml
+　　①invalid-session-url="/session-invalid"を追加する
+　　　　上記は無効なセッションでアクセスされた場合のリダイレクトパスを設定できる
+　　②<sec:intercept-url pattern="/session-invalid" access="permitAll()" />
+　　　　①のリダイレクト先を認証不要にしないと/loginにリダイレクトされてしまう
+　　③ログアウト設定の属性に「delete-cookies="JSESSIONID"」を追加
+　　　　上記を追加しないと、ログアウト時に無効なセッションとみなされて/session-invalidにリダイレクトされた
+⇒SessionController.java
+　　リダイレクト先の遷移ハンドラ追加しただけ
+⇒web.xml
+　　「<session-timeout>30</session-timeout>」のようにセッションタイムアウトの値を操作すれば動作確認可能
+

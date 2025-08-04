@@ -30,6 +30,8 @@
 		<sec:intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN','ROLE_DEVELOPER')" />
 		<!-- 自作したログイン画面のパス「/login」は認証不要とする（※isAuthenticated()の設定よりも先に定義すること） -->
 		<sec:intercept-url pattern="/login" access="permitAll()" />
+		<!-- 無効なセッションでアクセスした際のエラー画面リダイレクトURLは認証不要とする -->
+		<sec:intercept-url pattern="/session-invalid" access="permitAll()" />
 		<!-- すべてのパスで認証が必要 -->
 		<sec:intercept-url pattern="/**" access="isAuthenticated()" />
 		<!-- 
@@ -49,12 +51,14 @@
   		<!-- ログアウト設定 -->
   		<!-- 
   		logout-success-url： ログアウト成功時のリダイレクト先URL
-  		invalidate-session： TRUE⇒セッション破棄
+  		invalidate-session： TRUE⇒サーバー側のセッション破棄
+  		delete-cookies="JSESSIONID": クライアント側のクッキーを削除（これをしないとログアウト時に無効なセッションアクセスとなってしまう）
   		 -->
 		<sec:logout 
 			logout-url="/logout" 
 			logout-success-url="/login?logout=true" 
-			invalidate-session="true" />
+			invalidate-session="true"
+			delete-cookies="JSESSIONID" />
 		<sec:access-denied-handler ref="accessDeniedHandler" />
 
 	<!-- セッション管理機能 -->
@@ -62,8 +66,9 @@
 	max-sessions： 1ユーザーにつき、1セッションのみ許可する
 	error-if-maximum-exceeded: 最大セッション数を超えた場合にログインを拒否するかどうか（true: 新しいログインを拒否/ false: 古いセッションを破棄して新規ログインを許可）
 	session-registry-ref: セッション管理に使うSessionRegistryのBeanを参照（現在のセッションを把握したり作成したり破棄したり）
+	invalid-session-url="/session-invalid": 無効なセッションでアクセスされた場合のリダイレクトパス
 	 -->
- 	<sec:session-management>
+ 	<sec:session-management invalid-session-url="/session-invalid">
 		<sec:concurrency-control 
 		max-sessions="1"
 		error-if-maximum-exceeded="true"
