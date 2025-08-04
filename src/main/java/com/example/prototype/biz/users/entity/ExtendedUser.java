@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -250,4 +251,22 @@ public class ExtendedUser implements UserDetails {
                 ", authorities=" + authorities +
                 '}';
     }
+    // ------------------------------
+    // 二重ログイン判定を行うため、オーバーライド　ここから
+    // ------------------------------
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ExtendedUser that = (ExtendedUser) obj;
+        return Objects.equals(this.getLoginId(), that.getLoginId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLoginId());
+    }
+    // ------------------------------
+    // 二重ログイン判定を行うため、オーバーライド　ここまで
+    // ------------------------------
 }

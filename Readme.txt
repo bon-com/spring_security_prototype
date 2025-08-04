@@ -220,6 +220,26 @@ SmartInitializingSingletonを使用する
 上記を実装したクラスをDIコンテナで管理して、afterSingletonsInstantiatedメソッドをオーバーライドして
 初期化したい処理を記載することができる
 以下のような用途で使用する
-・アプリ起動時に マスターデータを一括ロードして保持したい
-・全ての@Autowiredや@PostConstructが終わったあとに処理したい
-・他のBeanへの依存関係がすべて確立されたあとで動作させたい
+⇒アプリ起動時に マスターデータを一括ロードして保持したい
+⇒全ての@Autowiredや@PostConstructが終わったあとに処理したい
+⇒他のBeanへの依存関係がすべて確立されたあとで動作させたい
+
+・二重ログイン防止機能について
+同一ログインユーザーによる二重ログインを防ぐ
+以下の手順で実装する
+⇒applicationContext-security.xml
+　　①SessionRegistryImplをBean登録
+　　②以下のセッション管理設定を用意
+ 	<sec:session-management>
+		<sec:concurrency-control 
+		max-sessions="1" 
+		error-if-maximum-exceeded="true"
+		session-registry-ref="sessionRegistry" />
+	</sec:session-management>
+　⇒web.xml
+　　①Spring Securityにセッション情報を通知するリスナー追加（HttpSessionEventPublisher）
+　⇒ExtendedUser.java
+　　①比較判定を行うメソッドをオーバーライド
+　⇒messages_ja.properties
+　　①以下のキーを追加
+　　　　ConcurrentSessionControlAuthenticationStrategy.exceededAllowed

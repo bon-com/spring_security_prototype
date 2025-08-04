@@ -79,9 +79,13 @@
 		<filter-name>authLoggingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<!-- デフォルトのエラー遷移先 -->
 	<error-page>
 		<location>/WEB-INF/views/default_error.jsp</location>
 	</error-page>
+	<!-- Spring Securityがセッションの作成・破棄を検知できるようにするためのリスナー -->
+	<listener>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+	</listener>
 </web-app>

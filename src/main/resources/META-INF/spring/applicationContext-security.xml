@@ -19,6 +19,8 @@
 	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 	<!-- 認可エラー時のハンドリングクラス -->
 	<bean id="accessDeniedHandler" class="com.example.prototype.biz.users.listener.ExtendedAccessDeniedHandler" />
+	<!-- 同一ユーザーの同時ログイン数を制限するためのクラス -->
+	<bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
 	
 	<!-- 認証と認可の設定をここに記載していく -->
 	<sec:http>
@@ -54,6 +56,19 @@
 			logout-success-url="/login?logout=true" 
 			invalidate-session="true" />
 		<sec:access-denied-handler ref="accessDeniedHandler" />
+
+	<!-- セッション管理機能 -->
+	<!-- 
+	max-sessions： 1ユーザーにつき、1セッションのみ許可する
+	error-if-maximum-exceeded: 最大セッション数を超えた場合にログインを拒否するかどうか（true: 新しいログインを拒否/ false: 古いセッションを破棄して新規ログインを許可）
+	session-registry-ref: セッション管理に使うSessionRegistryのBeanを参照（現在のセッションを把握したり作成したり破棄したり）
+	 -->
+ 	<sec:session-management>
+		<sec:concurrency-control 
+		max-sessions="1"
+		error-if-maximum-exceeded="true"
+		session-registry-ref="sessionRegistry" />
+	</sec:session-management>
 	</sec:http>
 
 	<!-- 認証プロバイダーの設定 -->
