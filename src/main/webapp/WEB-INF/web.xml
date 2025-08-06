@@ -81,9 +81,9 @@
 	</filter-mapping>
 
 	<!-- デフォルトのエラー遷移先 -->
-	<error-page>
+<!-- 	<error-page>
 		<location>/WEB-INF/views/default_error.jsp</location>
-	</error-page>
+	</error-page> -->
 	<!-- Spring Securityがセッションの作成・破棄を検知できるようにするためのリスナー -->
 	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>

@@ -26,5 +26,10 @@
 		<br />
 		<input type="submit" value="ログイン" />
 	</form>
+	<br>
+	<%-- Googleでログイン --%>
+    <a href="<c:url value='/oauth2/authorization/google' />">
+        <button>Googleでログイン</button>
+    </a>
 </body>
 </html>

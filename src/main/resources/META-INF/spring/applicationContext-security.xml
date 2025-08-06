@@ -12,7 +12,6 @@
 
 	<!-- 静的リソース（CSS, JS, 画像など）へのセキュリティ除外 -->
 	<sec:http pattern="/resources/**" security="none" />
-
 	<!-- 認証クラス -->
 	<bean id="userDetailsService" class="com.example.prototype.biz.users.service.AuthenticationUserService" />
 	<!-- 認証時のパスワードエンコーダー -->
@@ -28,12 +27,20 @@
 		<sec:intercept-url pattern="/user/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_DEVELOPER')" />
 		<!-- admin配下は管理者、開発者ロールを許可 -->
 		<sec:intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN','ROLE_DEVELOPER')" />
+		<sec:intercept-url pattern="/oauth2/**" access="permitAll" />
 		<!-- 自作したログイン画面のパス「/login」は認証不要とする（※isAuthenticated()の設定よりも先に定義すること） -->
 		<sec:intercept-url pattern="/login" access="permitAll()" />
 		<!-- 無効なセッションでアクセスした際のエラー画面リダイレクトURLは認証不要とする -->
 		<sec:intercept-url pattern="/session-invalid" access="permitAll()" />
 		<!-- すべてのパスで認証が必要 -->
 		<sec:intercept-url pattern="/**" access="isAuthenticated()" />
+		<!--
+		これがないとOAuth2のフィルターが登録されずGoogle認証画面が404になってしまう事象があった
+		-->
+	    <sec:oauth2-login 
+	       client-registration-repository-ref="clientRegistrationRepository"
+		   authorized-client-service-ref="authorizedClientService"
+	       login-page="/login" />
 		<!-- 
 		未認証時のパス：<sec:form-login />だけを定義すると、Spring Security提供のデフォルトログイン画面に遷移
 		default-target-url属性を指定すると、ログインのリダイレクト先URLを指定可能。（省略時は「/」）
@@ -61,19 +68,19 @@
 			delete-cookies="JSESSIONID" />
 		<sec:access-denied-handler ref="accessDeniedHandler" />
 
-	<!-- セッション管理機能 -->
-	<!-- 
-	max-sessions： 1ユーザーにつき、1セッションのみ許可する
-	error-if-maximum-exceeded: 最大セッション数を超えた場合にログインを拒否するかどうか（true: 新しいログインを拒否/ false: 古いセッションを破棄して新規ログインを許可）
-	session-registry-ref: セッション管理に使うSessionRegistryのBeanを参照（現在のセッションを把握したり作成したり破棄したり）
-	invalid-session-url="/session-invalid": 無効なセッションでアクセスされた場合のリダイレクトパス
-	 -->
- 	<sec:session-management invalid-session-url="/session-invalid">
-		<sec:concurrency-control 
-		max-sessions="1"
-		error-if-maximum-exceeded="true"
-		session-registry-ref="sessionRegistry" />
-	</sec:session-management>
+		<!-- セッション管理機能 -->
+		<!-- 
+		max-sessions： 1ユーザーにつき、1セッションのみ許可する
+		error-if-maximum-exceeded: 最大セッション数を超えた場合にログインを拒否するかどうか（true: 新しいログインを拒否/ false: 古いセッションを破棄して新規ログインを許可）
+		session-registry-ref: セッション管理に使うSessionRegistryのBeanを参照（現在のセッションを把握したり作成したり破棄したり）
+		invalid-session-url="/session-invalid": 無効なセッションでアクセスされた場合のリダイレクトパス
+		 -->
+	 	<sec:session-management invalid-session-url="/session-invalid">
+			<sec:concurrency-control 
+			max-sessions="1"
+			error-if-maximum-exceeded="true"
+			session-registry-ref="sessionRegistry" />
+		</sec:session-management>
 	</sec:http>
 
 	<!-- 認証プロバイダーの設定 -->

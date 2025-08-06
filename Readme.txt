@@ -258,3 +258,6 @@ SmartInitializingSingletonを使用する
 ⇒web.xml
 　　「<session-timeout>30</session-timeout>」のようにセッションタイムアウトの値を操作すれば動作確認可能
 
+・ここにきてわかったこと
+⇒OAuth2を使用してGoogleなどのプロバイダと連携したい場合、XMLベースだと厳しいってことがわかった
+⇒JavaConfigベースを推奨しているっぽい

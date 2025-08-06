@@ -24,3 +24,6 @@ hs_err_pid*
 replay_pid*
 .settings
 target
+
+# 機密情報のため除外
+src/main/resources/application.properties

@@ -52,10 +52,11 @@
 	</bean>
 	<!-- プロパティファイル参照 -->
 	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:auth.properties</value>
-			</list>
-		</property>
+	    <property name="locations">
+	        <list>
+	            <value>classpath:auth.properties</value>
+	            <value>classpath:application.properties</value>
+	        </list>
+	    </property>
 	</bean>
 </beans>
